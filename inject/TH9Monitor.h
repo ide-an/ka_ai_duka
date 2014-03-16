@@ -15,6 +15,8 @@ namespace ka_ai_duka{
         virtual void Attach(void) = 0;
         virtual void Detach(void) = 0;
         virtual void OnFrameUpdate(void) = 0;
+        virtual void OnGameStart(void) = 0;
+        virtual void OnGameEnd(void) = 0;
         static TH9Version CheckVersion(void){
             //TODO: check if version is 1.0
             return Ver1_5a;
@@ -28,8 +30,16 @@ namespace ka_ai_duka{
         void Detach(void){
         }
         void OnFrameUpdate(void);
+        void OnGameStart(void);
+        void OnGameEnd(void);
     private:
         void InjectOnFrameUpdate(void);
+        void InjectOnGameStart(void);
+        void InjectOnGameEnd(void);
+        bool IsNetBattle(void){
+            //TODO: implement
+            return false;
+        }
     };
 
     class TH09ver1_0Monitor : public TH9Monitor
@@ -44,6 +54,12 @@ namespace ka_ai_duka{
         void OnFrameUpdate(void){
             assert(0);//TODO: implement
         };
+        void OnGameStart(void){
+            assert(0);//TODO: implement
+        };
+        void OnGameEnd(void){
+            assert(0);//TODO: implement
+        }
     };
 
     extern TH9Monitor* monitor;
