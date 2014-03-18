@@ -1,8 +1,26 @@
 #include "TH9Monitor.h"
+#include "th09address.h"
 #include <Windows.h>
+#include <cstdio>
 
 namespace ka_ai_duka{
     TH9Monitor* monitor = nullptr;
+
+    TH9ver1_5aMonitor::TH9ver1_5aMonitor(void) : 
+        TH9Monitor(
+            raw_address::globals_ver1_5->board,
+            raw_address::globals_ver1_5->key_states
+            ),
+            net_info(raw_address::globals_ver1_5->net_info)
+    {
+    }
+    TH9ver1_0Monitor::TH9ver1_0Monitor(void) :
+        TH9Monitor(
+            raw_address::globals_ver1_0->board,
+            raw_address::globals_ver1_0->key_states
+            )
+    {
+    }
     
     int __declspec(naked) OnFrameUpdateVer1_5(void)
     {   
@@ -83,8 +101,7 @@ namespace ka_ai_duka{
         .text:00420295                 retn
         に書き換える
         */
-        //TODO: アドレスをどっかにまとめたい
-        char* inject_to = reinterpret_cast<char*>(0x420290);
+        char* inject_to = raw_address::addr_on_frame_update.ver1_5;
         char code[] = {
             0xE8, 0, 0, 0, 0, // call OnFrameUpdate
             0xC3              // retn
@@ -101,8 +118,7 @@ namespace ka_ai_duka{
         .text:0041B2C3                 call OnGameStart
         に書き換える
         */
-        //TODO: アドレスをどっかにまとめる
-        char* inject_to = reinterpret_cast<char*>(0x41B2C3);
+        char* inject_to = raw_address::addr_on_game_start.ver1_5;
         char code[] = {
             0xE8, 0, 0, 0, 0, // call OnGameStart
         };
@@ -119,7 +135,7 @@ namespace ka_ai_duka{
         .text:0041B9A7                 nop
         に書き換える
         */
-        char* inject_to = reinterpret_cast<char*>(0x41B9A2);
+        char* inject_to = raw_address::addr_on_game_end.ver1_5;
         char code[] = {
             0xE8, 0, 0, 0, 0, //call OnGameEnd
             0x90              //nop
@@ -127,30 +143,24 @@ namespace ka_ai_duka{
         SetJumpTo(code + 1, (int)(inject_to + 5), (int)OnGameEndVer1_5);
         WriteCode(inject_to, code, sizeof(code));
     }
-    
-    DWORD prev_ms = 0;
-    void TH9ver1_5aMonitor::OnFrameUpdate(void)
+/**
+ここから先はバージョン依存しない部分
+*/
+    void TH9Monitor::OnFrameUpdate(void)
     {
-        DWORD current = ::GetTickCount();
-        if(current - prev_ms > 1000){
-            //::MessageBeep(-1);
+        static int frame = 0;//TODO: デバッグコード。削除する。
+        key_states[0].keys |= frame%60 < 30 ? 0x40 : 0x80;
+        frame++;
+    }
+
+    void TH9Monitor::OnGameStart(void)
+    {
+        if(IsNetBattle()){
+            ::MessageBeep(MB_ICONASTERISK);
         }
-        prev_ms = current;
-        ////TODO: とりあえずテストとしてキー入力に介入。後で正式なコードに変える。
-        //static int frame = 0;
-        //unsigned short* keystate_1P = reinterpret_cast<unsigned short*>(0x4ACE18+0x2C);
-        //unsigned short* keystate_2P = reinterpret_cast<unsigned short*>(0x4ACE18+0x2C+0x8E);
-        //unsigned short* keystate_3P = reinterpret_cast<unsigned short*>(0x4ACE18+0x2C+0x8E*2);
-        //*keystate_1P |= frame%60 < 30 ? 0x40 : 0x80;
-        //frame++;
     }
 
-    void TH9ver1_5aMonitor::OnGameStart(void)
-    {
-        //::MessageBeep(MB_ICONASTERISK);
-    }
-
-    void TH9ver1_5aMonitor::OnGameEnd(void)
+    void TH9Monitor::OnGameEnd(void)
     {
         ::MessageBeep(MB_ICONEXCLAMATION);
     }
