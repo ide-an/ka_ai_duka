@@ -52,7 +52,11 @@ namespace ka_ai_duka {
             char unknown5[0x30384 - 0x30338 - sizeof(PlayerFeature *)];
             float charge_current;
             float charge_max;
-            char unknown6[0x30454 - 0x30388 - sizeof(int)];
+            char unknown6[0x30414 - 0x30388 - sizeof(float)];
+            unsigned int combo;
+            char unknown7[4];
+            unsigned int spell_point;
+            char unknown8[0x30454 - 0x3041C - sizeof(int)];
             struct Item items[4];
         };
 
@@ -89,7 +93,7 @@ namespace ka_ai_duka {
             char unknown4[0x59C - 0x584 - sizeof(float)];
         };
 
-        struct BulletsLasers{
+        struct BulletContainer{
             char unknown1[0x1A900];
             struct Bullet bullets[536];
             char unknown2[4292];
@@ -114,16 +118,16 @@ namespace ka_ai_duka {
             char unknown7[0x5430 - 0x3398 - sizeof(Rect2D)];
         };
 
-        struct Enemies{
+        struct EnemyContainer{
             char unknown1[0x5758];
             struct Enemy enemies[128];
         };
 
         struct Board{
             struct Player* player;//4A7D94
-            struct BulletsLasers* bullets_lasers;//4A7D98
+            struct BulletContainer* bullet_container;//4A7D98
             char unknown1[4];
-            struct Enemies* enemies;//4A7DA0
+            struct EnemyContainer* enemy_container;//4A7DA0
             char unknown2[8];
             struct Score* score;//4A7DAC
             PlayerCharacter player_character;//4A7DB0
@@ -145,7 +149,7 @@ namespace ka_ai_duka {
             char unknown4[0x4C - 0x34 - sizeof(ExFeature *)];
         };
 
-        struct ExAttacks{
+        struct ExAttackContainer{
             char unknown1[0x1C];
             struct ExAttack attacks[256];
         };

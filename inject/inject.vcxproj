@@ -79,6 +79,7 @@
     <ClCompile Include="TH9Monitor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="th09address.h" />
     <ClInclude Include="th09types.h" />
     <ClInclude Include="TH9Monitor.h" />

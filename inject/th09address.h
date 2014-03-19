@@ -2,14 +2,14 @@
 #include "th09types.h"
 
 namespace ka_ai_duka{
-    namespace raw_address{
+    namespace address{
         
 #pragma pack(push, 1)
         struct Th9GlobalVer1_5{
             struct raw_types::Board board[2];//4A7D94
             char unknown1[0x4A7E3C - 0x4A7D94 - sizeof(raw_types::Board)*2];
-            struct raw_types::ExAttacks* ex_attacks;//4A7E3C
-            char unknown2[0x4A7E90 - 0x4A7E3C - sizeof(raw_types::ExAttacks*)];
+            struct raw_types::ExAttackContainer* ex_attack_container;//4A7E3C
+            char unknown2[0x4A7E90 - 0x4A7E3C - sizeof(raw_types::ExAttackContainer*)];
             unsigned int round;//4A7E90
             char unknown3[4];
             unsigned int round_win[2];//4A7E98
@@ -17,7 +17,10 @@ namespace ka_ai_duka{
             unsigned int difficulty;//4A7EAC
             char unknown5[0x4ACE18 - 0x4A7EAC - sizeof(int)];
             struct raw_types::KeyState key_states[3];
-            char unknown6[0x4B42D0 - 0x4ACE18 - sizeof(raw_types::KeyState)*3];
+            char unknown6[0x4B3104 - 0x4ACE18 - sizeof(raw_types::KeyState)*3];
+            int** d3d8;//4B3104
+            int** d3d8_device;//4B3108
+            char unknown7[0x4B42D0 - 0x4B3108 - sizeof(int**)];
             struct raw_types::NetInfo* net_info;//4B42D0
         };
 #pragma pack(pop)

@@ -1,6 +1,6 @@
 #include "th09address.h"
 namespace ka_ai_duka{
-    namespace raw_address{
+    namespace address{
         const struct Address addr_on_frame_update = {
             reinterpret_cast<char*>(0x420290),
             reinterpret_cast<char*>(0x420290)//TODO: ver 1.0‘Î‰
