@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>
 #include "th09types.h"
+#include "GameSide.h"
 #ifdef DEBUG_DRAW
 #include "DrawUtil.h"
 #endif
@@ -10,6 +11,29 @@ namespace ka_ai_duka{
         Ver1_0,
         Ver1_5a,
     };
+
+    enum PlayerSide{
+        Side_1P = 0,
+        Side_2P,
+    };
+    typedef unsigned short KeyState;
+    namespace keys{
+        const KeyState r      = 1 << 14;
+        const KeyState d      = 1 << 13;
+        const KeyState enter  = 1 << 12;
+        const KeyState p      = 1 << 11;
+        const KeyState s      = 1 << 10;
+        const KeyState q      = 1 << 9;
+        const KeyState ctrl   = 1 << 8;
+        const KeyState right  = 1 << 7;
+        const KeyState left   = 1 << 6;
+        const KeyState down   = 1 << 5;
+        const KeyState up     = 1 << 4;
+        const KeyState esc    = 1 << 3;
+        const KeyState shift  = 1 << 2;
+        const KeyState x      = 1 << 1;
+        const KeyState z      = 1 << 0;
+    }
 
     class TH9Monitor;
 
@@ -31,6 +55,8 @@ namespace ka_ai_duka{
         unsigned int (&round_win)[2];
         unsigned int &difficulty;
         IObserver* observer;
+        bool is_playing;
+        managed_types::GameSide* game_sides[2];
     protected:
         void SetJumpTo(char* code, int from, int to);
         void WriteCode(char* inject_to, char* new_code, size_t size);
@@ -43,7 +69,7 @@ namespace ka_ai_duka{
             unsigned int (&round_win)[2],
             unsigned int &difficulty
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
-            round(round), round_win(round_win), difficulty(difficulty)
+            round(round), round_win(round_win), difficulty(difficulty), is_playing(false)
         {};
         virtual ~TH9Monitor(void){};
         virtual void Attach(void) = 0;
@@ -62,6 +88,7 @@ namespace ka_ai_duka{
         virtual bool IsNetBattle(void){
             return false;
         }
+        void SetKeyState(PlayerSide side, KeyState key_state);
     };
 
     class TH9ver1_5aMonitor : public TH9Monitor

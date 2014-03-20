@@ -18,7 +18,9 @@ namespace ka_ai_duka{
 
     void TH9Monitor::OnFrameUpdate(void)
     {
-        if(observer){
+        if(is_playing && observer){
+            game_sides[0]->Update();
+            game_sides[1]->Update();
             observer->OnFrameUpdate(*this);
         }
     }
@@ -26,8 +28,12 @@ namespace ka_ai_duka{
     void TH9Monitor::OnGameStart(void)
     {
         ::MessageBeep(MB_ICONASTERISK);
-        
-        if(observer){
+        if(!IsNetBattle()){
+            is_playing = true;
+        }
+        if(is_playing && observer){
+            game_sides[0] = new managed_types::GameSide(board[0]);
+            game_sides[1] = new managed_types::GameSide(board[1]);
             observer->OnGameStart(*this);
         }
         //char s[0xff];
@@ -38,8 +44,16 @@ namespace ka_ai_duka{
     void TH9Monitor::OnGameEnd(void)
     {
         ::MessageBeep(MB_ICONEXCLAMATION);
-        if(observer){
+        if(is_playing && observer){
             observer->OnGameEnd(*this);
+            delete game_sides[0];
+            delete game_sides[1];
         }
+        is_playing = false;
+    }
+
+    void TH9Monitor::SetKeyState(PlayerSide side, KeyState key_state)
+    {
+        key_states[side].keys |= key_state;
     }
 }

@@ -18,11 +18,11 @@ void Attach(void){
         break;
     }
     ai_manager = new AIManager();
+    //TODO: AI‰Šú‰»
     monitor->SetObserver(ai_manager);
     if(monitor){
         monitor->Attach();
     }
-    //TODO: AI Manager instantiation
 }
 
 void Detach(void){

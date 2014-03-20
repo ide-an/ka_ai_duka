@@ -4,6 +4,8 @@
 namespace ka_ai_duka{
     class AIManager : public IObserver
     {
+    private:
+        unsigned int frame;
     public:
         AIManager(void);
         virtual ~AIManager(void);

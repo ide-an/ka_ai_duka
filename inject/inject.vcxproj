@@ -75,7 +75,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIManager.cpp" />
+    <ClCompile Include="GameSide.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="th09address.cpp" />
     <ClCompile Include="TH9Monitor.cpp" />
     <ClCompile Include="TH9ver1_0Monitor.cpp" />
@@ -84,6 +86,8 @@
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
     <ClInclude Include="DrawUtil.h" />
+    <ClInclude Include="GameSide.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="th09address.h" />
     <ClInclude Include="th09types.h" />
     <ClInclude Include="TH9Monitor.h" />
