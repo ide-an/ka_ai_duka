@@ -46,8 +46,7 @@ namespace ka_ai_duka{
             DWORD diffuse;
         };
         class DrawUtil{
-        //private:
-        public:
+        private:
             int** d3d_device;
             HRESULT(__stdcall *begin_scene)(int**);
             HRESULT(__stdcall *end_scene)(int**);

@@ -1,5 +1,8 @@
 #include <Windows.h>
 #include "TH9Monitor.h"
+#include "AIManager.h"
+
+ka_ai_duka::AIManager* ai_manager = nullptr;
 
 void Attach(void){
     using namespace ka_ai_duka;
@@ -14,6 +17,8 @@ void Attach(void){
         assert(0);
         break;
     }
+    ai_manager = new AIManager();
+    monitor->SetObserver(ai_manager);
     if(monitor){
         monitor->Attach();
     }
@@ -26,6 +31,10 @@ void Detach(void){
         monitor->Detach();
         delete monitor;
         monitor = nullptr;
+    }
+    if(ai_manager){
+        delete ai_manager;
+        ai_manager = nullptr;
     }
 }
 

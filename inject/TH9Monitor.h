@@ -1,13 +1,24 @@
 #pragma once
 #include <cassert>
 #include "th09types.h"
-//DEBUG
+#ifdef DEBUG_DRAW
 #include "DrawUtil.h"
+#endif
 
 namespace ka_ai_duka{
     enum TH9Version{
         Ver1_0,
         Ver1_5a,
+    };
+
+    class TH9Monitor;
+
+    class IObserver
+    {
+    public:
+        virtual void OnGameStart(TH9Monitor &monitor) = 0;
+        virtual void OnFrameUpdate(TH9Monitor &monitor) = 0;
+        virtual void OnGameEnd(TH9Monitor &monitor) = 0;
     };
 
     class TH9Monitor
@@ -19,8 +30,10 @@ namespace ka_ai_duka{
         unsigned int &round;
         unsigned int (&round_win)[2];
         unsigned int &difficulty;
-        int** &d3d_device;
-        draw::DrawUtil* draw_util;
+        IObserver* observer;
+    protected:
+        void SetJumpTo(char* code, int from, int to);
+        void WriteCode(char* inject_to, char* new_code, size_t size);
     public:
         TH9Monitor(
             raw_types::Board (&board)[2],
@@ -28,19 +41,17 @@ namespace ka_ai_duka{
             raw_types::ExAttackContainer* &ex_attack_container,
             unsigned int &round,
             unsigned int (&round_win)[2],
-            unsigned int &difficulty,
-            int** &d3d_device
-            //draw::DrawUtil* draw_util = nullptr
+            unsigned int &difficulty
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
-            round(round), round_win(round_win), difficulty(difficulty), d3d_device(d3d_device), draw_util(nullptr)
+            round(round), round_win(round_win), difficulty(difficulty)
         {};
-        virtual ~TH9Monitor(void){
-            if(draw_util){
-                delete draw_util;
-            }
-        };
+        virtual ~TH9Monitor(void){};
         virtual void Attach(void) = 0;
         virtual void Detach(void) = 0;
+        void SetObserver(IObserver *observer)
+        {
+            this->observer = observer;
+        }
         void OnFrameUpdate(void);
         void OnGameStart(void);
         void OnGameEnd(void);

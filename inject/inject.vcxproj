@@ -74,11 +74,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="th09address.cpp" />
     <ClCompile Include="TH9Monitor.cpp" />
+    <ClCompile Include="TH9ver1_0Monitor.cpp" />
+    <ClCompile Include="TH9ver1_5aMonitor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIManager.h" />
     <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="th09address.h" />
     <ClInclude Include="th09types.h" />
