@@ -17,7 +17,8 @@ namespace ka_ai_duka{
     void AIManager::OnFrameUpdate(TH9Monitor &monitor)
     {
         static KeyState keystate = keys::right | keys::up;
-        auto player = monitor.GetPlayer(Side_1P);
+        auto game_side_1p = monitor.GetGameSide(Side_1P);
+        auto player = game_side_1p->Player();
         if(player->X() < -130.0 && (keystate & keys::left)){
             keystate &= ~keys::left;
             keystate |= keys::right;

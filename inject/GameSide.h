@@ -16,6 +16,10 @@ namespace ka_ai_duka{
                 //TODO: implement
                 //不要になった敵を管理下から外すなどの処置をする
             }
+            Player* Player(void)
+            {
+                return player;
+            }
         };
     }
 }

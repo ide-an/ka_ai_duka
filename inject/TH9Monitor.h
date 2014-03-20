@@ -89,6 +89,10 @@ namespace ka_ai_duka{
             return false;
         }
         void SetKeyState(PlayerSide side, KeyState key_state);
+        managed_types::GameSide* GetGameSide(PlayerSide side)
+        {
+            return game_sides[side];
+        }
     };
 
     class TH9ver1_5aMonitor : public TH9Monitor
