@@ -11,7 +11,9 @@ namespace ka_ai_duka{
             Player(raw_types::Player &player, raw_types::PlayerCharacter &character)
                 : player(player), character(character)
             {}
-            ~Player(void);
+            ~Player(void)
+            {
+            }
             float X() const
             {
                 return player.position.x;
