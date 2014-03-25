@@ -1,6 +1,7 @@
 #include "TH9Monitor.h"
 #include <Windows.h>
 #include "th09address.h"
+#include <cstdio>
 
 namespace ka_ai_duka{
     TH9Monitor* monitor = nullptr;
@@ -19,10 +20,15 @@ namespace ka_ai_duka{
 
     void TH9Monitor::OnFrameUpdate(void)
     {
+        static bool prev_p = false;
         if(is_playing && observer){
             game_sides[0]->Update();
             game_sides[1]->Update();
             observer->OnFrameUpdate(*this);
+            if(key_states[2].keys & keys::p){
+                OnSnapshotSave();
+            }
+            prev_p = (key_states[2].keys & keys::p);
         }
     }
 
@@ -51,6 +57,20 @@ namespace ka_ai_duka{
             delete game_sides[1];
         }
         is_playing = false;
+    }
+
+    void TH9Monitor::OnSnapshotSave(void)
+    {
+        static int count = 0;
+        FILE* fp;
+        char filename[0xff];
+        count++;
+        ::sprintf(filename, "C:/Users/ide/Desktop/hoge-snapshot-%d.txt", count);
+        fp = fopen(filename, "wt");
+        for(auto it=game_sides[0]->Bullets().begin();it!=game_sides[0]->Bullets().end();++it){
+            fprintf(fp, "pos(%f,%f)\tv(%f,%f)\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy());
+        }
+        fclose(fp);
     }
 
     void TH9Monitor::SetKeyState(PlayerSide side, KeyState key_state)

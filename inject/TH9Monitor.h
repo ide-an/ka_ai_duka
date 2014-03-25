@@ -58,6 +58,7 @@ namespace ka_ai_duka{
         bool is_playing;
         managed_types::GameSide* game_sides[2];
         int &hwnd;//for debugging
+        void OnSnapshotSave(void);
     protected:
         void SetJumpTo(char* code, int from, int to);
         void WriteCode(char* inject_to, char* new_code, size_t size);
