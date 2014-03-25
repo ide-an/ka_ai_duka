@@ -17,10 +17,12 @@ namespace ka_ai_duka{
             unsigned int difficulty;//4A7EAC
             char unknown5[0x4ACE18 - 0x4A7EAC - sizeof(int)];
             struct raw_types::KeyState key_states[3];
-            char unknown6[0x4B3104 - 0x4ACE18 - sizeof(raw_types::KeyState)*3];
+            char unknown6[0x4B30B0 - 0x4ACE18 - sizeof(raw_types::KeyState)*3];
+            int hwnd; //4B30B0
+            char unknown7[0x4B3104 - 0x4B30B0 - sizeof(int)];
             int** d3d8;//4B3104
             int** d3d8_device;//4B3108
-            char unknown7[0x4B42D0 - 0x4B3108 - sizeof(int**)];
+            char unknown8[0x4B42D0 - 0x4B3108 - sizeof(int**)];
             struct raw_types::NetInfo* net_info;//4B42D0
         };
 #pragma pack(pop)

@@ -8,7 +8,8 @@ namespace ka_ai_duka{
         address::globals_ver1_5->ex_attack_container,
         address::globals_ver1_5->round,
         address::globals_ver1_5->round_win,
-        address::globals_ver1_5->difficulty
+        address::globals_ver1_5->difficulty,
+        address::globals_ver1_5->hwnd
         ),
         net_info(address::globals_ver1_5->net_info)
     {

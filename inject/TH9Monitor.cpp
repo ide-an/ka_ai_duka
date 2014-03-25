@@ -1,5 +1,6 @@
 #include "TH9Monitor.h"
 #include <Windows.h>
+#include "th09address.h"
 
 namespace ka_ai_duka{
     TH9Monitor* monitor = nullptr;
@@ -37,7 +38,7 @@ namespace ka_ai_duka{
             observer->OnGameStart(*this);
         }
         //char s[0xff];
-        //::sprintf(s,"%X", address::globals_ver1_5->d3d8_device);
+        //::sprintf(s,"%X %X", &address::globals_ver1_5->hwnd, &hwnd);
         //::MessageBoxA(NULL, s, "D3DDeivce",MB_OK);
     }
 
@@ -55,5 +56,10 @@ namespace ka_ai_duka{
     void TH9Monitor::SetKeyState(PlayerSide side, KeyState key_state)
     {
         key_states[side].keys |= key_state;
+    }
+
+    void TH9Monitor::SetWindowTitle(const char* text)
+    {
+        ::SetWindowTextA((HWND)hwnd, text);
     }
 }

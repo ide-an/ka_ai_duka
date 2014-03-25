@@ -9,7 +9,8 @@ namespace ka_ai_duka{
             address::globals_ver1_0->ex_attack_container,
             address::globals_ver1_0->round,
             address::globals_ver1_0->round_win,
-            address::globals_ver1_0->difficulty
+            address::globals_ver1_0->difficulty,
+            address::globals_ver1_0->hwnd
             )
     {
     }

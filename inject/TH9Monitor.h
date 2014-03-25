@@ -57,6 +57,7 @@ namespace ka_ai_duka{
         IObserver* observer;
         bool is_playing;
         managed_types::GameSide* game_sides[2];
+        int &hwnd;//for debugging
     protected:
         void SetJumpTo(char* code, int from, int to);
         void WriteCode(char* inject_to, char* new_code, size_t size);
@@ -67,9 +68,10 @@ namespace ka_ai_duka{
             raw_types::ExAttackContainer* &ex_attack_container,
             unsigned int &round,
             unsigned int (&round_win)[2],
-            unsigned int &difficulty
+            unsigned int &difficulty,
+            int &hwnd
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
-            round(round), round_win(round_win), difficulty(difficulty), is_playing(false)
+            round(round), round_win(round_win), difficulty(difficulty), is_playing(false), hwnd(hwnd)
         {};
         virtual ~TH9Monitor(void){};
         virtual void Attach(void) = 0;
@@ -93,6 +95,7 @@ namespace ka_ai_duka{
         {
             return game_sides[side];
         }
+        void SetWindowTitle(const char* text);
     };
 
     class TH9ver1_5aMonitor : public TH9Monitor

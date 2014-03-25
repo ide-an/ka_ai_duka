@@ -49,6 +49,10 @@ namespace ka_ai_duka{
             }
             bool Enabled() const
             {
+                return IsEnabled(bullet);
+            }
+            static bool IsEnabled(raw_types::Bullet &bullet)
+            {
                 int status = bullet.status & 0xffff;
                 return (status != 0) && (status != 6);
             }
@@ -75,6 +79,10 @@ namespace ka_ai_duka{
                 return 0.0f;
             }
             bool Enabled() const
+            {
+                return IsEnabled(laser);
+            }
+            static bool IsEnabled(raw_types::Laser &laser)
             {
                 return laser.enabled != 0;
             }

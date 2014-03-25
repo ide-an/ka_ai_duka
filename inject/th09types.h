@@ -75,9 +75,11 @@ namespace ka_ai_duka {
             char unknown2[0xD4C - 0xD38 - sizeof(Size2D)];
             struct Vector3D position;
             struct Vector3D velocity;
-            char unknown3[0x10BC - 0xD58 - sizeof(Size2D)];
+            char unknown3[0xDBE - 0xD58 - sizeof(Vector3D)];
             unsigned int status;
-            char unknown4[0x10C4 - 0x10BC - sizeof(int)];
+            char unknown4[0x10BC - 0xDBE - sizeof(int)];
+            unsigned int unknown_status;
+            char unknown5[0x10C4 - 0x10BC - sizeof(int)];
         };
 
         struct Laser{
