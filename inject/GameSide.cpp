@@ -6,7 +6,8 @@ namespace ka_ai_duka{
         GameSide::GameSide(raw_types::Board &board)
             : board(board),
             bullet_marks_length(536),
-            laser_marks_length(48)
+            laser_marks_length(48),
+            enemy_marks_length(128)
         {
             player = new managed_types::Player(*board.player, board.player_character);
             bullets.reserve(1000);
@@ -22,7 +23,7 @@ namespace ka_ai_duka{
         {
             delete player;
         }
-        void GameSide::Update(void)
+        void GameSide::UpdateBullets(void)
         {
             bullets.erase(std::remove_if(
                 bullets.begin(), bullets.end(), 
@@ -47,6 +48,31 @@ namespace ka_ai_duka{
                     bullets.push_back(boost::shared_ptr<Bullet>(new Laser(board.bullet_container->lasers[i])));
                 }
             }
+        }
+        
+        void GameSide::UpdateEnemies(void)
+        {
+            //TODO: implement
+            enemies.erase(std::remove_if(
+                enemies.begin(), enemies.end(),
+                [](Enemies::value_type elm){
+                    return !elm->Enabled();
+                }), enemies.end());
+            for(unsigned int i=0;i<enemy_marks_length;i++){
+                bool is_enabled = Enemy::IsEnabled(board.enemy_container->enemies[i]);
+                if(enemy_marks[i] && !is_enabled){
+                    enemy_marks[i] = false;
+                }else if(!enemy_marks[i] && is_enabled){
+                    enemy_marks[i] = true;
+                    enemies.push_back(boost::shared_ptr<Enemy>(new Enemy(board.enemy_container->enemies[i])));
+                }
+            }
+        }
+
+        void GameSide::Update(void)
+        {
+            UpdateBullets();
+            UpdateEnemies();
         }
     }
 }

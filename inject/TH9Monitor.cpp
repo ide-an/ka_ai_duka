@@ -67,7 +67,12 @@ namespace ka_ai_duka{
         count++;
         ::sprintf(filename, "C:/Users/ide/Desktop/hoge-snapshot-%d.txt", count);
         fp = fopen(filename, "wt");
+        fprintf(fp, "bullet()\n");
         for(auto it=game_sides[0]->Bullets().begin();it!=game_sides[0]->Bullets().end();++it){
+            fprintf(fp, "pos(%f,%f)\tv(%f,%f)\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy());
+        }
+        fprintf(fp, "enemy()\n");
+        for(auto it=game_sides[0]->Enemies().begin();it!=game_sides[0]->Enemies().end();++it){
             fprintf(fp, "pos(%f,%f)\tv(%f,%f)\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy());
         }
         fclose(fp);

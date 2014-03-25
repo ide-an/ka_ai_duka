@@ -86,6 +86,7 @@
     <ClInclude Include="AIManager.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DrawUtil.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameSide.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="th09address.h" />
