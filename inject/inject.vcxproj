@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIManager.cpp" />
+    <ClCompile Include="bind.cpp" />
     <ClCompile Include="GameSide.cpp" />
     <ClCompile Include="lib\luabind\src\class.cpp" />
     <ClCompile Include="lib\luabind\src\class_info.cpp" />
@@ -105,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
+    <ClInclude Include="bind.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="Enemy.h" />

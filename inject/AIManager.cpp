@@ -1,38 +1,8 @@
 #include "AIManager.h"
-#include <luabind\luabind.hpp>
+#include "bind.h"
 #include <cstdio>
 #include <Windows.h>
 namespace ka_ai_duka{
-
-
-    //単に7要素の配列を受け取るだけでいい気もする
-    void SendKeys1P()
-    {
-        //TODO: まともな実装
-        monitor->SetKeyState(PlayerSide::Side_1P, keys::right);
-    }
-
-    void SendKeys2P()
-    {
-        monitor->SetKeyState(PlayerSide::Side_2P, keys::right);
-    }
-
-    void BindToLua(::lua_State* ls, PlayerSide player_side)
-    {
-        //TODO: bind
-        luabind::open(ls);
-        if(player_side == PlayerSide::Side_1P){
-            luabind::module(ls)[
-                luabind::def("sendKeys", SendKeys1P)
-            ];
-        }else{
-            luabind::module(ls)[
-                luabind::def("sendKeys", SendKeys2P)
-            ];
-        }
-        //TODO: global variables
-    }
-
     AIManager::AIManager(void)
     {
         lua_states[0] = nullptr;
@@ -57,7 +27,8 @@ namespace ka_ai_duka{
             if(ShouldRunAI(i)){
                 ::lua_State* ls = ::luaL_newstate();
                 ::luaL_openlibs(ls);//TODO: limit available libs
-                BindToLua(ls, i == 0 ? PlayerSide::Side_1P : PlayerSide::Side_2P);
+                BindToLua(ls, i == 0 ? Side_1P : Side_2P);
+                ExportVariables(ls, monitor, i == 0 ? Side_1P : Side_2P);
                 int res = luaL_dofile(ls, filenames[i].c_str());
                 if(!res){
                     lua_states[i] = ls;

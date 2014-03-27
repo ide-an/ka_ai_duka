@@ -52,7 +52,6 @@ namespace ka_ai_duka{
         
         void GameSide::UpdateEnemies(void)
         {
-            //TODO: implement
             enemies.erase(std::remove_if(
                 enemies.begin(), enemies.end(),
                 [](Enemies::value_type elm){
