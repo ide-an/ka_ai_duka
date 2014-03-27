@@ -1,7 +1,6 @@
 #pragma once
 #include "TH9Monitor.h"
 #include <lua.hpp>
-#include <luabind\luabind.hpp>
 #include <string>
 
 namespace ka_ai_duka{
@@ -9,11 +8,11 @@ namespace ka_ai_duka{
     {
     private:
         unsigned int frame;
-        std::string* filenames[2];//TODO: nullptrÇ≈èâä˙âª
+        std::string filenames[2];
         ::lua_State* lua_states[2];
         bool ShouldRunAI(int player_side)//1P: 0, 2P: 1
         {
-            return filenames[player_side] != nullptr;
+            return !filenames[player_side].empty();
         }
     public:
         AIManager(void);
@@ -21,21 +20,13 @@ namespace ka_ai_duka{
         void OnGameStart(TH9Monitor &monitor);
         void OnFrameUpdate(TH9Monitor &monitor);
         void OnGameEnd(TH9Monitor &monitor);
-        void SetFilename1P(std::string *filename)
+        void SetFilename1P(const std::string &filename)
         {
-            if(filename){
-                filenames[0] = filename;
-            }else{
-                filenames[0] = nullptr;
-            }
+            filenames[0] = filename;
         }
-        void SetFilename2P(std::string *filename)
+        void SetFilename2P(const std::string &filename)
         {
-            if(filename){
-                filenames[1] = filename;
-            }else{
-                filenames[1] = nullptr;
-            }
+            filenames[1] = filename;
         }
     };
 }
