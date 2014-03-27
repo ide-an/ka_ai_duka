@@ -21,7 +21,6 @@ namespace ka_ai_duka{
 
     void BindToLua(::lua_State* ls, PlayerSide player_side)
     {
-        //TODO: bind
         luabind::open(ls);
         luabind::module(ls)[
             luabind::def("sendKeys", (player_side == Side_1P) ? SendKeys1P : SendKeys2P),
