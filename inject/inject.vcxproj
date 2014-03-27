@@ -39,9 +39,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\users\ide\lang\cpp\boost_1_55_0;$(ProjectDir)lib\luabind;$(ProjectDir)lib\lua\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\users\ide\lang\cpp\boost_1_55_0;$(ProjectDir)lib\luabind;$(ProjectDir)lib\lua\include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -54,6 +56,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(ProjectDir)/lib/lua/lua5.1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -71,11 +74,30 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(ProjectDir)/lib/lua/lua5.1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIManager.cpp" />
+    <ClCompile Include="bind.cpp" />
     <ClCompile Include="GameSide.cpp" />
+    <ClCompile Include="lib\luabind\src\class.cpp" />
+    <ClCompile Include="lib\luabind\src\class_info.cpp" />
+    <ClCompile Include="lib\luabind\src\class_registry.cpp" />
+    <ClCompile Include="lib\luabind\src\class_rep.cpp" />
+    <ClCompile Include="lib\luabind\src\create_class.cpp" />
+    <ClCompile Include="lib\luabind\src\error.cpp" />
+    <ClCompile Include="lib\luabind\src\exception_handler.cpp" />
+    <ClCompile Include="lib\luabind\src\function.cpp" />
+    <ClCompile Include="lib\luabind\src\inheritance.cpp" />
+    <ClCompile Include="lib\luabind\src\link_compatibility.cpp" />
+    <ClCompile Include="lib\luabind\src\object_rep.cpp" />
+    <ClCompile Include="lib\luabind\src\open.cpp" />
+    <ClCompile Include="lib\luabind\src\pcall.cpp" />
+    <ClCompile Include="lib\luabind\src\scope.cpp" />
+    <ClCompile Include="lib\luabind\src\stack_content_by_name.cpp" />
+    <ClCompile Include="lib\luabind\src\weak_ref.cpp" />
+    <ClCompile Include="lib\luabind\src\wrapper_base.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="th09address.cpp" />
     <ClCompile Include="TH9Monitor.cpp" />
@@ -84,10 +106,49 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
+    <ClInclude Include="bind.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameSide.h" />
+    <ClInclude Include="lib\luabind\luabind\adopt_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\back_reference.hpp" />
+    <ClInclude Include="lib\luabind\luabind\back_reference_fwd.hpp" />
+    <ClInclude Include="lib\luabind\luabind\class.hpp" />
+    <ClInclude Include="lib\luabind\luabind\class_info.hpp" />
+    <ClInclude Include="lib\luabind\luabind\config.hpp" />
+    <ClInclude Include="lib\luabind\luabind\container_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\copy_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\dependency_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\discard_result_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\error.hpp" />
+    <ClInclude Include="lib\luabind\luabind\exception_handler.hpp" />
+    <ClInclude Include="lib\luabind\luabind\from_stack.hpp" />
+    <ClInclude Include="lib\luabind\luabind\function.hpp" />
+    <ClInclude Include="lib\luabind\luabind\get_main_thread.hpp" />
+    <ClInclude Include="lib\luabind\luabind\get_pointer.hpp" />
+    <ClInclude Include="lib\luabind\luabind\handle.hpp" />
+    <ClInclude Include="lib\luabind\luabind\iterator_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\luabind.hpp" />
+    <ClInclude Include="lib\luabind\luabind\lua_include.hpp" />
+    <ClInclude Include="lib\luabind\luabind\make_function.hpp" />
+    <ClInclude Include="lib\luabind\luabind\nil.hpp" />
+    <ClInclude Include="lib\luabind\luabind\object.hpp" />
+    <ClInclude Include="lib\luabind\luabind\open.hpp" />
+    <ClInclude Include="lib\luabind\luabind\operator.hpp" />
+    <ClInclude Include="lib\luabind\luabind\out_value_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\prefix.hpp" />
+    <ClInclude Include="lib\luabind\luabind\raw_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\return_reference_to_policy.hpp" />
+    <ClInclude Include="lib\luabind\luabind\scope.hpp" />
+    <ClInclude Include="lib\luabind\luabind\shared_ptr_converter.hpp" />
+    <ClInclude Include="lib\luabind\luabind\tag_function.hpp" />
+    <ClInclude Include="lib\luabind\luabind\typeid.hpp" />
+    <ClInclude Include="lib\luabind\luabind\value_wrapper.hpp" />
+    <ClInclude Include="lib\luabind\luabind\version.hpp" />
+    <ClInclude Include="lib\luabind\luabind\weak_ref.hpp" />
+    <ClInclude Include="lib\luabind\luabind\wrapper_base.hpp" />
+    <ClInclude Include="lib\luabind\luabind\yield_policy.hpp" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="th09address.h" />
     <ClInclude Include="th09types.h" />

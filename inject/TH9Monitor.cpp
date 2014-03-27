@@ -34,7 +34,6 @@ namespace ka_ai_duka{
 
     void TH9Monitor::OnGameStart(void)
     {
-        ::MessageBeep(MB_ICONASTERISK);
         if(!IsNetBattle()){
             is_playing = true;
         }
@@ -43,14 +42,10 @@ namespace ka_ai_duka{
             game_sides[1] = new managed_types::GameSide(board[1]);
             observer->OnGameStart(*this);
         }
-        //char s[0xff];
-        //::sprintf(s,"%X %X", &address::globals_ver1_5->hwnd, &hwnd);
-        //::MessageBoxA(NULL, s, "D3DDeivce",MB_OK);
     }
 
     void TH9Monitor::OnGameEnd(void)
     {
-        ::MessageBeep(MB_ICONEXCLAMATION);
         if(is_playing && observer){
             observer->OnGameEnd(*this);
             delete game_sides[0];
