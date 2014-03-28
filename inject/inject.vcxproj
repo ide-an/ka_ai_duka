@@ -80,7 +80,9 @@
   <ItemGroup>
     <ClCompile Include="AIManager.cpp" />
     <ClCompile Include="bind.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameSide.cpp" />
+    <ClCompile Include="hitTest.cpp" />
     <ClCompile Include="lib\luabind\src\class.cpp" />
     <ClCompile Include="lib\luabind\src\class_info.cpp" />
     <ClCompile Include="lib\luabind\src\class_registry.cpp" />
@@ -111,6 +113,7 @@
     <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameSide.h" />
+    <ClInclude Include="hitTest.h" />
     <ClInclude Include="lib\luabind\luabind\adopt_policy.hpp" />
     <ClInclude Include="lib\luabind\luabind\back_reference.hpp" />
     <ClInclude Include="lib\luabind\luabind\back_reference_fwd.hpp" />
