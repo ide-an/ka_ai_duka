@@ -32,32 +32,8 @@ namespace ka_ai_duka{
             {
                 return enemy.position.y;
             }
-            //TODO: x,VyÇÃíËã`ÇÕ.cppÇ…éùÇ¡ÇƒÇ¢Ç¡ÇΩÇŸÇ§Ç™ÇÊÇ≥Ç∞
-            float Vx() const
-            {
-                float vx = enemy.velocity.x;
-                if(IsActivatedSpirit()){
-                    vx = enemy.velocity2.x;
-                }
-                if(enemy.status & 0x8000){//reversed
-                    vx *= -1;
-                }
-                if(IsBoss()){
-                    //TODO: Ç≥Ç≠Ç‚Ç≥ÇÒï‚ê≥
-                }
-                return vx;
-            }
-            float Vy() const
-            {
-                float vy = enemy.velocity.y;
-                if(IsActivatedSpirit()){
-                    vy = enemy.velocity2.y;
-                }
-                if(IsBoss()){
-                    //TODO: Ç≥Ç≠Ç‚Ç≥ÇÒï‚ê≥
-                }
-                return vy;
-            }
+            float Vx() const;
+            float Vy() const;
             bool Enabled() const
             {
                 return IsEnabled(enemy);
@@ -87,12 +63,12 @@ namespace ka_ai_duka{
             {
                 return (enemy.status & 0x00000010) != 0;
             }
-            boost::shared_ptr<HittableObject> GetHittableObject() const
+            boost::shared_ptr<HittableObject> HittableObject() const
             {
 
-                return boost::static_pointer_cast<HittableObject>(hittable_object);
+                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
-            void Update(void);/
+            void Update(void);
         };
     }
 }

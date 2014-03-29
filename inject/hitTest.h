@@ -1,4 +1,6 @@
 #pragma once
+#include <ostream>
+
 namespace ka_ai_duka {
     namespace managed_types{
         enum HitType{
@@ -52,8 +54,22 @@ namespace ka_ai_duka {
             {
                 return Hit_Rect;
             }
-            float Width() const;
-            float Height() const;
+            void SetWidth(float width)
+            {
+                this->width = width;
+            }
+            void SetHeight(float height)
+            {
+                this->height = height;
+            }
+            float Width() const
+            {
+                return width;
+            }
+            float Height() const
+            {
+                return height;
+            }
             float Radius() const
             {
                 return Width() / 2;
@@ -76,6 +92,10 @@ namespace ka_ai_duka {
             {
                 return Hit_Circle;
             }
+            void SetRadius(float radius)
+            {
+                this->radius = radius;
+            }
             float Width() const
             {
                 return Radius() * 2;
@@ -84,7 +104,10 @@ namespace ka_ai_duka {
             {
                 return Radius() * 2;
             }
-            float Radius() const;
+            float Radius() const
+            {
+                return radius;
+            }
             float Angle() const
             {
                 return 0.0f;
@@ -105,15 +128,37 @@ namespace ka_ai_duka {
             {
                 return Hit_RotatableRect;
             }
-            float Width() const;
-            float Height() const;
+            void SetWidth(float width)
+            {
+                this->width = width;
+            }
+            void SetHeight(float height)
+            {
+                this->height = height;
+            }
+            void SetAngle(float angle)
+            {
+                this->angle = angle;
+            }
+            float Width() const
+            {
+                return width;
+            }
+            float Height() const
+            {
+                return height;
+            }
             float Radius() const
             {
                 return 0.0;
             }
-            float Angle() const;
+            float Angle() const
+            {
+                return angle;
+            }
         };
 
         bool HitTest(HittableObject* a, HittableObject* b);
+        std::ostream& operator<<(std::ostream&, const HittableObject&);
     }
 }

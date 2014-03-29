@@ -48,6 +48,9 @@ namespace ka_ai_duka{
                     bullets.push_back(boost::shared_ptr<Bullet>(new Laser(board.bullet_container->lasers[i])));
                 }
             }
+            std::for_each(bullets.begin(), bullets.end(), [](Bullets::value_type elm){
+                elm->Update();
+            });
         }
         
         void GameSide::UpdateEnemies(void)
@@ -66,6 +69,9 @@ namespace ka_ai_duka{
                     enemies.push_back(boost::shared_ptr<Enemy>(new Enemy(board.enemy_container->enemies[i])));
                 }
             }
+            std::for_each(enemies.begin(), enemies.end(), [](Enemies::value_type elm){
+                elm->Update();
+            });
         }
 
         void GameSide::Update(void)

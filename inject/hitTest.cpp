@@ -26,8 +26,8 @@ namespace ka_ai_duka{
         }
         bool HitTestRectVsRotatableRect(HittableRect* a, HittableRotatableRect* b)
         {
-            float cos_ = cos(a->Angle());
-            float sin_ = sin(a->Angle());
+            float cos_ = cos(-1 * a->Angle());
+            float sin_ = sin(-1 * a->Angle());
             float dx = b->X() - a->X();
             float dy = b->Y() - a->Y();
             float bx = b->X() + cos_ * dx - sin_ * dy;
@@ -53,6 +53,15 @@ namespace ka_ai_duka{
             }else{
                 return false;
             }
+        }
+
+        std::ostream& operator<<(std::ostream& os, const HittableObject& hittable)
+        {
+            os << "{ x:" << hittable.X() << ", y:" << hittable.Y()
+                << ", type:" << hittable.Type() 
+                << ", width:" << hittable.Width() << ", height:" << hittable.Height()
+                << ", radius:" << hittable.Radius() << ", angle:" << hittable.Angle() << " }";
+            return os;
         }
     }
 }

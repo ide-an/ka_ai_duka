@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "th09address.h"
 #include <cstdio>
+#include <sstream>
 
 namespace ka_ai_duka{
     TH9Monitor* monitor = nullptr;
@@ -63,12 +64,17 @@ namespace ka_ai_duka{
         ::sprintf(filename, "C:/Users/ide/Desktop/hoge-snapshot-%d.txt", count);
         fp = fopen(filename, "wt");
         fprintf(fp, "bullet()\n");
+        std::stringstream ss;
         for(auto it=game_sides[0]->Bullets().begin();it!=game_sides[0]->Bullets().end();++it){
-            fprintf(fp, "pos(%f,%f)\tv(%f,%f)\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy());
+            ss.str("");
+            ss << *((*it)->HittableObject());
+            fprintf(fp, "pos(%f,%f);v(%f,%f);body(%s);\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy(), ss.str().c_str());
         }
         fprintf(fp, "enemy()\n");
         for(auto it=game_sides[0]->Enemies().begin();it!=game_sides[0]->Enemies().end();++it){
-            fprintf(fp, "pos(%f,%f)\tv(%f,%f)\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy());
+            ss.str("");
+            ss << *((*it)->HittableObject());
+            fprintf(fp, "pos(%f,%f);v(%f,%f);body(%s);\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy(), ss.str().c_str());
         }
         fclose(fp);
     }
