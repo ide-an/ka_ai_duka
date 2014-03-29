@@ -14,6 +14,7 @@ namespace ka_ai_duka{
         {
         private:
             raw_types::Board &board;
+            unsigned int &round_win;
             Player* player;
             Bullets bullets;
             bool bullet_marks[536];//TODO: raw_types‚Ì•û‚Å’è”‚Æ‚µ‚Ä“f‚¢‚Ä‚¨‚­‚×‚«?
@@ -28,7 +29,7 @@ namespace ka_ai_duka{
             void UpdateBullets(void);
             void UpdateEnemies(void);
         public:
-            GameSide(raw_types::Board &board);
+            GameSide(raw_types::Board &board, unsigned int &round_win);
             virtual ~GameSide(void);
             void Update(void);
             Player* Player(void)
@@ -42,6 +43,14 @@ namespace ka_ai_duka{
             const Enemies& Enemies(void)
             {
                 return enemies;
+            }
+            unsigned int RoundWin(void) const
+            {
+                return round_win;
+            }
+            unsigned int Score(void) const
+            {
+                return board.score->score;
             }
         };
     }

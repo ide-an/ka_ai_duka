@@ -39,8 +39,8 @@ namespace ka_ai_duka{
             is_playing = true;
         }
         if(is_playing && observer){
-            game_sides[0] = new managed_types::GameSide(board[0]);
-            game_sides[1] = new managed_types::GameSide(board[1]);
+            game_sides[0] = new managed_types::GameSide(board[0], round_win[0]);
+            game_sides[1] = new managed_types::GameSide(board[1], round_win[1]);
             observer->OnGameStart(*this);
         }
     }

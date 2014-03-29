@@ -3,8 +3,9 @@
 
 namespace ka_ai_duka{
     namespace managed_types{
-        GameSide::GameSide(raw_types::Board &board)
+        GameSide::GameSide(raw_types::Board &board, unsigned int &round_win)
             : board(board),
+            round_win(round_win),
             bullet_marks_length(536),
             laser_marks_length(48),
             enemy_marks_length(128)

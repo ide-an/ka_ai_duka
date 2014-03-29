@@ -41,6 +41,7 @@ namespace ka_ai_duka{
     {
         for(int i=0;i<2;i++){
             if(lua_states[i]){
+                UpdateVariables(lua_states[i], monitor);
                 lua_getglobal(lua_states[i], "main");
                 if(lua_pcall(lua_states[i], 0, 0, 0)){
                     //TODO: error handling

@@ -115,10 +115,13 @@ namespace ka_ai_duka{
             .property("hitBody", &managed_types::Bullet::HittableObject)
             ,
             //TODO: Ex attack
+            //TODO: Item
             luabind::class_<managed_types::GameSide>("GameSide")
             .property("player", &managed_types::GameSide::Player)
             .property("enemies", &managed_types::GameSide::Enemies, luabind::return_stl_iterator)
             .property("bullets", &managed_types::GameSide::Bullets, luabind::return_stl_iterator)
+            .property("round_win", &managed_types::GameSide::RoundWin)
+            .property("score", &managed_types::GameSide::Score)
         ];
     }
 
@@ -129,6 +132,12 @@ namespace ka_ai_duka{
         game_sides[2] = luabind::object(ls, monitor.GetGameSide(Side_2P));
         luabind::globals(ls)["game_sides"] = game_sides;
         luabind::globals(ls)["player_side"] = player_side + 1;
+        luabind::globals(ls)["round"] = monitor.GetRound();
+        luabind::globals(ls)["difficulty"] = monitor.GetDifficulty();
     }
 
+    void UpdateVariables(lua_State* ls, TH9Monitor& monitor)
+    {
+        luabind::globals(ls)["round"] = monitor.GetRound();
+    }
 }

@@ -96,6 +96,14 @@ namespace ka_ai_duka{
         {
             return game_sides[side];
         }
+        unsigned int GetRound(void)
+        {
+            return round;
+        }
+        unsigned int GetDifficulty(void)
+        {
+            return difficulty;
+        }
         void SetWindowTitle(const char* text);
     };
 
