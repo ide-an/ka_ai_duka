@@ -23,8 +23,8 @@ namespace ka_ai_duka{
     {
         static bool prev_p = false;
         if(is_playing && observer){
-            game_sides[0]->Update();
-            game_sides[1]->Update();
+            game_sides[0]->Update(idgen);
+            game_sides[1]->Update(idgen);
             observer->OnFrameUpdate(*this);
             if(key_states[2].keys & keys::p){
                 OnSnapshotSave();
@@ -39,6 +39,7 @@ namespace ka_ai_duka{
             is_playing = true;
         }
         if(is_playing && observer){
+            idgen.Reset();
             game_sides[0] = new managed_types::GameSide(board[0], round_win[0]);
             game_sides[1] = new managed_types::GameSide(board[1], round_win[1]);
             observer->OnGameStart(*this);

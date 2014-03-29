@@ -7,13 +7,18 @@ namespace ka_ai_duka{
         class Bullet
         {
         private:
+            unsigned int id;
             raw_types::Vector3D &position;
         public:
-            Bullet(raw_types::Vector3D &position)
-                : position(position)
+            Bullet(raw_types::Vector3D &position, unsigned int id)
+                : position(position), id(id)
             {}
             virtual ~Bullet(void)
             {
+            }
+            unsigned int Id() const
+            {
+                return id;
             }
             float X() const
             {
@@ -36,8 +41,8 @@ namespace ka_ai_duka{
             raw_types::Bullet &bullet;
             boost::shared_ptr<HittableRect> hittable_object;
         public:
-            NormalBullet(raw_types::Bullet &bullet)
-                : Bullet(bullet.position), bullet(bullet)
+            NormalBullet(raw_types::Bullet &bullet, unsigned int id)
+                : Bullet(bullet.position, id), bullet(bullet)
             {
                 hittable_object = boost::shared_ptr<HittableRect>(
                     new HittableRect(
@@ -80,8 +85,8 @@ namespace ka_ai_duka{
             raw_types::Laser &laser;
             boost::shared_ptr<HittableRotatableRect> hittable_object;
         public:
-            Laser(raw_types::Laser &laser)
-                : Bullet(laser.position), laser(laser)
+            Laser(raw_types::Laser &laser, unsigned int id)
+                : Bullet(laser.position, id), laser(laser)
             {
                 hittable_object = boost::shared_ptr<HittableRotatableRect>(
                     new HittableRotatableRect(

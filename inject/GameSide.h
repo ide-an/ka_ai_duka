@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "idgen.h"
 #include <vector>
 #include <boost\shared_ptr.hpp>
 
@@ -26,12 +27,12 @@ namespace ka_ai_duka{
             Enemies enemies;
             bool enemy_marks[128];//TODO: const‚Å“¾‚½‚¢
             const unsigned int enemy_marks_length;
-            void UpdateBullets(void);
-            void UpdateEnemies(void);
+            void UpdateBullets(IDGenerator &idgen);
+            void UpdateEnemies(IDGenerator &idgen);
         public:
             GameSide(raw_types::Board &board, unsigned int &round_win);
             virtual ~GameSide(void);
-            void Update(void);
+            void Update(IDGenerator &idgen);
             Player* Player(void)
             {
                 return player;

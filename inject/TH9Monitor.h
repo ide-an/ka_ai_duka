@@ -2,6 +2,7 @@
 #include <cassert>
 #include "th09types.h"
 #include "GameSide.h"
+#include "idgen.h"
 #ifdef DEBUG_DRAW
 #include "DrawUtil.h"
 #endif
@@ -57,6 +58,7 @@ namespace ka_ai_duka{
         IObserver* observer;
         bool is_playing;
         managed_types::GameSide* game_sides[2];
+        IDGenerator idgen;
         int &hwnd;//for debugging
         void OnSnapshotSave(void);
     protected:

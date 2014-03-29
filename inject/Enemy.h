@@ -8,11 +8,12 @@ namespace ka_ai_duka{
         class Enemy
         {
         private:
+            unsigned int id;
             raw_types::Enemy &enemy;
             boost::shared_ptr<HittableRect> hittable_object;
         public:
-            Enemy(raw_types::Enemy &enemy)
-                : enemy(enemy)
+            Enemy(raw_types::Enemy &enemy, unsigned int id)
+                : enemy(enemy), id(id)
             {
                 hittable_object = boost::shared_ptr<HittableRect>(new HittableRect(
                     enemy.position.x,
@@ -23,6 +24,10 @@ namespace ka_ai_duka{
             }
             virtual ~Enemy(void)
             {
+            }
+            unsigned int Id() const
+            {
+                return id;
             }
             float X() const
             {

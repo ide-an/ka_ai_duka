@@ -117,6 +117,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameSide.h" />
     <ClInclude Include="hitTest.h" />
+    <ClInclude Include="idgen.h" />
     <ClInclude Include="lib\luabind\luabind\adopt_policy.hpp" />
     <ClInclude Include="lib\luabind\luabind\back_reference.hpp" />
     <ClInclude Include="lib\luabind\luabind\back_reference_fwd.hpp" />

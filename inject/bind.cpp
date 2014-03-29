@@ -94,6 +94,7 @@ namespace ka_ai_duka{
             //TODO: ‘¬“x, “–‚½‚è”»’è
             ,
             luabind::class_<managed_types::Enemy, boost::shared_ptr<managed_types::Enemy> >("Enemy")
+            .property("id", &managed_types::Enemy::Id)
             .property("x", &managed_types::Enemy::X)
             .property("y", &managed_types::Enemy::Y)
             .property("vx", &managed_types::Enemy::Vx)
@@ -107,6 +108,7 @@ namespace ka_ai_duka{
             .def("isPseudoEnemy", &managed_types::Enemy::IsPseudoEnemy)
             ,
             luabind::class_<managed_types::Bullet, boost::shared_ptr<managed_types::Bullet> >("Bullet")
+            .property("id", &managed_types::Bullet::Id)
             .property("x", &managed_types::Bullet::X)
             .property("y", &managed_types::Bullet::Y)
             .property("vx", &managed_types::Bullet::Vx)

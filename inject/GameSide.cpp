@@ -24,7 +24,7 @@ namespace ka_ai_duka{
         {
             delete player;
         }
-        void GameSide::UpdateBullets(void)
+        void GameSide::UpdateBullets(IDGenerator &idgen)
         {
             bullets.erase(std::remove_if(
                 bullets.begin(), bullets.end(), 
@@ -37,7 +37,7 @@ namespace ka_ai_duka{
                     bullet_marks[i] = false;
                 }else if(!bullet_marks[i] && is_enabled){
                     bullet_marks[i] = true;
-                    bullets.push_back(boost::shared_ptr<Bullet>(new NormalBullet(board.bullet_container->bullets[i])));
+                    bullets.push_back(boost::shared_ptr<Bullet>(new NormalBullet(board.bullet_container->bullets[i], idgen.NewId())));
                 }
             }
             for(unsigned int i=0;i<laser_marks_length;i++){
@@ -46,7 +46,7 @@ namespace ka_ai_duka{
                     laser_marks[i] = false;
                 }else if(!laser_marks[i] && is_enabled){
                     laser_marks[i] = true;
-                    bullets.push_back(boost::shared_ptr<Bullet>(new Laser(board.bullet_container->lasers[i])));
+                    bullets.push_back(boost::shared_ptr<Bullet>(new Laser(board.bullet_container->lasers[i], idgen.NewId())));
                 }
             }
             std::for_each(bullets.begin(), bullets.end(), [](Bullets::value_type elm){
@@ -54,7 +54,7 @@ namespace ka_ai_duka{
             });
         }
         
-        void GameSide::UpdateEnemies(void)
+        void GameSide::UpdateEnemies(IDGenerator &idgen)
         {
             enemies.erase(std::remove_if(
                 enemies.begin(), enemies.end(),
@@ -67,7 +67,7 @@ namespace ka_ai_duka{
                     enemy_marks[i] = false;
                 }else if(!enemy_marks[i] && is_enabled){
                     enemy_marks[i] = true;
-                    enemies.push_back(boost::shared_ptr<Enemy>(new Enemy(board.enemy_container->enemies[i])));
+                    enemies.push_back(boost::shared_ptr<Enemy>(new Enemy(board.enemy_container->enemies[i], idgen.NewId())));
                 }
             }
             std::for_each(enemies.begin(), enemies.end(), [](Enemies::value_type elm){
@@ -75,10 +75,10 @@ namespace ka_ai_duka{
             });
         }
 
-        void GameSide::Update(void)
+        void GameSide::Update(IDGenerator &idgen)
         {
-            UpdateBullets();
-            UpdateEnemies();
+            UpdateBullets(idgen);
+            UpdateEnemies(idgen);
         }
     }
 }
