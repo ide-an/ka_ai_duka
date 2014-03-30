@@ -116,12 +116,27 @@ namespace ka_ai_duka{
             .property("enabled", &managed_types::Bullet::Enabled)
             .property("hitBody", &managed_types::Bullet::HittableObject)
             ,
+            luabind::class_<managed_types::Item, boost::shared_ptr<managed_types::Item> >("Item")
+            .enum_("ItemType")[
+                luabind::value("ITEM_G", managed_types::Item::Item_G),
+                luabind::value("ITEM_BULLET", managed_types::Item::Item_Bullet),
+                luabind::value("ITEM_EX", managed_types::Item::Item_Ex),
+                luabind::value("ITEM_SCORE", managed_types::Item::Item_Score)
+            ]
+            .property("id", &managed_types::Item::Id)
+            .property("x", &managed_types::Item::X)
+            .property("y", &managed_types::Item::Y)
+            .property("vx", &managed_types::Item::Vx)
+            .property("vy", &managed_types::Item::Vy)
+            .property("type", &managed_types::Item::Type)
+            .property("enabled", &managed_types::Item::Enabled)
+            ,
             //TODO: Ex attack
-            //TODO: Item
             luabind::class_<managed_types::GameSide>("GameSide")
             .property("player", &managed_types::GameSide::Player)
             .property("enemies", &managed_types::GameSide::Enemies, luabind::return_stl_iterator)
             .property("bullets", &managed_types::GameSide::Bullets, luabind::return_stl_iterator)
+            .property("items", &managed_types::GameSide::Items, luabind::return_stl_iterator)
             .property("round_win", &managed_types::GameSide::RoundWin)
             .property("score", &managed_types::GameSide::Score)
         ];

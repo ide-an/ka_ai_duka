@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Item.h"
 #include "idgen.h"
 #include <vector>
 #include <boost\shared_ptr.hpp>
@@ -11,6 +12,7 @@ namespace ka_ai_duka{
     namespace managed_types{
         typedef std::vector<boost::shared_ptr<Bullet> > Bullets;
         typedef std::vector<boost::shared_ptr<Enemy> > Enemies;
+        typedef std::vector<boost::shared_ptr<Item> > Items;
         class GameSide
         {
         private:
@@ -27,8 +29,12 @@ namespace ka_ai_duka{
             Enemies enemies;
             bool enemy_marks[128];//TODO: const‚Å“¾‚½‚¢
             const unsigned int enemy_marks_length;
+            Items items;
+            bool item_marks[4];
+            const unsigned int item_marks_length;
             void UpdateBullets(IDGenerator &idgen);
             void UpdateEnemies(IDGenerator &idgen);
+            void UpdateItems(IDGenerator &idgen);
         public:
             GameSide(raw_types::Board &board, unsigned int &round_win);
             virtual ~GameSide(void);
@@ -44,6 +50,10 @@ namespace ka_ai_duka{
             const Enemies& Enemies(void)
             {
                 return enemies;
+            }
+            const Items& Items(void)
+            {
+                return items;
             }
             unsigned int RoundWin(void) const
             {

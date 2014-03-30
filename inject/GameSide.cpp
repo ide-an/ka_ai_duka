@@ -8,16 +8,17 @@ namespace ka_ai_duka{
             round_win(round_win),
             bullet_marks_length(536),
             laser_marks_length(48),
-            enemy_marks_length(128)
+            enemy_marks_length(128),
+            item_marks_length(4)
         {
             player = new managed_types::Player(*board.player, board.player_character);
             bullets.reserve(1000);
-            for(unsigned int i=0;i<bullet_marks_length;i++){
-                bullet_marks[i] = false;
-            }
-            for(unsigned int i=0;i<laser_marks_length;i++){
-                laser_marks[i] = false;
-            }
+            enemies.reserve(128);
+            items.reserve(4);
+            std::fill(std::begin(bullet_marks), std::end(bullet_marks), false);
+            std::fill(std::begin(laser_marks), std::end(laser_marks), false);
+            std::fill(std::begin(enemy_marks), std::end(enemy_marks), false);
+            std::fill(std::begin(item_marks), std::end(item_marks), false);
         }
 
         GameSide::~GameSide(void)
@@ -75,10 +76,32 @@ namespace ka_ai_duka{
             });
         }
 
+        void GameSide::UpdateItems(IDGenerator &idgen)
+        {
+            items.erase(std::remove_if(
+                items.begin(), items.end(),
+                [](Items::value_type elm){
+                    return !elm->Enabled();
+                }), items.end());
+            for(unsigned int i=0;i<item_marks_length;i++){
+                bool is_enabled = Item::IsEnabled(board.player->items[i]);
+                if(item_marks[i] && !is_enabled){
+                    item_marks[i] = false;
+                }else if(!item_marks[i] && is_enabled){
+                    item_marks[i] = true;
+                    items.push_back(boost::shared_ptr<Item>(new Item(board.player->items[i], idgen.NewId())));
+                }
+            }
+            std::for_each(items.begin(), items.end(), [](Items::value_type elm){
+                elm->Update();
+            });
+        }
+
         void GameSide::Update(IDGenerator &idgen)
         {
             UpdateBullets(idgen);
             UpdateEnemies(idgen);
+            UpdateItems(idgen);
         }
     }
 }
