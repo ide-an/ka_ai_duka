@@ -1,5 +1,6 @@
 #include "bind.h"
 #include "GameSide.h"
+#include "sandbox.h"
 #include <luabind\luabind.hpp>
 #include <luabind\iterator_policy.hpp>
 #include <luabind\operator.hpp>
@@ -142,7 +143,7 @@ namespace ka_ai_duka{
         ];
     }
 
-    void ExportVariables(lua_State* ls, TH9Monitor& monitor, PlayerSide player_side)
+    void ExportVariables(lua_State* ls, TH9Monitor& monitor, PlayerSide player_side, const std::string &script_dir)
     {
         auto game_sides = luabind::newtable(ls);
         game_sides[1] = luabind::object(ls, monitor.GetGameSide(Side_1P));
@@ -151,10 +152,11 @@ namespace ka_ai_duka{
         luabind::globals(ls)["player_side"] = player_side + 1;
         luabind::globals(ls)["round"] = monitor.GetRound();
         luabind::globals(ls)["difficulty"] = monitor.GetDifficulty();
+        luabind::globals(ls)[sandbox::varname_script_dir] = script_dir.c_str();
     }
 
     void UpdateVariables(lua_State* ls, TH9Monitor& monitor)
     {
-        luabind::globals(ls)["round"] = monitor.GetRound();
+        luabind::globals(ls)[sandbox::env_name]["round"] = monitor.GetRound();
     }
 }
