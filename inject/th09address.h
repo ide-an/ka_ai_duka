@@ -31,6 +31,12 @@ namespace ka_ai_duka{
             char* const ver1_5;
             char* const ver1_0;
         };
+
+        struct ExAttackFuncAddr{
+            int reimu;
+            //TODO: implement
+        };
+        //TODO: extern ex_attack_func_addr
         
         extern const struct Address addr_on_frame_update;
         extern const struct Address addr_on_game_start;

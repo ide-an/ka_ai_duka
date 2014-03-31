@@ -139,6 +139,8 @@ namespace ka_ai_duka {
         struct ExFeature{
             unsigned int is_local;
             struct Vector3D velocity;
+            char unknown1[0x14 - 0x4 - sizeof(Vector3D)];
+            struct Vector3D velocity_mystia;
         };
 
         struct ExAttack{
@@ -148,7 +150,9 @@ namespace ka_ai_duka {
             struct Vector3D position;
             char unknown3[0x34 - 0x20 - sizeof(Vector3D)];
             struct ExFeature* feature;
-            char unknown4[0x4C - 0x34 - sizeof(ExFeature *)];
+            char unknown4[0x40 - 0x34 - sizeof(ExFeature *)];
+            int update_func_address;
+            char unknown5[0x4C - 0x40 - sizeof(int)];
         };
 
         struct ExAttackContainer{
