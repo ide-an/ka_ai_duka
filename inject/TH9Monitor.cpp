@@ -40,8 +40,8 @@ namespace ka_ai_duka{
         }
         if(is_playing && observer){
             idgen.Reset();
-            game_sides[0] = new managed_types::GameSide(board[0], round_win[0]);
-            game_sides[1] = new managed_types::GameSide(board[1], round_win[1]);
+            game_sides[0] = new managed_types::GameSide(board[0], round_win[0], ex_attack_func_addr, ex_attack_container, Side_1P);
+            game_sides[1] = new managed_types::GameSide(board[1], round_win[1], ex_attack_func_addr, ex_attack_container, Side_2P);
             observer->OnGameStart(*this);
         }
     }

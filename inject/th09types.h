@@ -146,7 +146,9 @@ namespace ka_ai_duka {
         struct ExAttack{
             char unknown1[4];
             unsigned int is_2P;
-            char unknown2[0x20 - 8];
+            char unknown6[0xC - 0x4 - sizeof(int)];
+            int enabled;
+            char unknown2[0x20 - 0xC - sizeof(int)];
             struct Vector3D position;
             char unknown3[0x34 - 0x20 - sizeof(Vector3D)];
             struct ExFeature* feature;
@@ -169,6 +171,30 @@ namespace ka_ai_duka {
             char unknown1[0x2C];
             unsigned short keys;
             char unknown2[0x8E - 0x2C - sizeof(unsigned short)];
+        };
+
+        struct ExAttackFuncAddr{
+            int reimu;
+            int marisa;
+            int sakuya_1;
+            int sakuya_2;
+            int youmu;
+            int reisen;
+            int cirno;
+            int ryrica;//TODO: typo?
+            int merlin;
+            int lunasa;
+            int mystia_1;
+            int mystia_2;
+            int mystia_3;
+            int mystia_4;
+            int mystia_5;
+            int tewi;
+            int shameimaru;
+            int medicine;
+            int yuka;
+            int komachi;
+            int eiki;
         };
 #pragma pack(pop)
     }

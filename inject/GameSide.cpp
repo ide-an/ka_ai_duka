@@ -3,13 +3,23 @@
 
 namespace ka_ai_duka{
     namespace managed_types{
-        GameSide::GameSide(raw_types::Board &board, unsigned int &round_win)
+        GameSide::GameSide(
+            raw_types::Board &board, 
+            unsigned int &round_win, 
+            raw_types::ExAttackFuncAddr &ex_func_addr,
+            raw_types::ExAttackContainer* &ex_attack_container,
+            PlayerSide player_side
+            )
             : board(board),
             round_win(round_win),
             bullet_marks_length(536),
             laser_marks_length(48),
             enemy_marks_length(128),
-            item_marks_length(4)
+            item_marks_length(4),
+            ex_attack_marks_length(256),
+            ex_func_addr(ex_func_addr),
+            ex_attack_container(ex_attack_container),
+            player_side(player_side)
         {
             player = new managed_types::Player(*board.player, board.player_character);
             bullets.reserve(1000);
@@ -19,6 +29,7 @@ namespace ka_ai_duka{
             std::fill(std::begin(laser_marks), std::end(laser_marks), false);
             std::fill(std::begin(enemy_marks), std::end(enemy_marks), false);
             std::fill(std::begin(item_marks), std::end(item_marks), false);
+            std::fill(std::begin(ex_attack_marks), std::end(ex_attack_marks), false);
         }
 
         GameSide::~GameSide(void)
@@ -97,11 +108,27 @@ namespace ka_ai_duka{
             });
         }
 
+        void GameSide::UpdateExAttacks(IDGenerator &idgen)
+        {
+            ex_attacks.erase(std::remove_if(
+                ex_attacks.begin(), ex_attacks.end(),
+                [](ExAttacks::value_type elm){
+                    return !elm->Enabled();
+                }), ex_attacks.end());
+            for(unsigned int i=0;i<ex_attack_marks_length;i++){
+                //TODO: ’Ç‰Áˆ—‚ÌŽÀ‘•
+            }
+            std::for_each(ex_attacks.begin(), ex_attacks.end(), [](ExAttacks::value_type elm){
+                elm->Update();
+            });
+        }
+
         void GameSide::Update(IDGenerator &idgen)
         {
             UpdateBullets(idgen);
             UpdateEnemies(idgen);
             UpdateItems(idgen);
+            UpdateExAttacks(idgen);
         }
     }
 }

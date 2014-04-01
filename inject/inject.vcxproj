@@ -116,6 +116,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ExAttack.h" />
     <ClInclude Include="GameSide.h" />
     <ClInclude Include="hitTest.h" />
     <ClInclude Include="idgen.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="lib\luabind\luabind\wrapper_base.hpp" />
     <ClInclude Include="lib\luabind\luabind\yield_policy.hpp" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="player_side.h" />
     <ClInclude Include="sandbox.h" />
     <ClInclude Include="th09address.h" />
     <ClInclude Include="th09types.h" />

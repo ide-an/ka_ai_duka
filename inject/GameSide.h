@@ -4,6 +4,8 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "ExAttack.h"
+#include "player_side.h"
 #include "idgen.h"
 #include <vector>
 #include <boost\shared_ptr.hpp>
@@ -13,11 +15,16 @@ namespace ka_ai_duka{
         typedef std::vector<boost::shared_ptr<Bullet> > Bullets;
         typedef std::vector<boost::shared_ptr<Enemy> > Enemies;
         typedef std::vector<boost::shared_ptr<Item> > Items;
+        typedef std::vector<boost::shared_ptr<ExAttack> > ExAttacks;
+
         class GameSide
         {
         private:
             raw_types::Board &board;
             unsigned int &round_win;
+            struct raw_types::ExAttackFuncAddr &ex_func_addr;
+            raw_types::ExAttackContainer* &ex_attack_container;
+            PlayerSide player_side;
             Player* player;
             Bullets bullets;
             bool bullet_marks[536];//TODO: raw_types‚Ì•û‚Å’è”‚Æ‚µ‚Ä“f‚¢‚Ä‚¨‚­‚×‚«?
@@ -32,11 +39,21 @@ namespace ka_ai_duka{
             Items items;
             bool item_marks[4];
             const unsigned int item_marks_length;
+            ExAttacks ex_attacks;
+            bool ex_attack_marks[256];
+            const unsigned int ex_attack_marks_length;
             void UpdateBullets(IDGenerator &idgen);
             void UpdateEnemies(IDGenerator &idgen);
             void UpdateItems(IDGenerator &idgen);
+            void UpdateExAttacks(IDGenerator &idgen);
         public:
-            GameSide(raw_types::Board &board, unsigned int &round_win);
+            GameSide(
+                raw_types::Board &board,
+                unsigned int &round_win,
+                raw_types::ExAttackFuncAddr &ex_func_addr,
+                raw_types::ExAttackContainer* &ex_attack_container,
+                PlayerSide player_side
+                );
             virtual ~GameSide(void);
             void Update(IDGenerator &idgen);
             Player* Player(void)

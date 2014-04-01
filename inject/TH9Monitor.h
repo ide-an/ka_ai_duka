@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>
 #include "th09types.h"
+#include "player_side.h"
 #include "GameSide.h"
 #include "idgen.h"
 #ifdef DEBUG_DRAW
@@ -13,10 +14,6 @@ namespace ka_ai_duka{
         Ver1_5a,
     };
 
-    enum PlayerSide{
-        Side_1P = 0,
-        Side_2P,
-    };
     typedef unsigned short KeyState;
     namespace keys{
         const KeyState r      = 1 << 14;
@@ -55,6 +52,7 @@ namespace ka_ai_duka{
         unsigned int &round;
         unsigned int (&round_win)[2];
         unsigned int &difficulty;
+        raw_types::ExAttackFuncAddr &ex_attack_func_addr;
         IObserver* observer;
         bool is_playing;
         managed_types::GameSide* game_sides[2];
@@ -72,9 +70,11 @@ namespace ka_ai_duka{
             unsigned int &round,
             unsigned int (&round_win)[2],
             unsigned int &difficulty,
-            int &hwnd
+            int &hwnd,
+            raw_types::ExAttackFuncAddr &ex_attack_func_addr //TODO: init arg
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
-            round(round), round_win(round_win), difficulty(difficulty), is_playing(false), hwnd(hwnd)
+            round(round), round_win(round_win), difficulty(difficulty), is_playing(false), hwnd(hwnd),
+            ex_attack_func_addr(ex_attack_func_addr)
         {};
         virtual ~TH9Monitor(void){};
         virtual void Attach(void) = 0;
