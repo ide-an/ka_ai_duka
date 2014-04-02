@@ -116,7 +116,14 @@ namespace ka_ai_duka{
                     return !elm->Enabled();
                 }), ex_attacks.end());
             for(unsigned int i=0;i<ex_attack_marks_length;i++){
-                //TODO: ’Ç‰Áˆ—‚ÌŽÀ‘•
+                bool is_enabled = ExAttack::IsEnabled(ex_attack_container->attacks[i]);
+                if(ex_attack_marks[i] && !is_enabled){
+                    ex_attack_marks[i] = false;
+                }else if(!ex_attack_marks[i] && is_enabled && ExAttack::GetPlayerSide(ex_attack_container->attacks[i]) == player_side){
+                    if(ExAttackFactory(ex_attack_container->attacks[i], ex_func_addr, idgen, ex_attacks)){
+                        ex_attack_marks[i] = true;
+                    }
+                }
             }
             std::for_each(ex_attacks.begin(), ex_attacks.end(), [](ExAttacks::value_type elm){
                 elm->Update();

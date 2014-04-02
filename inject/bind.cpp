@@ -133,11 +133,15 @@ namespace ka_ai_duka{
             .property("enabled", &managed_types::Item::Enabled)
             ,
             //TODO: Ex attack
+            luabind::class_<managed_types::ExAttack>("ExAttack")
+            .property("hitBody", &managed_types::ExAttack::HittableObject)
+            ,
             luabind::class_<managed_types::GameSide>("GameSide")
             .property("player", &managed_types::GameSide::Player)
             .property("enemies", &managed_types::GameSide::Enemies, luabind::return_stl_iterator)
             .property("bullets", &managed_types::GameSide::Bullets, luabind::return_stl_iterator)
             .property("items", &managed_types::GameSide::Items, luabind::return_stl_iterator)
+            .property("exAttacks", &managed_types::GameSide::ExAttacks, luabind::return_stl_iterator)
             .property("round_win", &managed_types::GameSide::RoundWin)
             .property("score", &managed_types::GameSide::Score)
         ];

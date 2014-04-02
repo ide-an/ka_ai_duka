@@ -84,6 +84,7 @@
     <ClCompile Include="bind.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="ExAttack.cpp" />
     <ClCompile Include="GameSide.cpp" />
     <ClCompile Include="hitTest.cpp" />
     <ClCompile Include="lib\luabind\src\class.cpp" />

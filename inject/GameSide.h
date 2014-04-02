@@ -72,6 +72,10 @@ namespace ka_ai_duka{
             {
                 return items;
             }
+            const managed_types::ExAttacks& ExAttacks(void)
+            {
+                return ex_attacks;
+            }
             unsigned int RoundWin(void) const
             {
                 return round_win;

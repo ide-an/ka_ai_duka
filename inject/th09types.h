@@ -136,11 +136,18 @@ namespace ka_ai_duka {
             char unknown3[0x38 - (0x4A7DB0 - 0x4A7D94) - sizeof(PlayerCharacter)];
         };
 
+        struct ExSakuyaKnife{
+            struct Vector3D position;
+            char unknown1[0x48 - sizeof(Vector3D)];
+        };
+
         struct ExFeature{
             unsigned int is_local;
             struct Vector3D velocity;
             char unknown1[0x14 - 0x4 - sizeof(Vector3D)];
             struct Vector3D velocity_mystia;
+            char unknown2[0x58 - 0x14 - sizeof(Vector3D)];
+            struct ExSakuyaKnife knives[4];
         };
 
         struct ExAttack{
@@ -148,7 +155,8 @@ namespace ka_ai_duka {
             unsigned int is_2P;
             char unknown6[0xC - 0x4 - sizeof(int)];
             int enabled;
-            char unknown2[0x20 - 0xC - sizeof(int)];
+            char unknown2[0x1C - 0xC - sizeof(int)];
+            int* hitbodies;//TODO: 構造体へのポインタのはず
             struct Vector3D position;
             char unknown3[0x34 - 0x20 - sizeof(Vector3D)];
             struct ExFeature* feature;
@@ -181,7 +189,7 @@ namespace ka_ai_duka {
             int youmu;
             int reisen;
             int cirno;
-            int ryrica;//TODO: typo?
+            int lyrica;
             int merlin;
             int lunasa;
             int mystia_1;
@@ -190,9 +198,9 @@ namespace ka_ai_duka {
             int mystia_4;
             int mystia_5;
             int tewi;
-            int shameimaru;
+            int aya;
             int medicine;
-            int yuka;
+            int yuuka;
             int komachi;
             int eiki;
         };
