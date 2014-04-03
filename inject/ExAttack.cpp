@@ -18,13 +18,13 @@ namespace ka_ai_duka{
         {
             int func_addr = ex_attack.update_func_address;
             if(func_addr == ex_func_addr.reimu){
-                AddExAttack(attacks, new ExAttackReimu(ex_attack, idgen.NewId()));
+                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Reimu, 18.0f));
                 return true;
             }else if(func_addr == ex_func_addr.marisa){
-                AddExAttack(attacks, new ExAttackMarisa(ex_attack, idgen.NewId()));
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Marisa));
                 return true;
             }else if(func_addr == ex_func_addr.sakuya_1){
-                return false;//ignored
+                return false;// ignored
             }else if(func_addr == ex_func_addr.sakuya_2){
                 AddExAttack(attacks, new ExAttackSakuya(ex_attack, idgen.NewId(), 0));
                 AddExAttack(attacks, new ExAttackSakuya(ex_attack, idgen.NewId(), 1));
@@ -33,22 +33,56 @@ namespace ka_ai_duka{
                 AddExAttack(attacks, new ExAttackSakuya(ex_attack, idgen.NewId(), 4));
                 return true;
             }else if(func_addr == ex_func_addr.youmu){
-                AddExAttack(attacks, new ExAttackYoumu(ex_attack, idgen.NewId()));
+                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Youmu, 14.0f));
                 return true;
             }else if(func_addr == ex_func_addr.reisen){
+                AddExAttack(attacks, new ExAttackReisen(ex_attack, idgen.NewId()));
+                return true;
+            }else if(func_addr == ex_func_addr.cirno){
+                AddExAttack(attacks, new ExAttackCirno(ex_attack, idgen.NewId()));
+                return true;
             }else if(func_addr == ex_func_addr.lyrica){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Lyrica));
+                return true;
             }else if(func_addr == ex_func_addr.merlin){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Merlin));
+                return true;
             }else if(func_addr == ex_func_addr.lunasa){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Lunasa));
+                return true;
             }else if(func_addr == ex_func_addr.mystia_1){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Ex));
+                return true;
             }else if(func_addr == ex_func_addr.mystia_2){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Charge2));
+                return true;
             }else if(func_addr == ex_func_addr.mystia_3){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Charge3));
+                return true;
             }else if(func_addr == ex_func_addr.mystia_4){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Boss1));
+                return true;
             }else if(func_addr == ex_func_addr.mystia_5){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Boss2));
+                return true;
             }else if(func_addr == ex_func_addr.tewi){
+                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Tewi, 13.0f));
+                return true;
             }else if(func_addr == ex_func_addr.aya){
+                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Aya, 12.0f));
+                return true;
+            }else if(func_addr == ex_func_addr.medicine){
+                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Medicine, 64.0f));
+                return true;
             }else if(func_addr == ex_func_addr.yuuka){
+                AddExAttack(attacks, new ExAttackYuuka(ex_attack, idgen.NewId()));
+                return true;
             }else if(func_addr == ex_func_addr.komachi){
+                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Komachi));
+                return true;
             }else if(func_addr == ex_func_addr.eiki){
+                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Eiki, 32.0f));
+                return true;
             }
             //UNREACHABLE
             assert(0);
@@ -76,20 +110,12 @@ namespace ka_ai_duka{
                 return ex_attack.position.y - 16.0f;
             }
         }
-        //Reimu
-        void ExAttackReimu::Update(void)
+        //Circle
+        void ExAttackCircle::Update(void)
         {
             hittable_object->SetX(X());
             hittable_object->SetY(Y());
             hittable_object->SetRadius(radius);
-        }
-        //Marisa
-        void ExAttackMarisa::Update(void)
-        {
-            //–‚—¹EX‚Í—LˆÓ‚È“–‚½‚è”»’è‚ðŽ‚½‚È‚¢
-            hittable_object->SetX(X());
-            hittable_object->SetY(Y());
-            hittable_object->SetRadius(0);
         }
         //Sakuya
         float ExAttackSakuya::X() const
@@ -110,18 +136,27 @@ namespace ka_ai_duka{
                 return ex_attack.feature->knives[index - 1].position.y;
             }
         }
-        void ExAttackSakuya::Update(void)
+        //Reisen
+        void ExAttackReisen::Update(void)
         {
             hittable_object->SetX(X());
             hittable_object->SetY(Y());
-            hittable_object->SetRadius(radius);
+            hittable_object->SetRadius(ex_attack.feature->radius * 0.8f);
         }
-        //Youmu
-        void ExAttackYoumu::Update(void)
+        //Cirno
+        void ExAttackCirno::Update(void)
         {
             hittable_object->SetX(X());
             hittable_object->SetY(Y());
-            hittable_object->SetRadius(radius);
+            hittable_object->SetWidth(width);
+            hittable_object->SetHeight(height);
+        }
+        //Yuuka
+        void ExAttackYuuka::Update(void)
+        {
+            hittable_object->SetX(X());
+            hittable_object->SetY(Y());
+            hittable_object->SetRadius(ex_attack.feature->ex_yuuka_type == 2 ? 18.0f : 28.0f);//TODO: ‚Ç‚Á‚¿‚ª‚Ç‚Á‚¿‚©žB–†B‰ÂŽ‹‰»‚µ‚Ä’²‚×‚é
         }
     }
 }

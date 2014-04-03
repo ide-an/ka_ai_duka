@@ -146,7 +146,10 @@ namespace ka_ai_duka {
             struct Vector3D velocity;
             char unknown1[0x14 - 0x4 - sizeof(Vector3D)];
             struct Vector3D velocity_mystia;
-            char unknown2[0x58 - 0x14 - sizeof(Vector3D)];
+            char unknown2[0x4C - 0x14 - sizeof(Vector3D)];
+            int ex_yuuka_type;
+            float radius;//‚¤‚Ç‚ñ‚°EX‚Ì“–‚½‚è”»’è”¼Œa
+            char unknown3[0x58 - 0x50 - sizeof(float)];
             struct ExSakuyaKnife knives[4];
         };
 

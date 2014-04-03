@@ -69,7 +69,10 @@ namespace ka_ai_duka {
             {
                 return ex_attack.enabled != 0;
             }
-            //TODO: 当たり判定が有効かどうかのメソッド
+            virtual bool Hittable(void) const
+            {
+                return true;//TODO: 実際にメモリを読みだして調べるべき
+            }
             static PlayerSide GetPlayerSide(raw_types::ExAttack &ex_attack)
             {
                 return ex_attack.is_2P ? Side_2P : Side_1P;
@@ -77,70 +80,81 @@ namespace ka_ai_duka {
             virtual void Update(void) = 0;
             virtual boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const = 0;
         };
-        //TODO: 円形のEXアタック一般を表すクラスを用意した方がシンプル?
-        class ExAttackReimu : public ExAttack
+
+        class ExAttackCircle : public ExAttack
         {
-        private:
-            const float radius;
+        protected:
+            float radius;
             boost::shared_ptr<HittableCircle> hittable_object;
         public:
-            ExAttackReimu(raw_types::ExAttack &ex_attack, unsigned int id)
-                : ExAttack(ex_attack, id, Reimu), radius(18.0f)
+            ExAttackCircle(raw_types::ExAttack &ex_attack, unsigned int id, ExAttackType ex_type, float radius)
+                : ExAttack(ex_attack, id, ex_type), radius(radius)
             {
                 hittable_object = boost::shared_ptr<HittableCircle>(new HittableCircle(X(), Y(), radius));
             }
-            void Update(void);
+            virtual void Update(void);
             boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const
             {
                 return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
         };
-        class ExAttackMarisa : public ExAttack
+
+        class ExAttackUnhittable : public ExAttack
         {
-        private:
-            boost::shared_ptr<HittableCircle> hittable_object;
         public:
-            ExAttackMarisa(raw_types::ExAttack &ex_attack, unsigned int id)
-                : ExAttack(ex_attack, id, Marisa)
+            ExAttackUnhittable(raw_types::ExAttack &ex_attack, unsigned int id, ExAttackType ex_type)
+                : ExAttack(ex_attack, id, ex_type)
             {
-                hittable_object = boost::shared_ptr<HittableCircle>(new HittableCircle(X(), Y(), 0));
             }
-            void Update(void);
+            virtual bool Hittable(void) const
+            {
+                return false;
+            }
+            virtual void Update(void)
+            {
+            }
             boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const
             {
-                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
+                return boost::shared_ptr<managed_types::HittableObject>(nullptr);
             }
         };
-        class ExAttackSakuya : public ExAttack
+
+        //キャラごとに特化したクラス
+        class ExAttackSakuya : public ExAttackCircle
         {
         private:
-            const float radius;
-            boost::shared_ptr<HittableCircle> hittable_object;
             unsigned int index;
         public:
             ExAttackSakuya(raw_types::ExAttack &ex_attack, unsigned int id, unsigned int index)
-                : ExAttack(ex_attack, id, Sakuya), index(index), radius(12.0f)
+                : ExAttackCircle(ex_attack, id, Sakuya, 12.0f), index(index)
             {
-                hittable_object = boost::shared_ptr<HittableCircle>(new HittableCircle(X(), Y(), radius));
             }
             float X() const;//咲夜さんのEXは1つのあれから5個の弾が生まれる
             float Y() const;
-            void Update(void);
-            boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const
-            {
-                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
-            }
         };
-        class ExAttackYoumu : public ExAttack
+
+        class ExAttackReisen : public ExAttackCircle
+        {
+        public:
+            ExAttackReisen(raw_types::ExAttack &ex_attack, unsigned int id)
+                : ExAttackCircle(ex_attack, id, Reisen, 1.0f)
+            {
+            }
+            void Update(void);
+        };
+
+        class ExAttackCirno : public ExAttack
         {
         private:
-            const float radius;
-            boost::shared_ptr<HittableCircle> hittable_object;
+            const float width;
+            const float height;
+            boost::shared_ptr<HittableRect> hittable_object;
         public:
-            ExAttackYoumu(raw_types::ExAttack &ex_attack, unsigned int id)
-                : ExAttack(ex_attack, id, Youmu), radius(14.0f)
+            ExAttackCirno(raw_types::ExAttack &ex_attack, unsigned int id)
+                : ExAttack(ex_attack, id, Cirno), width(6), height(32)
             {
-                hittable_object = boost::shared_ptr<HittableCircle>(new HittableCircle(X(), Y(), radius));
+                hittable_object = boost::shared_ptr<HittableRect>(
+                    new HittableRect(X(), Y(), width, height));
             }
             void Update(void);
             boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const
@@ -148,7 +162,16 @@ namespace ka_ai_duka {
                 return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
         };
-        //TODO: derived classes
+        class ExAttackYuuka : public ExAttackCircle
+        {
+        public:
+            ExAttackYuuka(raw_types::ExAttack &ex_attack, unsigned int id)
+                : ExAttackCircle(ex_attack, id, Yuuka, 1.0f)
+            {
+            }
+            void Update(void);
+        };
+
         bool ExAttackFactory(
             raw_types::ExAttack &ex_attack,
             raw_types::ExAttackFuncAddr &ex_func_addr,
