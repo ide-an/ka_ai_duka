@@ -50,20 +50,20 @@ namespace ka_ai_duka{
             }else if(func_addr == ex_func_addr.lunasa){
                 AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Lunasa));
                 return true;
-            }else if(func_addr == ex_func_addr.mystia_1){
-                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Ex));
+            }else if(func_addr == ex_func_addr.mystia_1){//TODO: mystia's velocity isn't valid
+                AddExAttack(attacks, new ExAttackMystia(ex_attack, idgen.NewId(), Mystia_Ex));
                 return true;
             }else if(func_addr == ex_func_addr.mystia_2){
-                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Charge2));
+                AddExAttack(attacks, new ExAttackMystia(ex_attack, idgen.NewId(), Mystia_Charge2));
                 return true;
             }else if(func_addr == ex_func_addr.mystia_3){
-                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Charge3));
+                AddExAttack(attacks, new ExAttackMystia(ex_attack, idgen.NewId(), Mystia_Charge3));
                 return true;
             }else if(func_addr == ex_func_addr.mystia_4){
-                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Boss1));
+                AddExAttack(attacks, new ExAttackMystia(ex_attack, idgen.NewId(), Mystia_Boss1));
                 return true;
             }else if(func_addr == ex_func_addr.mystia_5){
-                AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Mystia_Boss2));
+                AddExAttack(attacks, new ExAttackMystia(ex_attack, idgen.NewId(), Mystia_Boss2));
                 return true;
             }else if(func_addr == ex_func_addr.tewi){
                 AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Tewi, 13.0f));
@@ -156,7 +156,7 @@ namespace ka_ai_duka{
         {
             hittable_object->SetX(X());
             hittable_object->SetY(Y());
-            hittable_object->SetRadius(ex_attack.feature->ex_yuuka_type == 2 ? 18.0f : 28.0f);//TODO: ‚Ç‚Á‚¿‚ª‚Ç‚Á‚¿‚©žB–†B‰ÂŽ‹‰»‚µ‚Ä’²‚×‚é
+            hittable_object->SetRadius(ex_attack.feature->ex_yuuka_type >= 2 ? 18.0f : 28.0f);
         }
     }
 }

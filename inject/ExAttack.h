@@ -162,6 +162,22 @@ namespace ka_ai_duka {
                 return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
         };
+        class ExAttackMystia : public ExAttackUnhittable
+        {
+        public:
+            ExAttackMystia(raw_types::ExAttack &ex_attack, unsigned int id, ExAttackType ex_type)
+                : ExAttackUnhittable(ex_attack, id, ex_type)
+            {
+            }
+            virtual float Vx() const
+            {
+                return ex_attack.feature->velocity_mystia.x;
+            }
+            virtual float Vy() const
+            {
+                return ex_attack.feature->velocity_mystia.y;
+            }
+        };
         class ExAttackYuuka : public ExAttackCircle
         {
         public:
