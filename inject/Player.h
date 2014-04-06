@@ -58,6 +58,10 @@ namespace ka_ai_duka{
             {
                 return character;
             }
+            bool IsNativeAI(void) const
+            {
+                return player.is_ai != 0;
+            }
             //TODO: “–‚½‚è”»’è
             //TODO: ‘¬“x
         };

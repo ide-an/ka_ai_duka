@@ -38,7 +38,7 @@ namespace ka_ai_duka{
     void AIManager::OnGameStart(TH9Monitor &monitor)
     {
         for(int i=0;i<2;i++){
-            if(ShouldRunAI(i)){
+            if(ShouldRunAI(i, monitor)){
                 std::string basename;
                 std::string script_dir;
                 FilenameToDirAndBasename(filenames[i], script_dir, basename);

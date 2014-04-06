@@ -131,6 +131,7 @@ namespace ka_ai_duka{
             .property("vy", &managed_types::Item::Vy)
             .property("type", &managed_types::Item::Type)
             .property("enabled", &managed_types::Item::Enabled)
+            .property("hitBody", &managed_types::Item::HittableObject)
             ,
             //TODO: Ex attack
             luabind::class_<managed_types::ExAttack>("ExAttack")

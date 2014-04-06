@@ -50,7 +50,7 @@ namespace ka_ai_duka{
             }else if(func_addr == ex_func_addr.lunasa){
                 AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Lunasa));
                 return true;
-            }else if(func_addr == ex_func_addr.mystia_1){//TODO: mystia's velocity isn't valid
+            }else if(func_addr == ex_func_addr.mystia_1){
                 AddExAttack(attacks, new ExAttackMystia(ex_attack, idgen.NewId(), Mystia_Ex));
                 return true;
             }else if(func_addr == ex_func_addr.mystia_2){

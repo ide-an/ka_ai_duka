@@ -10,9 +10,9 @@ namespace ka_ai_duka{
         unsigned int frame;
         std::string filenames[2];
         ::lua_State* lua_states[2];
-        bool ShouldRunAI(int player_side)//1P: 0, 2P: 1
+        bool ShouldRunAI(int player_side, TH9Monitor &monitor)//1P: 0, 2P: 1
         {
-            return !filenames[player_side].empty();
+            return !filenames[player_side].empty() && !monitor.GetGameSide((PlayerSide) player_side)->Player()->IsNativeAI();
         }
     public:
         AIManager(void);

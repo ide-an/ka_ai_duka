@@ -100,7 +100,7 @@ namespace ka_ai_duka{
                     item_marks[i] = false;
                 }else if(!item_marks[i] && is_enabled){
                     item_marks[i] = true;
-                    items.push_back(boost::shared_ptr<Item>(new Item(board.player->items[i], idgen.NewId())));
+                    items.push_back(boost::shared_ptr<Item>(new Item(board.player->items[i], idgen.NewId(), board.player->feature->item_size)));
                 }
             }
             std::for_each(items.begin(), items.end(), [](Items::value_type elm){

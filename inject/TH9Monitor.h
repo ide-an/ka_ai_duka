@@ -52,9 +52,10 @@ namespace ka_ai_duka{
         unsigned int &round;
         unsigned int (&round_win)[2];
         unsigned int &difficulty;
+        unsigned int &play_status;
         raw_types::ExAttackFuncAddr &ex_attack_func_addr;
         IObserver* observer;
-        bool is_playing;
+        bool is_playing;// 0x1000: cut-in, 0x8: replay
         managed_types::GameSide* game_sides[2];
         IDGenerator idgen;
         int &hwnd;//for debugging
@@ -70,10 +71,11 @@ namespace ka_ai_duka{
             unsigned int &round,
             unsigned int (&round_win)[2],
             unsigned int &difficulty,
+            unsigned int &play_status,
             int &hwnd,
-            raw_types::ExAttackFuncAddr &ex_attack_func_addr //TODO: init arg
+            raw_types::ExAttackFuncAddr &ex_attack_func_addr
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
-            round(round), round_win(round_win), difficulty(difficulty), is_playing(false), hwnd(hwnd),
+            round(round), round_win(round_win), difficulty(difficulty), is_playing(false), play_status(play_status), hwnd(hwnd),
             ex_attack_func_addr(ex_attack_func_addr)
         {};
         virtual ~TH9Monitor(void){};
@@ -92,6 +94,9 @@ namespace ka_ai_duka{
         }
         virtual bool IsNetBattle(void){
             return false;
+        }
+        virtual bool IsReplay(void){
+            return (play_status & 0x8) != 0;
         }
         void SetKeyState(PlayerSide side, KeyState key_state);
         managed_types::GameSide* GetGameSide(PlayerSide side)

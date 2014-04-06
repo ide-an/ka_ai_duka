@@ -25,6 +25,8 @@ namespace ka_ai_duka {
 
         struct PlayerFeature{
             char unknown1[0x24];
+            float item_size;
+            char unknown2[0x24 - 0x10 - sizeof(float)];
             float charge_speed;
         };
 
@@ -37,26 +39,28 @@ namespace ka_ai_duka {
         };
 
         struct Player{
-            char unknown1[0xA0];
+            char unknown1[0x20];
+            unsigned int is_ai;
+            char unknown2[0xA0 - 0x20 - sizeof(int)];
             unsigned int card_attack_level;
             unsigned int boss_card_attack_level;
             unsigned int life;
-            char unknown2[0x1B88 - 0xA8 - 4];
+            char unknown3[0x1B88 - 0xA8 - 4];
             struct Vector3D position;
-            char unknown3[0x1C60 - 0x1B88 - sizeof(Vector3D)];
+            char unknown4[0x1C60 - 0x1B88 - sizeof(Vector3D)];
             struct Rect3D rect1;
             struct Rect3D rect2;
-            struct Rect3D rect3;
-            char unknown4[0x30338 - 0x1C90 - sizeof(Rect3D)];
+            struct Rect3D rect3; // vs Item
+            char unknown5[0x30338 - 0x1C90 - sizeof(Rect3D)];
             struct PlayerFeature* feature;
-            char unknown5[0x30384 - 0x30338 - sizeof(PlayerFeature *)];
+            char unknown6[0x30384 - 0x30338 - sizeof(PlayerFeature *)];
             float charge_current;
             float charge_max;
-            char unknown6[0x30414 - 0x30388 - sizeof(float)];
+            char unknown7[0x30414 - 0x30388 - sizeof(float)];
             unsigned int combo;
-            char unknown7[4];
+            char unknown8[4];
             unsigned int spell_point;
-            char unknown8[0x30454 - 0x3041C - sizeof(int)];
+            char unknown9[0x30454 - 0x3041C - sizeof(int)];
             struct Item items[4];
         };
 
