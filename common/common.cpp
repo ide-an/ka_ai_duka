@@ -2,6 +2,7 @@
 #include <Windows.h>
 namespace ka_ai_duka{
     namespace common{
+        const std::string ini_name("ka_ai_duka.ini");
         bool FileExists(const std::string& file_path)
         {
             DWORD attr = ::GetFileAttributesA(file_path.c_str());
@@ -32,15 +33,25 @@ namespace ka_ai_duka{
                 enable_2P = ReadIniBool("2P", "enabled", "false", file_path.c_str());
                 th09_exe_path = ReadIniString("common", "exe_path", "", file_path.c_str());
             }else{
-                th09_exe_path = "C:/Users/ide/toho/tmp-kaeiduka/東方花映塚/th09.exe";
                 //TODO: I should notify error?
             }
+            //TODO: path文字列の正規化。/区切りをバックスラッシュ区切りに変える
         }
         void Config::Save(const std::string &file_path)
         {
             //TODO: implement
-            //TODO: どうやってdll injectionした先からiniファイルを読ませるのか?
-            //th09.exeのプロセスメモリにファイルパスとその文字列へのアドレス書き込む?
+}
+
+        //モジュールからファイルパスを取り出し、iniファイルのフルパスを得る。
+        //トリッキーだが、プロセス間の通信が不要になる
+        void Config::IniFilePath(HANDLE h_module, std::string &out)
+        {
+            char str[0x800];
+            ::GetModuleFileNameA((HMODULE)h_module, str, sizeof(str)/sizeof(str[0]));
+            //TODO: パスの文字列長チェック
+            out.append(str, strrchr(str, '\\'));
+            out.append("\\");
+            out.append(ini_name);
         }
     }
 }

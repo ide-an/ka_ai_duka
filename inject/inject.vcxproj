@@ -167,6 +167,11 @@
     <ClInclude Include="th09types.h" />
     <ClInclude Include="TH9Monitor.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\common\common.vcxproj">
+      <Project>{25ca3e9a-1b79-40d0-b1f4-0064e0748eee}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

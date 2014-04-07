@@ -19,7 +19,9 @@ void BuildDllPath(std::string& out)
 int main(int argc, char** argv){
 
     ka_ai_duka::common::Config conf;
-    conf.Load("hoge.ini");
+    std::string ini_path;
+    ka_ai_duka::common::Config::IniFilePath(NULL, ini_path);
+    conf.Load(ini_path);
     //TODO: validation
     STARTUPINFO si;
     PROCESS_INFORMATION pi;

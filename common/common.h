@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-
+#include <Windows.h>
 namespace ka_ai_duka{
     namespace common{
         class Config{
@@ -33,9 +33,7 @@ namespace ka_ai_duka{
             }
             void Load(const std::string &filepath);
             void Save(const std::string &filepath);
-//TODO: static std::string IniFilePath() const;// returns full path
-//TODO: static void WriteIniFilePathToProcessMemory(std::string &path, HANDLE process);
-//TODO: static void ReadIniFilePathFromProcessMemory(std::string &path, HANDLE process);
+            static void IniFilePath(HANDLE h_module, std::string &out);
         };
     }
 }

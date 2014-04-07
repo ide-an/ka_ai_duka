@@ -2,11 +2,17 @@
 #include "TH9Monitor.h"
 #include "AIManager.h"
 #include <string>
+#include "../common/common.h"
 
 ka_ai_duka::AIManager* ai_manager = nullptr;
 
-void Attach(void){
+void Attach(HANDLE hModule){
     using namespace ka_ai_duka;
+    common::Config conf;
+    std::string ini_path;
+    common::Config::IniFilePath(hModule, ini_path);
+    conf.Load(ini_path);
+    //TODO: validate config
     switch(TH9Monitor::CheckVersion()){
     case Ver1_5a:
         monitor = new TH9ver1_5aMonitor();
@@ -19,11 +25,12 @@ void Attach(void){
         break;
     }
     ai_manager = new AIManager();
-    //std::string file_1p("C:/Users/ide/Desktop/1p.lua");
-    std::string file_2p("C:/Users/ide/Desktop/2p.lua");
-    //ai_manager->SetFilename1P(file_1p);
-    ai_manager->SetFilename2P(file_2p);
-    //TODO: AI‰Šú‰»
+    if(conf.Enable1P()){
+        ai_manager->SetFilename1P(conf.ScriptPath1P());
+    }
+    if(conf.Enable2P()){
+        ai_manager->SetFilename2P(conf.ScriptPath2P());
+    }
     monitor->SetObserver(ai_manager);
     if(monitor){
         monitor->Attach();
@@ -46,7 +53,7 @@ void Detach(void){
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved){
     switch(ul_reason_for_call){
     case DLL_PROCESS_ATTACH:
-        Attach();
+        Attach(hModule);
         break;
     case DLL_PROCESS_DETACH:
         Detach();
