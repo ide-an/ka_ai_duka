@@ -19,6 +19,14 @@ namespace ka_ai_duka{
             {
                 return enable_2P;
             }
+            void SetEnable1P(bool b)
+            {
+                enable_1P = b;
+            }
+            void SetEnable2P(bool b)
+            {
+                enable_2P = b;
+            }
             const std::string& ScriptPath1P() const
             {
                 return script_path_1P;
@@ -26,6 +34,15 @@ namespace ka_ai_duka{
             const std::string& ScriptPath2P() const
             {
                 return script_path_2P;
+            }
+    
+            void SetScriptPath1P(const std::string& str)
+            {
+                script_path_1P = str;
+            }
+            void SetScriptPath2P(const std::string& str)
+            {
+                script_path_2P = str;
             }
             const std::string& Th09ExePath() const
             {
