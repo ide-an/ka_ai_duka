@@ -71,7 +71,7 @@ namespace ka_ai_duka {
             }
             virtual bool Hittable(void) const
             {
-                return true;//TODO: ŽÀÛ‚Éƒƒ‚ƒŠ‚ð“Ç‚Ý‚¾‚µ‚Ä’²‚×‚é‚×‚«
+                return ex_attack.feature->is_local > 0;
             }
             static PlayerSide GetPlayerSide(raw_types::ExAttack &ex_attack)
             {
@@ -131,6 +131,11 @@ namespace ka_ai_duka {
             }
             float X() const;//ç–é‚³‚ñ‚ÌEX‚Í1‚Â‚Ì‚ ‚ê‚©‚ç5ŒÂ‚Ì’e‚ª¶‚Ü‚ê‚é
             float Y() const;
+            
+            virtual bool Hittable(void) const
+            {
+                return ex_attack.feature->is_local == 0;//Å‰‚©‚ç(‚¾‚¯)—LŒø
+            }
         };
 
         class ExAttackReisen : public ExAttackCircle
@@ -139,6 +144,10 @@ namespace ka_ai_duka {
             ExAttackReisen(raw_types::ExAttack &ex_attack, unsigned int id)
                 : ExAttackCircle(ex_attack, id, Reisen, 1.0f)
             {
+            }
+            virtual bool Hittable(void) const
+            {
+                return ex_attack.feature->is_local == 2;
             }
             void Update(void);
         };

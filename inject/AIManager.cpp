@@ -39,7 +39,6 @@ namespace ka_ai_duka{
     {
         for(int i=0;i<2;i++){
             if(ShouldRunAI(i, monitor)){
-                ::MessageBoxA(NULL, filenames[i].c_str(), "hoge", MB_OK);
                 std::string basename;
                 std::string script_dir;
                 FilenameToDirAndBasename(filenames[i], script_dir, basename);
