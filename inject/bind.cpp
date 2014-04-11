@@ -9,15 +9,15 @@
 namespace ka_ai_duka{
     
 
-    //単に7要素の配列を受け取るだけでいい気もする
     void SendKeys1P(KeyState key_state)
     {
-        //TODO: まともな実装
+        key_state &= keys::z | keys::x | keys::shift | keys::right | keys::left | keys::up | keys::down;
         monitor->SetKeyState(Side_1P, key_state);
     }
 
     void SendKeys2P(KeyState key_state)
     {
+        key_state &= keys::z | keys::x | keys::shift | keys::right | keys::left | keys::up | keys::down;
         monitor->SetKeyState(Side_2P, key_state);
     }
 
@@ -133,9 +133,38 @@ namespace ka_ai_duka{
             .property("enabled", &managed_types::Item::Enabled)
             .property("hitBody", &managed_types::Item::HittableObject)
             ,
-            //TODO: Ex attack
             luabind::class_<managed_types::ExAttack>("ExAttack")
+            .enum_("ExAttackType")[
+                luabind::value("ITEM_Reimu", managed_types::Reimu),
+                luabind::value("ITEM_Marisa", managed_types::Marisa),
+                luabind::value("ITEM_Sakuya", managed_types::Sakuya),
+                luabind::value("ITEM_Youmu", managed_types::Youmu),
+                luabind::value("ITEM_Reisen", managed_types::Reisen),
+                luabind::value("ITEM_Cirno", managed_types::Cirno),
+                luabind::value("ITEM_Lyrica", managed_types::Lyrica),
+                luabind::value("ITEM_Merlin", managed_types::Merlin),
+                luabind::value("ITEM_Lunasa", managed_types::Lunasa),
+                luabind::value("ITEM_Mystia_Ex", managed_types::Mystia_Ex),
+                luabind::value("ITEM_Mystia_Charge2", managed_types::Mystia_Charge2),
+                luabind::value("ITEM_Mystia_Charge3", managed_types::Mystia_Charge3),
+                luabind::value("ITEM_Mystia_Boss1", managed_types::Mystia_Boss1),
+                luabind::value("ITEM_Mystia_Boss2", managed_types::Mystia_Boss2),
+                luabind::value("ITEM_Tewi", managed_types::Tewi),
+                luabind::value("ITEM_Aya", managed_types::Aya),
+                luabind::value("ITEM_Medicine", managed_types::Medicine),
+                luabind::value("ITEM_Yuuka", managed_types::Yuuka),
+                luabind::value("ITEM_Komachi", managed_types::Komachi),
+                luabind::value("ITEM_Eiki", managed_types::Eiki)
+            ]
+            .property("id", &managed_types::ExAttack::Id)
+            .property("x", &managed_types::ExAttack::X)
+            .property("y", &managed_types::ExAttack::Y)
+            .property("vx", &managed_types::ExAttack::Vx)
+            .property("vy", &managed_types::ExAttack::Vy)
+            .property("type", &managed_types::ExAttack::Type)
+            .property("enabled", &managed_types::ExAttack::Enabled)
             .property("hitBody", &managed_types::ExAttack::HittableObject)
+            .property("hittable", &managed_types::ExAttack::Hittable)
             ,
             luabind::class_<managed_types::GameSide>("GameSide")
             .property("player", &managed_types::GameSide::Player)

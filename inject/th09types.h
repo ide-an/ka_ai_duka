@@ -24,9 +24,11 @@ namespace ka_ai_duka {
         };
 
         struct PlayerFeature{
-            char unknown1[0x24];
+            char unknown1[0x4];
+            float radius;
+            char unknown2[0x24 - 0x4 - sizeof(float)];
             float item_size;
-            char unknown2[0x24 - 0x10 - sizeof(float)];
+            char unknown3[0x24 - 0x10 - sizeof(float)];
             float charge_speed;
         };
 
