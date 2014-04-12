@@ -1,4 +1,6 @@
 #include "th09types.h"
+#include <boost\shared_ptr.hpp>
+#include "hitTest.h"
 #pragma once
 namespace ka_ai_duka{
     namespace managed_types{
@@ -7,6 +9,9 @@ namespace ka_ai_duka{
         private:
             raw_types::Player &player;
             raw_types::PlayerCharacter &character;
+            boost::shared_ptr<HittableRect> hittable_rect;
+            boost::shared_ptr<HittableCircle> hittable_circle;
+            boost::shared_ptr<HittableRect> hittable_for_item;
         public:
             Player(raw_types::Player &player, raw_types::PlayerCharacter &character)
                 : player(player), character(character)
@@ -62,8 +67,40 @@ namespace ka_ai_duka{
             {
                 return player.is_ai != 0;
             }
-            //TODO: “–‚½‚è”»’è
-            //TODO: ‘¬“x
+            float SpeedFast(void) const
+            {
+                return player.feature->speed_fast;
+            }
+            float SpeedSlow(void) const
+            {
+                return player.feature->speed_slow;
+            }
+            boost::shared_ptr<HittableRect> HittableObjectRect() const
+            {
+                return hittable_rect;
+            }
+            boost::shared_ptr<HittableCircle> HittableObjectCircle() const
+            {
+                return hittable_circle;
+            }
+            boost::shared_ptr<HittableRect> HittableObjectForItem() const
+            {
+                return hittable_for_item;
+            }
+            void Update(void)
+            {
+                hittable_rect->SetX(X());
+                hittable_rect->SetY(Y());
+                hittable_rect->SetWidth(player.rect_size1.x);
+                hittable_rect->SetHeight(player.rect_size1.y);
+                hittable_circle->SetX(X());
+                hittable_circle->SetY(Y());
+                hittable_circle->SetRadius(player.feature->radius);
+                hittable_rect->SetX(X());
+                hittable_rect->SetY(Y());
+                hittable_rect->SetWidth(player.rect_size3.x);
+                hittable_rect->SetHeight(player.rect_size3.y);
+            }
         };
     }
 }

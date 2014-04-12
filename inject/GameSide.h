@@ -46,6 +46,10 @@ namespace ka_ai_duka{
             void UpdateEnemies(IDGenerator &idgen);
             void UpdateItems(IDGenerator &idgen);
             void UpdateExAttacks(IDGenerator &idgen);
+            void UpdatePlayer()
+            {
+                player->Update();
+            }
         public:
             GameSide(
                 raw_types::Board &board,

@@ -26,9 +26,12 @@ namespace ka_ai_duka {
         struct PlayerFeature{
             char unknown1[0x4];
             float radius;
-            char unknown2[0x24 - 0x4 - sizeof(float)];
+            char unknown2[0x10 - 0x4 - sizeof(float)];
             float item_size;
-            char unknown3[0x24 - 0x10 - sizeof(float)];
+            float speed_fast;
+            float speed_slow;
+            float speed_fast_div_sqrt2;
+            float speed_slow_div_sqrt2;
             float charge_speed;
         };
 
@@ -53,7 +56,10 @@ namespace ka_ai_duka {
             struct Rect3D rect1;
             struct Rect3D rect2;
             struct Rect3D rect3; // vs Item
-            char unknown5[0x30338 - 0x1C90 - sizeof(Rect3D)];
+            struct Vector3D rect_size1;//0x1CA8
+            struct Vector3D rect_size2;//0x1CB4
+            struct Vector3D rect_size3;//0x1CC0
+            char unknown5[0x30338 - 0x1CA8 - sizeof(Vector2D)];
             struct PlayerFeature* feature;
             char unknown6[0x30384 - 0x30338 - sizeof(PlayerFeature *)];
             float charge_current;
@@ -165,7 +171,7 @@ namespace ka_ai_duka {
             char unknown6[0xC - 0x4 - sizeof(int)];
             int enabled;
             char unknown2[0x1C - 0xC - sizeof(int)];
-            int* hitbodies;//TODO: 構造体へのポインタのはず
+            int* hitbodies;//構造体へのポインタ? 結局使う必要なさげ
             struct Vector3D position;
             char unknown3[0x34 - 0x20 - sizeof(Vector3D)];
             struct ExFeature* feature;

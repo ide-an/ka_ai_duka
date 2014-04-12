@@ -92,7 +92,11 @@ namespace ka_ai_duka{
             .property("spellPoint", &managed_types::Player::SpellPoint)
             .property("combo", &managed_types::Player::Combo)
             .property("character", &managed_types::Player::Character)
-            //TODO: ‘¬“x, “–‚½‚è”»’è
+            .property("speedFast", &managed_types::Player::SpeedFast)
+            .property("speedSlow", &managed_types::Player::SpeedSlow)
+            .property("hitBodyRect", &managed_types::Player::HittableObjectRect)
+            .property("hitBodyCircle", &managed_types::Player::HittableObjectCircle)
+            .property("hitBodyForItem", &managed_types::Player::HittableObjectForItem)
             ,
             luabind::class_<managed_types::Enemy, boost::shared_ptr<managed_types::Enemy> >("Enemy")
             .property("id", &managed_types::Enemy::Id)

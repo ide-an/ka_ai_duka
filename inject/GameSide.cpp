@@ -132,6 +132,7 @@ namespace ka_ai_duka{
 
         void GameSide::Update(IDGenerator &idgen)
         {
+            UpdatePlayer();
             UpdateBullets(idgen);
             UpdateEnemies(idgen);
             UpdateItems(idgen);

@@ -1,6 +1,10 @@
 #include "Enemy.h"
 namespace ka_ai_duka{
     namespace managed_types{
+        static bool ShouldAdjust(raw_types::Enemy &enemy)
+        {
+            return (enemy.status & 0x10000) != 0;
+        }
         float Enemy::Vx() const
         {
             float vx = enemy.velocity.x;
@@ -10,8 +14,13 @@ namespace ka_ai_duka{
             if(enemy.status & 0x8000){//reversed
                 vx *= -1;
             }
-            if(IsBoss()){
-                //TODO: Ç≥Ç≠Ç‚Ç≥ÇÒï‚ê≥
+            if(IsBoss() && ShouldAdjust(enemy)){
+                float new_x = X() + vx;
+                if(new_x < enemy.appear_area.ru.x){
+                    vx = enemy.appear_area.ru.x - new_x;
+                }else if(enemy.appear_area.ld.x < new_x){
+                    vx = enemy.appear_area.ld.x - new_x;
+                }
             }
             return vx;
         }
@@ -21,8 +30,13 @@ namespace ka_ai_duka{
             if(IsActivatedSpirit()){
                 vy = enemy.velocity2.y;
             }
-            if(IsBoss()){
-                //TODO: Ç≥Ç≠Ç‚Ç≥ÇÒï‚ê≥
+            if(IsBoss() && ShouldAdjust(enemy)){
+                float new_y = Y() + vy;
+                if(new_y < enemy.appear_area.ru.y){
+                    vy = enemy.appear_area.ru.y - new_y;
+                }else if(enemy.appear_area.ld.y < new_y){
+                    vy = enemy.appear_area.ld.y - new_y;
+                }
             }
             return vy;
         }
