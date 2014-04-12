@@ -1,5 +1,6 @@
 #include "GameSide.h"
 #include <algorithm>
+#include <Windows.h>
 
 namespace ka_ai_duka{
     namespace managed_types{

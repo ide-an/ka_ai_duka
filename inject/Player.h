@@ -15,7 +15,25 @@ namespace ka_ai_duka{
         public:
             Player(raw_types::Player &player, raw_types::PlayerCharacter &character)
                 : player(player), character(character)
-            {}
+            {
+                hittable_rect = boost::shared_ptr<HittableRect>(
+                    new HittableRect(
+                    player.position.x,
+                    player.position.y,
+                    player.rect_size1.x,
+                    player.rect_size1.y));
+                hittable_circle = boost::shared_ptr<HittableCircle>(
+                    new HittableCircle(
+                    player.position.x,
+                    player.position.y,
+                    player.feature->radius));
+                hittable_for_item = boost::shared_ptr<HittableRect>(
+                    new HittableRect(
+                    player.position.x,
+                    player.position.y,
+                    player.rect_size3.x,
+                    player.rect_size3.y));
+            }
             ~Player(void)
             {
             }

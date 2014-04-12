@@ -59,7 +59,7 @@ namespace ka_ai_duka {
             struct Vector3D rect_size1;//0x1CA8
             struct Vector3D rect_size2;//0x1CB4
             struct Vector3D rect_size3;//0x1CC0
-            char unknown5[0x30338 - 0x1CA8 - sizeof(Vector2D)];
+            char unknown5[0x30338 - 0x1CC0 - sizeof(Vector3D)];
             struct PlayerFeature* feature;
             char unknown6[0x30384 - 0x30338 - sizeof(PlayerFeature *)];
             float charge_current;

@@ -85,7 +85,7 @@ namespace ka_ai_duka{
                 "env.dofile = dofile_safe;\n"
                 "env.io.open = io_open_safe\n"
                 "env._G = env;\n";
-            ::luaL_loadstring(ls, src);
+            ::luaL_loadbuffer(ls, src, ::strlen(src), "sandbox");
             if(::lua_pcall(ls, 0, 0, 0)){
                 //error reporting is caller's task!!!
                 return false;
