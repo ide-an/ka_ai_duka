@@ -40,6 +40,7 @@ namespace ka_ai_duka{
         extern const struct Address addr_on_frame_update;
         extern const struct Address addr_on_game_start;
         extern const struct Address addr_on_game_end;
+        extern const struct Address addr_window_title;
         extern struct Th9GlobalVer1_5* const globals_ver1_5;
         extern struct Th9GlobalVer1_5* const globals_ver1_0;//TODO: ver 1.0—p‚Ì\‘¢‘Ì’è‹`
     }

@@ -58,12 +58,41 @@ bool OpenFileDialog(HWND hwnd, const std::string &path, std::string &new_path)
     }
 }
 
-void OnSelectFileClick(HWND hwnd, INT_PTR edit_box)
+bool OpenFileDialogExe(HWND hwnd, const std::string &path, std::string &new_path)
+{
+    char s[0x800];
+    ZeroMemory(s, sizeof(s));
+    std::copy(path.begin(), path.end(), s);
+    OPENFILENAME op;
+    memset(&op, 0, sizeof(op));
+    op.lStructSize = sizeof(op);
+    op.hwndOwner = hwnd;
+    op.lpstrFilter = "exe(*.exe)\0 *.exe\0\0";
+    op.lpstrFile = s;
+    op.nMaxFile = sizeof(s);
+    op.lpstrTitle = "ファイルを開く";
+    op.Flags = OFN_FILEMUSTEXIST;
+    op.lpstrDefExt = "exe";
+    if(GetOpenFileNameA(&op)){
+        new_path = s;
+        return true;
+    }else{
+        return false;
+    }
+}
+
+void OnSelectFileClick(HWND hwnd, INT_PTR edit_box, bool is_exe=false)
 {
     std::string old_path;
     GetScriptPath(hwnd, old_path, edit_box);
     std::string new_path;
-    if(OpenFileDialog(hwnd, old_path, new_path)){
+    bool res;
+    if(is_exe){
+        res = OpenFileDialogExe(hwnd, old_path, new_path);
+    }else{
+        res = OpenFileDialog(hwnd, old_path, new_path);
+    }
+    if(res){
         ChangeScriptPath(hwnd, new_path, edit_box);
     }
 }
@@ -76,6 +105,7 @@ void InitUI(HWND hwnd, ka_ai_duka::common::Config &conf)
     ChangeEnabled2P(hwnd, conf.Enable2P());
     ChangeScriptPath(hwnd, conf.ScriptPath1P(), ID_EDIT_SCRIPTPATH_1P);
     ChangeScriptPath(hwnd, conf.ScriptPath2P(), ID_EDIT_SCRIPTPATH_2P);
+    ChangeScriptPath(hwnd, conf.Th09ExePath(), ID_EDIT_EXEPATH);
 }
 
 void SetConfigFromUI(HWND hwnd, ka_ai_duka::common::Config &conf)
@@ -88,7 +118,24 @@ void SetConfigFromUI(HWND hwnd, ka_ai_duka::common::Config &conf)
     std::string path_2p;
     GetScriptPath(hwnd, path_2p, ID_EDIT_SCRIPTPATH_2P);
     conf.SetScriptPath2P(path_2p);
-    //TODO: th09.exe path
+    std::string exe_path;
+    GetScriptPath(hwnd, exe_path, ID_EDIT_EXEPATH);
+    conf.SetTh09ExePath(exe_path);
+}
+
+bool RunExe(void)
+{
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ::ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ::ZeroMemory(&pi, sizeof(pi));
+    if(!::CreateProcess("ka_ai_duka.exe", NULL, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &si, &pi)){
+        return false;
+    }
+    ::CloseHandle(pi.hThread);
+    ::CloseHandle(pi.hProcess);
+    return true;
 }
 
 static ka_ai_duka::common::Config conf;
@@ -134,6 +181,9 @@ BOOL CALLBACK DialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 case ID_SELECTFILE_2P:
                     OnSelectFileClick(hWnd, ID_EDIT_SCRIPTPATH_2P);
                     break;
+                case ID_SELECTFILE_EXE:
+                    OnSelectFileClick(hWnd, ID_EDIT_EXEPATH, true);
+                    break;
                 }
                 break;
             }
@@ -149,14 +199,32 @@ int APIENTRY WinMain(
 )
 {
     std::string ini_path;
-    ka_ai_duka::common::Config::IniFilePath(NULL, ini_path);
-    conf.Load(ini_path);//TODO: error handling
+    try{
+        ka_ai_duka::common::Config::IniFilePath(NULL, ini_path);
+    }catch(std::exception &e){
+        //iniファイルのパスがそもそも長過ぎるケースは諦める
+        ::MessageBoxA(NULL, e.what(), "エラー", MB_OK);
+        return 1;
+    }
+    try{
+        conf.Load(ini_path);
+    }catch(std::exception &e){
+        //iniファイルがうまく読めなければデフォルト設定とする
+        conf.SetEnable1P(false);
+        conf.SetEnable2P(false);
+        conf.SetEnable1P("");
+        conf.SetEnable2P("");
+        conf.SetTh09ExePath("");
+    }
     auto res = DialogBoxA(hInstance, "IDD_DIALOG1", NULL, DialogProc);
     if(res ==-1){
         auto err = GetLastError();
     }else if(res == IDOK){
         conf.Save(ini_path);
-        //TODO:  run ka_ai_duka.exe
+        if(!RunExe()){
+            ::MessageBoxA(NULL, "ka_ai_duka.exeの起動に失敗しました。", "エラー", MB_OK);
+            return 1;
+        }
     }
     return 0;
 }

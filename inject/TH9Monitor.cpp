@@ -3,9 +3,23 @@
 #include "th09address.h"
 #include <cstdio>
 #include <sstream>
+#include <string.h>
 
 namespace ka_ai_duka{
     TH9Monitor* monitor = nullptr;
+
+    TH9Version TH9Monitor::CheckVersion(void)
+    {
+        char* title_ver_1_0 = "“Œ•û‰Ô‰f’Ë@` Phantasmagoria of Flower View. ver 1.00";
+        char* title_ver_1_5 = "“Œ•û‰Ô‰f’Ë@` Phantasmagoria of Flower View. ver 1.50a";
+        if(::memcmp(address::addr_window_title.ver1_0, title_ver_1_0, ::strlen(title_ver_1_0)) == 0){
+            return Ver1_0;
+        }
+        if(::memcmp(address::addr_window_title.ver1_5, title_ver_1_5, ::strlen(title_ver_1_5)) == 0){
+            return Ver1_5a;
+        }
+        return Unknown_Version;
+    }
     
     void TH9Monitor::SetJumpTo(char* code, int from, int to)
     {

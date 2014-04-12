@@ -3,6 +3,7 @@
 #include "AIManager.h"
 #include <string>
 #include "../common/common.h"
+#include "../common/errorhandle.h"
 
 ka_ai_duka::AIManager* ai_manager = nullptr;
 
@@ -10,15 +11,27 @@ void Attach(HANDLE hModule){
     using namespace ka_ai_duka;
     common::Config conf;
     std::string ini_path;
-    common::Config::IniFilePath(hModule, ini_path);
-    conf.Load(ini_path);
-    //TODO: validate config
+    try{
+        common::Config::IniFilePath(hModule, ini_path);
+        conf.Load(ini_path);
+    }catch(const std::exception &e){
+        std::ostringstream os;
+        os << e.what() << std::endl;
+        ka_ai_duka::ReportError(os);
+        return;
+    }
     switch(TH9Monitor::CheckVersion()){
     case Ver1_5a:
         monitor = new TH9ver1_5aMonitor();
         break;
     case Ver1_0:
-        monitor = new TH9ver1_0Monitor();
+        {
+            std::ostringstream os;
+            os << "‰Ô‰f’Ëver 1.00‚É‚Í‘Î‰ž‚µ‚Ä‚¢‚Ü‚¹‚ñB" << std::endl;
+            ka_ai_duka::ReportError(os);
+            return;
+        }
+        //monitor = new TH9ver1_0Monitor();
         break;
     default:
         assert(0);

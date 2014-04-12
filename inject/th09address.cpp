@@ -13,6 +13,10 @@ namespace ka_ai_duka{
             reinterpret_cast<char*>(0x41B9A2),
             reinterpret_cast<char*>(0x41B9A2)//TODO: ver 1.0‘Î‰ž
         };
+        const struct Address addr_window_title = {
+            reinterpret_cast<char*>(0x4901E4),
+            reinterpret_cast<char*>(0x48B1EC)
+        };
         struct raw_types::ExAttackFuncAddr ex_attack_func_addr_ver1_5 = {
             0x441100,
             0x441A70,

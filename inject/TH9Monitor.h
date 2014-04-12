@@ -12,6 +12,7 @@ namespace ka_ai_duka{
     enum TH9Version{
         Ver1_0,
         Ver1_5a,
+        Unknown_Version
     };
 
     typedef unsigned short KeyState;
@@ -88,10 +89,7 @@ namespace ka_ai_duka{
         void OnFrameUpdate(void);
         void OnGameStart(void);
         void OnGameEnd(void);
-        static TH9Version CheckVersion(void){
-            //TODO: check if version is 1.0
-            return Ver1_5a;
-        }
+        static TH9Version CheckVersion(void);
         virtual bool IsNetBattle(void){
             return false;
         }

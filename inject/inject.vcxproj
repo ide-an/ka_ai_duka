@@ -84,7 +84,6 @@
     <ClCompile Include="bind.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="errorhandle.cpp" />
     <ClCompile Include="ExAttack.cpp" />
     <ClCompile Include="GameSide.cpp" />
     <ClCompile Include="hitTest.cpp" />
@@ -118,7 +117,6 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DrawUtil.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="errorhandle.h" />
     <ClInclude Include="ExAttack.h" />
     <ClInclude Include="GameSide.h" />
     <ClInclude Include="hitTest.h" />

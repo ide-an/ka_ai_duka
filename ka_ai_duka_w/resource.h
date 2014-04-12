@@ -10,3 +10,5 @@
 #define ID_ENABLED_2P    106
 #define ID_SELECTFILE_1P    107
 #define ID_SELECTFILE_2P    108
+#define ID_EDIT_EXEPATH      122
+#define ID_SELECTFILE_EXE    123

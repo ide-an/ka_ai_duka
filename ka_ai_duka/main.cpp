@@ -4,6 +4,7 @@
 #include <Shlwapi.h>
 #include "inject.h"
 #include "../common/common.h"
+#include "../common/errorhandle.h"
 
 const std::string dll_name("inject.dll");
 
@@ -20,9 +21,15 @@ int main(int argc, char** argv){
 
     ka_ai_duka::common::Config conf;
     std::string ini_path;
-    ka_ai_duka::common::Config::IniFilePath(NULL, ini_path);
-    conf.Load(ini_path);
-    //TODO: validation
+    try{
+        ka_ai_duka::common::Config::IniFilePath(NULL, ini_path);
+        conf.Load(ini_path);
+    }catch(const std::exception &e){
+        std::ostringstream os;
+        os << e.what() << std::endl;
+        ka_ai_duka::ReportError(os);
+        return 1;
+    }
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
     ::ZeroMemory(&si, sizeof(si));
@@ -32,10 +39,9 @@ int main(int argc, char** argv){
     ::strcpy(current_dir, conf.Th09ExePath().c_str());
     ::PathRemoveFileSpecA(current_dir);
     if(!::CreateProcess(conf.Th09ExePath().c_str(), NULL, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS | CREATE_SUSPENDED, NULL, current_dir, &si, &pi)){
-        char message[0x800];
-        ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), message, sizeof(message), NULL);
-        std::cerr << "‰Ô‰f’Ë‚Ì‹N“®‚ÉŽ¸”s‚µ‚Ü‚µ‚½B" << std::endl;
-        std::cerr << message << std::endl;
+        std::ostringstream os;
+        os << "‰Ô‰f’Ë‚Ì‹N“®‚ÉŽ¸”s‚µ‚Ü‚µ‚½B" << std::endl;
+        ka_ai_duka::ReportError(os);
         return 1;
     }
     delete[] current_dir;
@@ -43,7 +49,9 @@ int main(int argc, char** argv){
     BuildDllPath(dll_path);
     std::cerr << "DLL path:" << dll_path << std::endl;
     if(!ka_ai_duka::InjectDll(pi.hProcess, dll_path)){
-        std::cerr << "DLL injection‚ÉŽ¸”s‚µ‚Ü‚µ‚½B" << std::endl;
+        std::ostringstream os;
+        os << "DLL injection‚ÉŽ¸”s‚µ‚Ü‚µ‚½B" << std::endl;
+        ka_ai_duka::ReportError(os);
         ::CloseHandle(pi.hProcess);
         ::CloseHandle(pi.hThread);
         return 1;

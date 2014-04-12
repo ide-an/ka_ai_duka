@@ -48,6 +48,10 @@ namespace ka_ai_duka{
             {
                 return th09_exe_path;
             }
+            void SetTh09ExePath(const std::string& str)
+            {
+                th09_exe_path = str;
+            }
             void Load(const std::string &filepath);
             void Save(const std::string &filepath);
             static void IniFilePath(HANDLE h_module, std::string &out);
