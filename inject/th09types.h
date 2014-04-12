@@ -72,7 +72,7 @@ namespace ka_ai_duka {
             struct Item items[4];
         };
 
-        enum PlayerCharacter{
+        enum PlayerCharacter{//TODO: implement
             Reimu = 0
         };
 

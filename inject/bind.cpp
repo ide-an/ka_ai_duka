@@ -81,6 +81,9 @@ namespace ka_ai_duka{
             .property("angle", &managed_types::HittableRotatableRect::Angle)
             ,
             luabind::class_<managed_types::Player>("Player")
+            .enum_("Character")[
+                luabind::value("CH_REIMU", raw_types::Reimu)//TODO: implement
+            ]
             .property("x", &managed_types::Player::X)
             .property("y", &managed_types::Player::Y)
             .property("life", &managed_types::Player::Life)
@@ -139,26 +142,26 @@ namespace ka_ai_duka{
             ,
             luabind::class_<managed_types::ExAttack>("ExAttack")
             .enum_("ExAttackType")[
-                luabind::value("ITEM_Reimu", managed_types::Reimu),
-                luabind::value("ITEM_Marisa", managed_types::Marisa),
-                luabind::value("ITEM_Sakuya", managed_types::Sakuya),
-                luabind::value("ITEM_Youmu", managed_types::Youmu),
-                luabind::value("ITEM_Reisen", managed_types::Reisen),
-                luabind::value("ITEM_Cirno", managed_types::Cirno),
-                luabind::value("ITEM_Lyrica", managed_types::Lyrica),
-                luabind::value("ITEM_Merlin", managed_types::Merlin),
-                luabind::value("ITEM_Lunasa", managed_types::Lunasa),
-                luabind::value("ITEM_Mystia_Ex", managed_types::Mystia_Ex),
-                luabind::value("ITEM_Mystia_Charge2", managed_types::Mystia_Charge2),
-                luabind::value("ITEM_Mystia_Charge3", managed_types::Mystia_Charge3),
-                luabind::value("ITEM_Mystia_Boss1", managed_types::Mystia_Boss1),
-                luabind::value("ITEM_Mystia_Boss2", managed_types::Mystia_Boss2),
-                luabind::value("ITEM_Tewi", managed_types::Tewi),
-                luabind::value("ITEM_Aya", managed_types::Aya),
-                luabind::value("ITEM_Medicine", managed_types::Medicine),
-                luabind::value("ITEM_Yuuka", managed_types::Yuuka),
-                luabind::value("ITEM_Komachi", managed_types::Komachi),
-                luabind::value("ITEM_Eiki", managed_types::Eiki)
+                luabind::value("EX_REIMU", managed_types::Reimu),
+                luabind::value("EX_MARISA", managed_types::Marisa),
+                luabind::value("EX_SAKUYA", managed_types::Sakuya),
+                luabind::value("EX_YOUMU", managed_types::Youmu),
+                luabind::value("EX_REISEN", managed_types::Reisen),
+                luabind::value("EX_CIRNO", managed_types::Cirno),
+                luabind::value("EX_LYRICA", managed_types::Lyrica),
+                luabind::value("EX_MERLIN", managed_types::Merlin),
+                luabind::value("EX_LUNASA", managed_types::Lunasa),
+                luabind::value("EX_MYSTIA", managed_types::Mystia_Ex),
+                luabind::value("EX_MYSTIA_CHARGE2", managed_types::Mystia_Charge2),
+                luabind::value("EX_MYSTIA_CHARGE3", managed_types::Mystia_Charge3),
+                luabind::value("EX_MYSTIA_BOSS1", managed_types::Mystia_Boss1),
+                luabind::value("EX_MYSTIA_Boss2", managed_types::Mystia_Boss2),
+                luabind::value("EX_TEWI", managed_types::Tewi),
+                luabind::value("EX_AYA", managed_types::Aya),
+                luabind::value("EX_MEDICINE", managed_types::Medicine),
+                luabind::value("EX_YUUKA", managed_types::Yuuka),
+                luabind::value("EX_KOMACHI", managed_types::Komachi),
+                luabind::value("EX_EIKI", managed_types::Eiki)
             ]
             .property("id", &managed_types::ExAttack::Id)
             .property("x", &managed_types::ExAttack::X)
