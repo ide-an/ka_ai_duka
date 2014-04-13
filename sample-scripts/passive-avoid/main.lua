@@ -3,7 +3,7 @@ local keyutils = dofile("keyutils.lua");
 local hitutils = dofile("hitutils.lua");
 
 -- 10ÉtÉåÅ[ÉÄêÊÇ‹Ç≈ó\ë™ÇµÇΩÇ¢èäë∂
-local predict_frame = 2;
+local predict_frame = 10;
 
 local fp;
 if (enable_time_logging) then
@@ -56,21 +56,24 @@ end
 function calculateHitCost(player, elements, hit_body_for_filter_circle, hit_body_for_filter_rect, candidates, hittest_func)
   local px = player.x;
   local py = player.y;
+  local player_hit_body_rect = player.hitBodyRect;
+  local player_hit_body_circle = player.hitBodyCircle;
   for elm in elements do
-    if hitTest(hit_body_for_filter_circle, elm.hitBody) or hitTest(hit_body_for_filter_rect, elm.hitBody) then
+    local hit_body = elm.hitBody;
+    if hitTest(hit_body_for_filter_circle, hit_body) or hitTest(hit_body_for_filter_rect, hit_body) then
       local ex = elm.x;
       local ey = elm.y;
       local evx = elm.vx;
       local evy = elm.vy;
       for frame=1,predict_frame do
-        elm.hitBody.x = ex + evx * frame;
-        elm.hitBody.y = ey + evy * frame;
+        hit_body.x = ex + evx * frame;
+        hit_body.y = ey + evy * frame;
         for i,c in ipairs(candidates) do
           count = count + 1;
-          player.hitBodyRect.x = px + c.vx * frame;
-          player.hitBodyRect.y = py + c.vy * frame;
-          player.hitBodyCircle.x = px + c.vx * frame;
-          player.hitBodyCircle.y = py + c.vy * frame;
+          player_hit_body_rect.x = px + c.vx * frame;
+          player_hit_body_rect.y = py + c.vy * frame;
+          player_hit_body_circle.x = px + c.vx * frame;
+          player_hit_body_circle.y = py + c.vy * frame;
           if hittest_func(player, elm) then
             c.cost = c.cost + 0.5 ^ frame;
           end
@@ -133,8 +136,8 @@ function main ()
   -- time logging
   if enable_time_logging then
     local time_end = os.clock();
-    fp:write(tostring(time_end - time_start).."\n");
+    fp:write(tostring(time_end - time_start)..","..tostring(count).."\n");
   end
-  fp:write("count:"..tostring(count).."\n");
+  --fp:write("count:"..tostring(count).."\n");
 end
 
