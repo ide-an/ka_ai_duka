@@ -50,7 +50,7 @@ namespace ka_ai_duka{
             .def(luabind::constructor<float,float,float,float>())
             .property("type", &managed_types::HittableRect::Type)
             .property("x", &managed_types::HittableRect::X, &managed_types::HittableRect::SetX)
-            .property("y", &managed_types::HittableRect::Y, &managed_types::HittableRect::SetX)
+            .property("y", &managed_types::HittableRect::Y, &managed_types::HittableRect::SetY)
             .property("width", &managed_types::HittableRect::Width, &managed_types::HittableRect::SetWidth)
             .property("height", &managed_types::HittableRect::Height, &managed_types::HittableRect::SetHeight)
             .property("radius", &managed_types::HittableRect::Radius)
@@ -60,7 +60,7 @@ namespace ka_ai_duka{
                             luabind::bases<managed_types::HittableObject>,
                             boost::shared_ptr<managed_types::HittableObject> >("HittableCircle")
             .def(luabind::constructor<float,float,float>())
-            .property("type", &managed_types::HittableRect::Type)
+            .property("type", &managed_types::HittableCircle::Type)
             .property("x", &managed_types::HittableCircle::X, &managed_types::HittableCircle::SetX)
             .property("y", &managed_types::HittableCircle::Y, &managed_types::HittableCircle::SetY)
             .property("width", &managed_types::HittableCircle::Width)

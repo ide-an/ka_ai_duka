@@ -42,6 +42,9 @@ namespace ka_ai_duka{
         }
         bool HitTest(HittableObject* a, HittableObject* b)
         {
+            if(!a || !b){
+                return false;
+            }
             if(a->Type() == Hit_Rect && b->Type() == Hit_Rect){
                 return HitTestRectVsRect(reinterpret_cast<HittableRect*>(a), reinterpret_cast<HittableRect*>(b));
             }else if(a->Type() == Hit_Circle && b->Type() == Hit_Circle){
