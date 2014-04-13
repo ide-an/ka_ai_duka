@@ -60,6 +60,7 @@ namespace ka_ai_duka{
                 );
             virtual ~GameSide(void);
             void Update(IDGenerator &idgen);
+            void Reset(void);
             Player* Player(void)
             {
                 return player;

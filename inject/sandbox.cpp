@@ -66,7 +66,7 @@ namespace ka_ai_duka{
                 "io.type\n"
                 "os.clock os.date os.difftime os.time\n"
                 "\n"
-                "game_sides player_side round difficulty sendKeys\n"
+                "game_sides player_side round difficulty sendKeys hitTest\n"
                 "HittableObject HittableRect HittableCircle HittableRotatableRect\n"
                 "Item\n"
                 "]];\n"

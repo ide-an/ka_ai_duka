@@ -37,6 +37,12 @@ namespace ka_ai_duka{
         {
             delete player;
         }
+        void ResetBullets(Bullets &bullets)
+        {
+            std::for_each(bullets.begin(), bullets.end(), [](Bullets::value_type elm){
+                elm->Update();
+            });
+        }
         void GameSide::UpdateBullets(IDGenerator &idgen)
         {
             bullets.erase(std::remove_if(
@@ -62,11 +68,18 @@ namespace ka_ai_duka{
                     bullets.push_back(boost::shared_ptr<Bullet>(new Laser(board.bullet_container->lasers[i], idgen.NewId())));
                 }
             }
-            std::for_each(bullets.begin(), bullets.end(), [](Bullets::value_type elm){
+            ResetBullets(bullets);
+            //std::for_each(bullets.begin(), bullets.end(), [](Bullets::value_type elm){
+            //    elm->Update();
+            //});
+        }
+        
+        void ResetEnemies(Enemies &enemies)
+        {
+            std::for_each(enemies.begin(), enemies.end(), [](Enemies::value_type elm){
                 elm->Update();
             });
         }
-        
         void GameSide::UpdateEnemies(IDGenerator &idgen)
         {
             enemies.erase(std::remove_if(
@@ -83,11 +96,18 @@ namespace ka_ai_duka{
                     enemies.push_back(boost::shared_ptr<Enemy>(new Enemy(board.enemy_container->enemies[i], idgen.NewId())));
                 }
             }
-            std::for_each(enemies.begin(), enemies.end(), [](Enemies::value_type elm){
+            ResetEnemies(enemies);
+            //std::for_each(enemies.begin(), enemies.end(), [](Enemies::value_type elm){
+            //    elm->Update();
+            //});
+        }
+
+        void ResetItems(Items &items)
+        {
+            std::for_each(items.begin(), items.end(), [](Items::value_type elm){
                 elm->Update();
             });
         }
-
         void GameSide::UpdateItems(IDGenerator &idgen)
         {
             items.erase(std::remove_if(
@@ -104,11 +124,18 @@ namespace ka_ai_duka{
                     items.push_back(boost::shared_ptr<Item>(new Item(board.player->items[i], idgen.NewId(), board.player->feature->item_size)));
                 }
             }
-            std::for_each(items.begin(), items.end(), [](Items::value_type elm){
+            ResetItems(items);
+            //std::for_each(items.begin(), items.end(), [](Items::value_type elm){
+            //    elm->Update();
+            //});
+        }
+
+        void ResetExAttacks(ExAttacks &ex_attacks)
+        {
+            std::for_each(ex_attacks.begin(), ex_attacks.end(), [](ExAttacks::value_type elm){
                 elm->Update();
             });
         }
-
         void GameSide::UpdateExAttacks(IDGenerator &idgen)
         {
             ex_attacks.erase(std::remove_if(
@@ -126,9 +153,10 @@ namespace ka_ai_duka{
                     }
                 }
             }
-            std::for_each(ex_attacks.begin(), ex_attacks.end(), [](ExAttacks::value_type elm){
-                elm->Update();
-            });
+            ResetExAttacks(ex_attacks);
+            //std::for_each(ex_attacks.begin(), ex_attacks.end(), [](ExAttacks::value_type elm){
+            //    elm->Update();
+            //});
         }
 
         void GameSide::Update(IDGenerator &idgen)
@@ -138,6 +166,15 @@ namespace ka_ai_duka{
             UpdateEnemies(idgen);
             UpdateItems(idgen);
             UpdateExAttacks(idgen);
+        }
+
+        void GameSide::Reset()
+        {
+            UpdatePlayer();
+            ResetBullets(bullets);
+            ResetEnemies(enemies);
+            ResetItems(items);
+            ResetExAttacks(ex_attacks);
         }
     }
 }

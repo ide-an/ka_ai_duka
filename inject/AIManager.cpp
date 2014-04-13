@@ -75,9 +75,14 @@ namespace ka_ai_duka{
 
     void AIManager::OnFrameUpdate(TH9Monitor &monitor)
     {
+        bool should_reset = false;
         for(int i=0;i<2;i++){
             if(lua_states[i]){
                 UpdateVariables(lua_states[i], monitor);
+                if(should_reset){
+                    monitor.GetGameSide(Side_1P)->Reset();
+                    monitor.GetGameSide(Side_2P)->Reset();
+                }
                 if(!sandbox::CallMain(lua_states[i])){
                     std::ostringstream os;
                     os << "スクリプトの実行エラー。(" <<  Side2Str(i==0 ? Side_1P : Side_2P) << "側)" << std::endl;
@@ -87,6 +92,7 @@ namespace ka_ai_duka{
                     ::lua_close(lua_states[i]);
                     lua_states[i] = nullptr;
                 }
+                should_reset = true;
             }
         }
     }
