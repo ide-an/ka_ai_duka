@@ -1,3 +1,18 @@
+print("#include \"bind-gen.h\"");
+print("#include \"GameSide.h\"");
+print("namespace ka_ai_duka{")
+print("using namespace ka_ai_duka::managed_types;")
+print("""
+#define LUA_TY_HITTABLEOBJECT 0x1
+#define LUA_TY_HITTABLERECT   0x3
+#define LUA_TY_HITTABLECIRCLE 0x5
+#define LUA_TY_HITTABLEROTATABLERECT 0x9
+#define LUA_TY_EXATTACK 0x10
+#define LUA_TY_PLAYER 0x20
+#define LUA_TY_ENEMY 0x40
+#define LUA_TY_BULLET 0x80
+#define LUA_TY_GAMESIDE 0x100
+    """)
 def func_(retn, args):
   return {
       "args":args,
@@ -123,7 +138,7 @@ import re
 p_class = re.compile(r"(class\s*\w*\s*{(:?\S|\s)*?})",re.M)
 res = [ x for x in  p_class.split(hittests) if p_class.match(x)]
 p_classname = re.compile(r"class\s(\w*)")
-p_method = re.compile(r"(([a-zA-Z:<>&_]+) ([a-zA-Z]+)\(\s*(\w*)\s*\))")
+p_method = re.compile(r"(([a-zA-Z:<>&_\*]+) ([a-zA-Z]+)\(\s*(\w*)\s*\))")
 p_contstructor = re.compile(r"\s{2,}([a-zA-Z]+)\((\s*\w*(?:,\s*\w*\s*)*)\)")
 for r in res:
   class_obj = {}
@@ -167,7 +182,7 @@ def type_check(idx, ty):
   else:
     return "::lua_isuserdata(ls, %d)" % idx
 def should_userdata(ty):
-  return  ty != "float" and ty != "short"
+  return  ty != "float" and ty != "short" and ty != "int" and ty != "bool" and ty != "HitType" and ty != "ExAttackType" and ty != "raw_types::PlayerCharacter"
 
 def type_error_msg(ty):
   return "'%s' expected." % ty
@@ -176,7 +191,7 @@ def arg_check(args, first_idx=1):
   assign_str = ""
   idx = first_idx
   for arg in args:
-    check_str += "::luaL_argcheck(ls, %s, %d, \"%s\");\n" % (
+    check_str += "luaL_argcheck(ls, %s, %d, \"%s\");\n" % (
         type_check(idx, arg),
         idx,
         type_error_msg(arg)
@@ -190,17 +205,16 @@ def arg_check(args, first_idx=1):
 def type_mask(ty):
   return "LUA_TY_"+ty.upper()[:-1]
 def should_shared(ty):
-  return ty != "Player" and ty != "GameSide"
+  return ty != "Player*" and ty != "GameSide*"
 def retrieve_userdata_arg(idx, ty):
   def retrieve(idx, ty):
     if should_shared(ty):
-      return "a%d = &*(((BindData<boost::shared_ptr<%s> >)aa%d).data);\n" % (idx, ty[:-1], idx)
+      return "a%d = &*(((BindData<boost::shared_ptr<%s> >*)aa%d)->data);\n" % (idx, ty[:-1], idx)
     else:
-      return "a%d = ((BindData<%s>)aa%d).data;\n" % (idx, ty, idx)
-  res = """
-  aa%d = (lua_bind_type)::lua_touserdata(ls, %d);
+      return "a%d = ((BindData<%s>*)aa%d)->data;\n" % (idx, ty, idx)
+  res = """BindData<char*>* aa%d = (BindData<char*>*)::lua_touserdata(ls, %d);
   %s a%d;
-  if(aa%d.ty & %s){
+  if(aa%d->ty & %s){
     %s
   }else{
     return ::luaL_argerror(ls, %d, "%s"); 
@@ -210,7 +224,7 @@ def retrieve_userdata_arg(idx, ty):
 def retrieve_this(cls_name):
   #is shared ptr?1
   cls_name += "*"
-  res = "::luaL_argcheck(ls, %s, %d, \"%s\");\n" % (
+  res = "luaL_argcheck(ls, %s, %d, \"%s\");\n" % (
       type_check(1, cls_name),
       1,
       type_error_msg(cls_name)
@@ -228,23 +242,35 @@ def gen_cnstr(cls):
   %s
 }""" % (constr_name(cls), arg_check(cls["constr"]["args"]))
   #TODO: instantiate
-  print(res)
+  #print(res)
+def metatable_name(ty):
+  return ty
+
+def export_primitive(ty, var_name):
+  if not(should_userdata(ty)) and ty != "bool":
+    return "::lua_pushnumber(ls, %s);" % (var_name, )
+  elif ty == "bool":
+    return "::lua_pushboolean(ls, %s ? 1 : 0);" % (var_name, )
+  elif ty[-1] == "*" or ty.startswith("boost::shared_ptr<"):
+    return """BindData<%s >* bind_data = (BindData<%s >*)::lua_newuserdata(ls, sizeof(BindData<%s >));
+    bind_data->data = %s;
+    ::luaL_newmetatable(ls, "%s");
+    ::lua_setmetatable(ls, -2);
+    """ % (ty, ty, ty, var_name, metatable_name(ty))
 
 def gen_method(mthd, cls):
   def gen_call(mthd, cls):
     if mthd["retn"] == "void":
-      return """
-      a1->%s(%s);
-      return 0;""" % (method_name(mthd, cls), ", ".join([ "a"+str(x+1) for x in range(len(mthd["args"]))]) )
+      return """a1->%s(%s);
+      return 0;""" % (mthd["name"], ", ".join([ "a"+str(x+2) for x in range(len(mthd["args"]))]) )
     elif mthd["retn"][-1] == "&":
       #TODO: retunr iterator
-      return """
-      %s r = a1->%s(%s);
-      return 1;""" % (mthd["retn"], method_name(mthd, cls), ", ".join([ "a"+str(x+1) for x in range(len(mthd["args"]))]) )#TODO: cast and push the result
+      return """const %s r = a1->%s(%s);
+      return 1;""" % (mthd["retn"], mthd["name"], ", ".join([ "a"+str(x+2) for x in range(len(mthd["args"]))]) )#TODO: cast and push the result
     else:
-      return """
-      %s r = a1->%s(%s);
-      return 1;""" % (mthd["retn"], method_name(mthd, cls), ", ".join([ "a"+str(x+1) for x in range(len(mthd["args"]))]) )#TODO: cast and push the result
+      return """%s r = a1->%s(%s);
+      %s
+      return 1;""" % (mthd["retn"], mthd["name"], ", ".join([ "a"+str(x+2) for x in range(len(mthd["args"]))]), export_primitive(mthd["retn"], "r"))
   res = """int %s(lua_State* ls){
   %s
   %s
@@ -252,12 +278,62 @@ def gen_method(mthd, cls):
 }""" % (method_name(mthd, cls), retrieve_this(cls["name"]), arg_check(mthd["args"], 2), gen_call(mthd, cls))
   print(res)
 
+def gen_gc_method(cls):
+  res = """int %s(lua_State* ls){
+  BindData<boost::shared_ptr<%s> >* a1 = (BindData<boost::shared_ptr<%s> >*)::lua_touserdata(ls, 1);
+  a1->data.~shared_ptr<%s>();
+  return 0;
+}""" % (gc_name(cls), cls["name"], cls["name"], cls["name"])
+  print(res)
+
+print("""template<typename T>
+struct BindData{
+  short ty;
+  T data;
+};
+""");
+
+
+def gc_name(cls):
+  return method_name({"name":"gc"}, cls)
+def reg_name(cls):
+  return "lua_reg_%s" % cls["name"];
 #print(classes)
 for cls in classes:
+  reg = [];
   if "constr" in cls:
+    #reg.append((cls["name"], constr_name(cls)))
     gen_cnstr(cls)
+  if should_shared(cls["name"]+"*"):
+    gen_gc_method(cls)
   for mthd in cls["methods"]:
+    reg.append((mthd["name"], method_name(mthd, cls)))
     gen_method(mthd, cls)
+  print("""static const luaL_Reg %s[] = {
+    %s,
+    {NULL, NULL}
+  };
+  """ % (reg_name(cls), ",\n".join([ "{\""+x[0]+"\","+x[1]+"}" for x in reg]))
+  );
+
+
 #TODO: bind functions
 
-#TODO: register methods and functions
+print("void lua_bind_all(::lua_State* ls, PlayerSide player_side){")
+  #register methods
+for cls in classes:
+  print("""::luaL_newmetatable(ls, "%s");
+    ::lua_pushstring(ls, "__index");
+    ::lua_newtable(ls);
+    luaL_register(ls, NULL, %s);
+    ::lua_settable(ls, -3);
+    """ % (metatable_name(cls["name"]), reg_name(cls)))
+  if should_userdata(cls["name"]) and should_shared(cls["name"]+"*"):
+    print("""
+    ::lua_pushstring(ls, "__gc");
+    ::lua_pushcfunction(ls, %s);
+    ::lua_settable(ls, -3);
+    """ % gc_name(cls));
+    print("lua_pop(ls, 1);")
+#TODO: register  functions
+print("}}")

@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIManager.cpp" />
+    <ClCompile Include="bind-gen.cpp" />
     <ClCompile Include="bind.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -113,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
+    <ClInclude Include="bind-gen.h" />
     <ClInclude Include="bind.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DrawUtil.h" />
