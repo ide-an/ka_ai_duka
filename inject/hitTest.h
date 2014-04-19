@@ -46,7 +46,7 @@ namespace ka_ai_duka {
             float width;
             float height;
         public:
-            HittableRect(float x, float y, float width, float height)
+            HittableRect(float x=0.0f, float y=0.0f, float width=0.0f, float height=0.0f)
                 : HittableObject(x, y), width(width), height(height)
             {
             }
@@ -84,7 +84,7 @@ namespace ka_ai_duka {
         private:
             float radius;
         public:
-            HittableCircle(float x, float y, float radius)
+            HittableCircle(float x=0.0f, float y=0.0f, float radius=0.0f)
                 : HittableObject(x, y), radius(radius)
             {
             }
@@ -120,7 +120,7 @@ namespace ka_ai_duka {
             float height;
             float angle;
         public:
-            HittableRotatableRect(float x, float y, float length, float thickness, float angle)
+            HittableRotatableRect(float x=0.0f, float y=0.0f, float length=0.0f, float thickness=0.0f, float angle=0.0f)
                 : HittableObject(x, y), width(length), height(thickness), angle(angle)
             {
             }
