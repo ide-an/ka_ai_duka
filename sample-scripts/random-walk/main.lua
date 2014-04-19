@@ -6,7 +6,7 @@ if (enable_time_logging) then
   fp = io.open(os.date("%Y%m%d%H%M%S").."-"..tostring(player_side).."p.txt","w");
 end
 
-local function generateCandidates(player)
+local function generateCandidates()
   local candidates = {};
   local keys = { "up", "right", "down", "left", "up" };
   -- stop
@@ -46,7 +46,7 @@ function main ()
   fp:write("hittype:"..tostring(player.hitBodyCircle.type).."\n");
 
   -- generate candidates
-  local candidates = generateCandidates(player);
+  local candidates = generateCandidates();
   -- choice
   local keys_to_send = choice(candidates);
 

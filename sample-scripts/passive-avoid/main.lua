@@ -10,6 +10,7 @@ if (enable_time_logging) then
   fp = io.open(os.date("%Y%m%d%H%M%S").."-"..tostring(player_side).."p.txt","w");
 end
 local count = 0;
+local item_count = 0;
 
 local function generateCandidates(player)
   local candidates = {};
@@ -58,9 +59,10 @@ function calculateHitCost(player, elements, hit_body_for_filter_circle, hit_body
   local py = player.y;
   local player_hit_body_rect = player.hitBodyRect;
   local player_hit_body_circle = player.hitBodyCircle;
-  for elm in elements do
+  for idx, elm in ipairs(elements) do
+    item_count = item_count + 1;
     local hit_body = elm.hitBody;
-    if hitTest(hit_body_for_filter_circle, hit_body) or hitTest(hit_body_for_filter_rect, hit_body) then
+    if hit_body and (hitTest(hit_body_for_filter_circle, hit_body) or hitTest(hit_body_for_filter_rect, hit_body)) then
       local ex = elm.x;
       local ey = elm.y;
       local evx = elm.vx;
@@ -85,6 +87,7 @@ end
 
 function main ()
   count = 0;
+  item_count = 0;
   -- time logging
   local time_start;
   if enable_time_logging then
@@ -136,7 +139,7 @@ function main ()
   -- time logging
   if enable_time_logging then
     local time_end = os.clock();
-    fp:write(tostring(time_end - time_start)..","..tostring(count).."\n");
+    fp:write(tostring(time_end - time_start)..","..tostring(count)..","..tostring(item_count).."\n");
   end
   --fp:write("count:"..tostring(count).."\n");
 end
