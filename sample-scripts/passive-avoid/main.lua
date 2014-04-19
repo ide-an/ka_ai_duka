@@ -12,6 +12,18 @@ end
 local count = 0;
 local item_count = 0;
 
+local function positionCost(player, dx, dy)
+  local cost = 0;
+  local cx, cy = 0, 300;
+  if (cx - player.x) * dx <= 0 then
+    cost = cost + 0.0001;
+  end
+  if (cy - player.y) * dy <= 0 then
+    cost = cost + 0.0001;
+  end
+  return cost;
+end
+
 local function generateCandidates(player)
   local candidates = {};
   local keys = { "up", "right", "down", "left"};
@@ -23,14 +35,14 @@ local function generateCandidates(player)
     vx=0,
     vy=0,
     keys={},
-    cost=0
+    cost=positionCost(player, 0, 0)
   });
   for i=1,4 do
     table.insert(candidates, {
       vx= dx[i] * speed_fast,
       vy= dy[i] * speed_fast,
       keys={keys[i]},
-      cost=0
+      cost=positionCost(player, dx[i], dy[i])
     });
   end
   return candidates;
@@ -48,10 +60,25 @@ end
 
 local function choice(candidates)
   table.sort(candidates, function(a,b) return a.cost < b.cost end);
-  --for i,c in ipairs(candidates) do
-  --  fp:write(tostring(c.cost)..":" .. tostring(c.keys[1]) .. "\n")
-  --end
   return candidates[1].keys;
+end
+
+local function adjustX(x)
+  if x < -136 then
+    return -136;
+  elseif x > 136 then
+    return 136
+  end
+  return x;
+end
+
+local function adjustY(y)
+  if y < 16 then
+    return 16;
+  elseif y > 384 then
+    return 384
+  end
+  return y;
 end
 
 function calculateHitCost(player, elements, hit_body_for_filter_circle, hit_body_for_filter_rect, candidates, hittest_func)
@@ -72,10 +99,10 @@ function calculateHitCost(player, elements, hit_body_for_filter_circle, hit_body
         hit_body.y = ey + evy * frame;
         for i,c in ipairs(candidates) do
           count = count + 1;
-          player_hit_body_rect.x = px + c.vx * frame;
-          player_hit_body_rect.y = py + c.vy * frame;
-          player_hit_body_circle.x = px + c.vx * frame;
-          player_hit_body_circle.y = py + c.vy * frame;
+          player_hit_body_rect.x = adjustX(px + c.vx * frame);
+          player_hit_body_rect.y = adjustY(py + c.vy * frame);
+          player_hit_body_circle.x = adjustX(px + c.vx * frame);
+          player_hit_body_circle.y = adjustY(py + c.vy * frame);
           if hittest_func(player, elm) then
             c.cost = c.cost + 0.5 ^ frame;
           end
