@@ -207,8 +207,12 @@ namespace ka_ai_duka {
 
         struct KeyState{
             char unknown1[0x2C];
-            unsigned short keys;
-            char unknown2[0x8E - 0x2C - sizeof(unsigned short)];
+            unsigned short keys;//0x2C
+            unsigned short prev_keys;//0x2E
+            char unknown2[0x32 - 0x2E - sizeof(unsigned short)];
+            unsigned short start_pushing_keys;//0x32
+            unsigned short start_leaving_keys;//0x34
+            char unknown3[0x8E - 0x34 - sizeof(unsigned short)];
         };
 
         struct ExAttackFuncAddr{

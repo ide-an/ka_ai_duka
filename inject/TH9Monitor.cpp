@@ -97,6 +97,9 @@ namespace ka_ai_duka{
     void TH9Monitor::SetKeyState(PlayerSide side, KeyState key_state)
     {
         key_states[side].keys |= key_state;
+        KeyState changed_keys = key_states[side].keys ^ key_states[side].prev_keys;
+        key_states[side].start_pushing_keys = changed_keys & key_states[side].keys;
+        key_states[side].start_leaving_keys = changed_keys & ~key_states[side].keys;
     }
 
     void TH9Monitor::SetWindowTitle(const char* text)
