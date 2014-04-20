@@ -392,6 +392,72 @@ namespace ka_ai_duka{
         lua_pop(ls, 1);
     }
 
+    void ExportEnums(lua_State* ls, TH9Monitor& monitor)
+    {
+        ::lua_createtable(ls, 0, 20);
+        ::lua_pushvalue(ls, -1);
+        lua_setglobal(ls, "ExAttackType");
+        SetNumber(ls, "Reimu", managed_types::Reimu);
+        SetNumber(ls, "Marisa", managed_types::Marisa);
+        SetNumber(ls, "Sakuya", managed_types::Sakuya);
+        SetNumber(ls, "Youmu", managed_types::Youmu);
+        SetNumber(ls, "Reisen", managed_types::Reisen);
+        SetNumber(ls, "Cirno", managed_types::Cirno);
+        SetNumber(ls, "Lyrica", managed_types::Lyrica);
+        SetNumber(ls, "Merlin", managed_types::Merlin);
+        SetNumber(ls, "Lunasa", managed_types::Lunasa);
+        SetNumber(ls, "Mystia_Ex", managed_types::Mystia_Ex);
+        SetNumber(ls, "Mystia_Charge2", managed_types::Mystia_Charge2);
+        SetNumber(ls, "Mystia_Charge3", managed_types::Mystia_Charge3);
+        SetNumber(ls, "Mystia_Boss1", managed_types::Mystia_Boss1);
+        SetNumber(ls, "Mystia_Boss2", managed_types::Mystia_Boss2);
+        SetNumber(ls, "Tewi", managed_types::Tewi);
+        SetNumber(ls, "Aya", managed_types::Aya);
+        SetNumber(ls, "Medicine", managed_types::Medicine);
+        SetNumber(ls, "Yuuka", managed_types::Yuuka);
+        SetNumber(ls, "Komachi", managed_types::Komachi);
+        SetNumber(ls, "Eiki", managed_types::Eiki);
+        lua_pop(ls, 1);
+
+        ::lua_createtable(ls, 0, 4);
+        ::lua_pushvalue(ls, -1);
+        lua_setglobal(ls, "ItemType");
+        SetNumber(ls, "G", managed_types::Item::Item_G);
+        SetNumber(ls, "Bullet", managed_types::Item::Item_Bullet);
+        SetNumber(ls, "Ex", managed_types::Item::Item_Ex);
+        SetNumber(ls, "Score", managed_types::Item::Item_Score);
+        lua_pop(ls, 1);
+
+        ::lua_createtable(ls, 0, 3);
+        ::lua_pushvalue(ls, -1);
+        lua_setglobal(ls, "HitType");
+        SetNumber(ls, "Rect", managed_types::Hit_Rect);
+        SetNumber(ls, "Circle", managed_types::Hit_Circle);
+        SetNumber(ls, "RotatableRect", managed_types::Hit_RotatableRect);
+        lua_pop(ls, 1);
+
+        ::lua_createtable(ls, 0, 16);
+        ::lua_pushvalue(ls, -1);
+        lua_setglobal(ls, "CharacterType");
+        SetNumber(ls, "Reimu", raw_types::Reimu);
+        SetNumber(ls, "Marisa", raw_types::Marisa);
+        SetNumber(ls, "Sakuya", raw_types::Sakuya);
+        SetNumber(ls, "Youmu", raw_types::Youmu);
+        SetNumber(ls, "Reisen", raw_types::Reisen);
+        SetNumber(ls, "Cirno", raw_types::Cirno);
+        SetNumber(ls, "Lyrica", raw_types::Lyrica);
+        SetNumber(ls, "Mystia", raw_types::Mystia);
+        SetNumber(ls, "Tewi", raw_types::Tewi);
+        SetNumber(ls, "Yuuka", raw_types::Yuuka);
+        SetNumber(ls, "Aya", raw_types::Aya);
+        SetNumber(ls, "Medicine", raw_types::Medicine);
+        SetNumber(ls, "Komachi", raw_types::Komachi);
+        SetNumber(ls, "Eiki", raw_types::Eiki);
+        SetNumber(ls, "Merlin", raw_types::Merlin);
+        SetNumber(ls, "Lunasa", raw_types::Lunasa);
+        lua_pop(ls, 1);
+    }
+
     void ExportVariables(lua_State* ls, TH9Monitor& monitor, PlayerSide player_side, const std::string &script_dir)
     {
         //毎回更新する変数についてはどうせupdateするときに存在しない変数を作るので
@@ -404,7 +470,7 @@ namespace ka_ai_duka{
         lua_setglobal(ls, "difficulty");
         lua_pushstring(ls, script_dir.c_str());
         lua_setglobal(ls, sandbox::varname_script_dir);
-        //TODO: enumのエクスポート
+        ExportEnums(ls, monitor);
     }
 
     void UpdateVariables(lua_State* ls, TH9Monitor& monitor)

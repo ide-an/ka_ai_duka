@@ -72,8 +72,23 @@ namespace ka_ai_duka {
             struct Item items[4];
         };
 
-        enum PlayerCharacter{//TODO: implement
-            Reimu = 0
+        enum PlayerCharacter{
+            Reimu = 0,
+            Marisa,
+            Sakuya,
+            Youmu,
+            Reisen,
+            Cirno,
+            Lyrica,
+            Mystia,
+            Tewi,
+            Yuuka,
+            Aya,
+            Medicine,
+            Komachi,
+            Eiki,
+            Merlin,
+            Lunasa
         };
 
         struct Score{
