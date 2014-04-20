@@ -166,6 +166,16 @@ namespace ka_ai_duka{
             lua_settable(ls, -4);
         }
     }
+    void AddTableToGlobalIfNotFound(lua_State* ls, const char* var_name, int narr, int nrec)
+    {
+        lua_getglobal(ls, var_name);
+        if(!lua_istable(ls, -1)){
+            lua_pop(ls, 1);
+            ::lua_createtable(ls, narr, nrec);
+            ::lua_pushvalue(ls, -1);
+            lua_setglobal(ls, var_name);
+        }
+    }
 
     void SetHitBodyFields(lua_State* ls, managed_types::HittableObject& hit_body)
     {
@@ -375,15 +385,14 @@ namespace ka_ai_duka{
         lua_pop(ls, 1);
     }
 
-    void UpdateBothGameSides(lua_State* ls, TH9Monitor& monitor)
+    void UpdateBothGameSides(lua_State* ls, TH9Monitor& monitor, bool use_env)
     {
         //retrieve game_sides[side]
-        lua_getglobal(ls, "game_sides");
-        if(!lua_istable(ls, -1)){
-            lua_pop(ls, 1);
-            ::lua_createtable(ls, 2, 0);
-            ::lua_pushvalue(ls, -1);
-            lua_setglobal(ls, "game_sides");
+        if(use_env){
+            lua_getglobal(ls, "env");
+            AddTableIfNotFound(ls, "game_sides", 2, 0);
+        }else{
+            AddTableToGlobalIfNotFound(ls, "game_sides", 2, 0);
         }
         for(int i=0;i<2;i++){
             PlayerSide side = i==0 ? Side_1P : Side_2P;
@@ -462,7 +471,7 @@ namespace ka_ai_duka{
     {
         //毎回更新する変数についてはどうせupdateするときに存在しない変数を作るので
         //ここでもUpdateVariablesを使って変数を生成する
-        UpdateVariables(ls, monitor);
+        UpdateVariables(ls, monitor, false);
         //以降更新しない変数
         lua_pushnumber(ls, player_side + 1);
         lua_setglobal(ls, "player_side");
@@ -473,10 +482,17 @@ namespace ka_ai_duka{
         ExportEnums(ls, monitor);
     }
 
-    void UpdateVariables(lua_State* ls, TH9Monitor& monitor)
+    void UpdateVariables(lua_State* ls, TH9Monitor& monitor, bool use_env)
     {
-        UpdateBothGameSides(ls, monitor);
-        lua_pushnumber(ls, monitor.GetRound());
-        lua_setglobal(ls, "round");
+        UpdateBothGameSides(ls, monitor, use_env);
+        if(use_env){
+            lua_getglobal(ls, "env");
+            //skip check istable
+            SetNumber(ls, "round", monitor.GetRound());
+            lua_pop(ls, 1);
+        }else{
+            lua_pushnumber(ls, monitor.GetRound());
+            lua_setglobal(ls, "round");
+        }
     }
 }
