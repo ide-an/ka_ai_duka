@@ -37,6 +37,10 @@ namespace ka_ai_duka{
             std::string res = ReadIniString(sec, key, default_bool ? val_bool_true: val_bool_false, filename);
             return res.compare("true") == 0;
         }
+        void FlushIni(const char* filename)
+        {
+            ::WritePrivateProfileStringA(NULL, NULL, NULL, filename);
+        }
         void WriteIniString(const char* sec, const char* key, const std::string &val, const char* filename)
         {
             ::WritePrivateProfileStringA(sec, key, val.c_str(), filename);
@@ -80,6 +84,7 @@ namespace ka_ai_duka{
             WriteIniString(sec_2p, key_script_path, script_path_2P, file_path.c_str());
             WriteIniBool(sec_2p, key_enabled, enable_2P, file_path.c_str());
             WriteIniString(sec_common, key_exe_path, th09_exe_path, file_path.c_str());
+            FlushIni(file_path.c_str());
         }
 
         //モジュールからファイルパスを取り出し、iniファイルのフルパスを得る。

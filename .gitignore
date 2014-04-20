@@ -185,3 +185,4 @@ $RECYCLE.BIN/
 
 #log
 sample-scripts/*/2014*.txt
+tmp-deploy

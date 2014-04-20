@@ -38,6 +38,8 @@ void GetScriptPath(HWND hwnd, std::string &path, INT_PTR a)
 bool OpenFileDialog(HWND hwnd, const std::string &path, std::string &new_path)
 {
     char s[0x800];
+    char s2[0x800];
+    GetCurrentDirectory(sizeof(s2), s2);
     ZeroMemory(s, sizeof(s));
     std::copy(path.begin(), path.end(), s);
     OPENFILENAME op;
@@ -46,6 +48,7 @@ bool OpenFileDialog(HWND hwnd, const std::string &path, std::string &new_path)
     op.hwndOwner = hwnd;
     op.lpstrFilter = "lua(*.lua)\0 *.lua\0\0";
     op.lpstrFile = s;
+    op.lpstrInitialDir = s2;
     op.nMaxFile = sizeof(s);
     op.lpstrTitle = "ファイルを開く";
     op.Flags = OFN_FILEMUSTEXIST;
@@ -221,10 +224,10 @@ int APIENTRY WinMain(
         auto err = GetLastError();
     }else if(res == IDOK){
         conf.Save(ini_path);
-        if(!RunExe()){
-            ::MessageBoxA(NULL, "ka_ai_duka.exeの起動に失敗しました。", "エラー", MB_OK);
-            return 1;
-        }
+        //if(!RunExe()){
+        //    ::MessageBoxA(NULL, "ka_ai_duka.exeの起動に失敗しました。", "エラー", MB_OK);
+        //    return 1;
+        //}
     }
     return 0;
 }
