@@ -1,6 +1,10 @@
-local enable_time_logging = true;
+-- License: CC0 1.0 Universal ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+-- 
+
 local keyutils = dofile("keyutils.lua");
 
+-- debug only
+local enable_time_logging = false; -- trueにすると毎フレームの経過時間のログを取る
 local fp;
 if (enable_time_logging) then
   fp = io.open(os.date("%Y%m%d%H%M%S").."-"..tostring(player_side).."p.txt","w");

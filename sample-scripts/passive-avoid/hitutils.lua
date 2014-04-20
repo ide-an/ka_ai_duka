@@ -1,9 +1,7 @@
+-- License: CC0 1.0 Universal ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+-- 
+
 do
-  local HittableObject = {
-    HIT_RECT = 0,
-    HIT_CIRCLE = 1,
-    HIT_ROTATABLE_RECT = 2
-  };
   return {
     playerVsEnemy=function(player, enemy)
       return hitTest(player.hitBodyRect, enemy.hitBody);
@@ -15,7 +13,7 @@ do
       if not(ex_attack.hittable) then
         return false;
       end
-      if ex_attack.hitBody.type == HittableObject.HIT_CIRCLE then
+      if ex_attack.hitBody.type == HitType.CIRCLE then
         return hitTest(player.hitBodyCircle, ex_attack.hitBody);
       else
         return hitTest(player.hitBodyRect, ex_attack.hitBody);
@@ -27,13 +25,6 @@ do
         obj[k] = v;
       end
       return obj;
-      --if hit_body.type == HittableObject.HIT_CIRCLE then
-      --  return HittableCircle(hit_body.x, hit_body.y, hit_body.radius);
-      --elseif hit_body.type == HittableObject.HIT_RECT then
-      --  return HittableRect(hit_body.x, hit_body.y, hit_body.width, hit_body.height);
-      --else
-      --  return HittableRotatableRect(hit_body.x, hit_body.y, hit_body.width, hit_body.height, hit_body.angle);
-      --end
     end
   }
 end

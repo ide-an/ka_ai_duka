@@ -1,16 +1,22 @@
-local enable_time_logging = true;
+-- License: CC0 1.0 Universal ( http://creativecommons.org/publicdomain/zero/1.0/legalcode )
+-- 
+
 local keyutils = dofile("keyutils.lua");
 local hitutils = dofile("hitutils.lua");
 
 -- 10フレーム先まで予測したい所存
 local predict_frame = 10;
 
+-- debug only
+local enable_time_logging = true; -- trueにすると毎フレームの経過時間などのログを取る
+local count = 0;
+local item_count = 0;
 local fp;
 if (enable_time_logging) then
   fp = io.open(os.date("%Y%m%d%H%M%S").."-"..tostring(player_side).."p.txt","w");
+  fp:write("elapsed time[sec/frame],hittest count,number of objects\n");
 end
-local count = 0;
-local item_count = 0;
+--
 
 local function positionCost(player, dx, dy)
   local cost = 0;
@@ -24,6 +30,7 @@ local function positionCost(player, dx, dy)
   return cost;
 end
 
+-- キー操作の候補。上下左右移動と停止のみ。今回斜め移動や低速移動は扱わない
 local function generateCandidates(player)
   local candidates = {};
   local keys = { "up", "right", "down", "left"};
@@ -48,21 +55,12 @@ local function generateCandidates(player)
   return candidates;
 end
 
-local function filter(tbl, pred)
-  local new_tbl = {};
-  for i,v in ipairs(tbl) do
-    if pred(v) then
-      table.insert(new_tbl, v);
-    end
-  end
-  return new_tbl;
-end
-
 local function choice(candidates)
   table.sort(candidates, function(a,b) return a.cost < b.cost end);
   return candidates[1].keys;
 end
 
+-- 画面外に出ないように座標を補正
 local function adjustX(x)
   if x < -136 then
     return -136;
@@ -71,7 +69,6 @@ local function adjustX(x)
   end
   return x;
 end
-
 local function adjustY(y)
   if y < 16 then
     return 16;
@@ -87,7 +84,7 @@ function calculateHitCost(player, elements, hit_body_for_filter_circle, hit_body
   local player_hit_body_rect = player.hitBodyRect;
   local player_hit_body_circle = player.hitBodyCircle;
   for idx, elm in ipairs(elements) do
-    item_count = item_count + 1;
+    item_count = item_count + 1; -- debug
     local hit_body = elm.hitBody;
     if hit_body and (hitTest(hit_body_for_filter_circle, hit_body) or hitTest(hit_body_for_filter_rect, hit_body)) then
       local ex = elm.x;
@@ -98,7 +95,7 @@ function calculateHitCost(player, elements, hit_body_for_filter_circle, hit_body
         hit_body.x = ex + evx * frame;
         hit_body.y = ey + evy * frame;
         for i,c in ipairs(candidates) do
-          count = count + 1;
+          count = count + 1; -- debug
           player_hit_body_rect.x = adjustX(px + c.vx * frame);
           player_hit_body_rect.y = adjustY(py + c.vy * frame);
           player_hit_body_circle.x = adjustX(px + c.vx * frame);
@@ -113,8 +110,8 @@ function calculateHitCost(player, elements, hit_body_for_filter_circle, hit_body
 end
 
 function main ()
-  count = 0;
-  item_count = 0;
+  count = 0; -- debug
+  item_count = 0; -- debug
   -- time logging
   local time_start;
   if enable_time_logging then
@@ -133,21 +130,21 @@ function main ()
   hit_body_for_filter_rect.width = 100;
   hit_body_for_filter_rect.height = 100;
   -- hittest
-  calculateHitCost(
+  calculateHitCost(-- player vs enemies
     player,
     my_side.enemies,
     hit_body_for_filter_circle,
     hit_body_for_filter_rect,
     candidates,
     hitutils.playerVsEnemy);
-  calculateHitCost(
+  calculateHitCost(-- player vs bullets
     player,
     my_side.bullets,
     hit_body_for_filter_circle,
     hit_body_for_filter_rect,
     candidates,
     hitutils.playerVsBullet);
-  calculateHitCost(
+  calculateHitCost(-- player vs exAttacks
     player,
     my_side.exAttacks,
     hit_body_for_filter_circle,
@@ -168,6 +165,5 @@ function main ()
     local time_end = os.clock();
     fp:write(tostring(time_end - time_start)..","..tostring(count)..","..tostring(item_count).."\n");
   end
-  --fp:write("count:"..tostring(count).."\n");
 end
 
