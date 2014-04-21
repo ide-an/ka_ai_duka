@@ -13,7 +13,7 @@ do
       if not(ex_attack.hittable) then
         return false;
       end
-      if ex_attack.hitBody.type == HitType.CIRCLE then
+      if ex_attack.hitBody.type == HitType.Circle then
         return hitTest(player.hitBodyCircle, ex_attack.hitBody);
       else
         return hitTest(player.hitBodyRect, ex_attack.hitBody);
