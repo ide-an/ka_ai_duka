@@ -1,0 +1,82 @@
+*花AI塚 AIスクリプト ドキュメント
+
+**概要
+
+花AI塚のAIはLua5.1(http://www.lua.org/, http://milkpot.sakura.ne.jp/lua/lua51_manual_ja.html)で記述します。
+花映塚の対戦が開始するとスクリプトがロードされ、以後対戦が終了するまで毎フレームmain関数が呼び出されます。
+大戦終了後はスクリプトがアンロードされます。
+
+**Lua5.1標準ライブラリからの制限
+
+セキュリティ上の都合により、提供する標準ライブラリを制限しています。
+
+*** 使用できないライブラリ
+
+以下の関数はAIスクリプト内で使用できません。
+
+- collectgarbage
+- getfenv 
+- getmetatable 
+- load
+- loadstring
+- print
+- rawequal
+- rawget
+- setfenv
+- setmetatable 
+- module
+- require
+- package.*
+- string.dump
+- ioモジュールのうち
+  - io.close
+  - io.flush
+  - io.input
+  - io.lines
+  - io.output
+  - io.popen
+  - io.read
+  - io.tmpfile
+  - io.write
+- osモジュールのうち
+  - os.execute
+  - os.exit
+  - os.getenv
+  - os.remove
+  - os.rename
+  - os.setlocale
+  - os.tmpname
+- debug.*
+
+*** 使用できるが、制限されているライブラリ
+
+以下の関数はAIスクリプト内で使用できますが、本来の関数よりも機能が制限されています。
+
+- dofile
+- loadfile
+- io.open
+
+これらはいずれも指定できるファイルパスが制限されています。
+これらの関数に渡すファイルパスfilenameは</p>
+<pre>string.match(filename, '^[%w_%-]+%.%w+$')</pre>
+<p>にマッチしなければいけません。マッチしない場合はファイルオープンに失敗するなどのエラーが発生します。
+
+以下のfilenameはマッチします。
+
+- hoge-fuga_foo.bar
+- 20140401-log.1
+
+以下のfilenameはマッチしません。
+
+- ./file.txt
+- dir/foo.txt
+- bar
+
+なお、これらの関数で指定したファイルパスはAIスクリプトのある場所からの相対パスとして解釈されます。
+したがって、これらの関数はAIスクリプトのあるフォルダ内のファイルへのみアクセスできます。
+
+また、dofileおよびloadfileでバイトコードをロードすることはできません。
+
+**API
+
+**雑多
