@@ -22,5 +22,6 @@ cp("inject.dll", bin_dir)
 cp("setting.exe", bin_dir)
 cp_r(sample_script_dir, "")
 cp("ka_ai_duka.ini", static_files_dir)
+cp("readme.txt", static_files_dir)
 #TODO: document
 #TODO: readme
