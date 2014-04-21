@@ -59,7 +59,7 @@ namespace ka_ai_duka{
                 "coroutine.create coroutine.resume coroutine.running coroutine.status coroutine.wrap coroutine.yield\n"
                 "string.byte string.char string.find string.format string.gmatch string.gsub string.len\n"
                 "string.lower string.match string.rep string.reverse string.sub string.upper\n"
-                "table.insert table.maxn table.remove table.sort\n"
+                "table.concat table.insert table.maxn table.remove table.sort\n"
                 "math.abs math.acos math.asin math.atan math.atan2 math.ceil math.cos math.cosh math.deg math.exp\n"
                 "math.floor math.fmod math.frexp math.huge math.ldexp math.log math.log10 math.max math.min math.modf\n"
                 "math.pi math.pow math.rad math.random math.randomseed math.sin math.sinh math.sqrt math.tan math.tanh\n"
