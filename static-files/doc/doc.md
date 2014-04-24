@@ -26,7 +26,7 @@
 - setmetatable 
 - module
 - require
-- package.*
+- packageモジュールのすべて
 - string.dump
 - ioモジュールのうち
     - io.close
@@ -46,7 +46,7 @@
     - os.rename
     - os.setlocale
     - os.tmpname
-- debug.*
+- debugモジュールのすべて
 
 ### 使用できるが、制限されているライブラリ
 
@@ -127,7 +127,7 @@
 ### グローバル変数
 
 ####game_sides {#game_sides}
-  
+
 2つの[GameSide](#GameSide) からなる配列で、`game_sides[1]`は1P側の、`game_sides[2]`は2P側のゲーム状態を表します。
 このグローバル変数は毎フレーム更新されます。
 
@@ -138,7 +138,7 @@
 ある時点でのデータを次フレームに渡したい場合は深いコピーを行うなどして下さい。
 
 ####player_side {#player_side}
-  
+
 この変数はこのAIスクリプトが1P側か2P側かを表します。
 1P側ならば
 
@@ -154,21 +154,21 @@
 
 この変数は現在のゲームの難易度を表します。
 
-------------------------
+-----------------------
 難易度    difficultyの値
---------- --------------
-Easy       1
+-------- --------------
+Easy        0
 
-Normal     2
+Normal      1
 
-Hard       3
+Hard        2
 
-Lunatic    4
+Lunatic     3
 
-Extra      5
+Extra       4
 
-------------------------
-  
+-----------------------
+
 ####round {#round}
 
 この変数は対戦開始からの経過ラウンド数を表します。
@@ -199,7 +199,7 @@ GameSide.score
 
 Playerオブジェクトは自機に関する情報を表します。
 このオブジェクトは以下のフィールドを持ちます。
-  
+
 Player.x / Player.y
 :   自機の位置を表します。
 Player.life
@@ -288,6 +288,39 @@ Bullet.hitBody
 
 ####ExAttack {#ExAttack}
 
+ExAttackオブジェクトはEXアタックによって発生する弾やメディの毒霧、四季映姫のなんかもやもやのやつなどに関する情報を表します。
+
+EXアタックによって発生する弾のすべてがExAttackオブジェクトで表されるとは限りません。
+たとえば小野塚小町のEXアタックでは個々の弾はBulletオブジェクトで表され、弾源のみがExAttackオブジェクトで表されます。
+
+ExAttackオブジェクトは以下のフィールドを持ちます。
+
+ExAttack.id
+:   それぞれのEXアタックの弾ごとに1つずつ付与されるIDです。
+    ある弾について、その弾に対応するExAttackオブジェクトは必ず同じidを持ちます。
+ExAttack.x / ExAttack.y
+:   EXアタックの位置を表します。
+ExAttack.vx / ExAttack.vy
+:   現在の速度を表します。
+
+    **BUG:** 1P/2P間をまたぐ間、速度が正しく取得できない。
+ExAttack.type
+:   EXアタックの種別を表します。
+    [ExAttackType](#ExAttackType) の定数のいずれかの値を取ります。
+ExAttack.enabled
+:   現在有効なEXアタックかどうかをブール値で表します。
+
+    このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
+ExAttack.hittable
+:   有効な当たり判定を持つかどうかをブール値で表します。
+
+    EXアタックは必ずしも有効な当たり判定を持つとは限りません(特に弾源としてのみ機能する場合)。
+ExAttack.hitBody
+:   EXアタックの当たり判定を表す[HitBody](#HitBody)オブジェクトです。
+    この当たり判定はEXアタックvs自機の衝突判定で用いるものです。
+
+    **注意** `hittable = false`のときはhitBodyが`nil`であるケースがあります。
+
 ####Item     {#Item}
 
 Itemオブジェクトは画面中のアイテムに関する情報を表します。
@@ -311,7 +344,121 @@ Item.hitBody
 
 ####HitBody  {#HitBody}
 
+HitBodyオブジェクトは当たり判定に関する情報を表します。
+このオブジェクトは以下のフィールドを持ちます。
+
+HitBody.type
+:   この当たり判定の種別を表します。
+    [HitType](#HitType) の定数のいずれかの値を取ります。
+HitBody.x / HitBody.y
+:   この当たり判定の現在の位置を表します。
+HitBody.width
+:   当たり判定の幅を表します。
+HitBody.height
+:   当たり判定の高さを表します。
+HitBody.radius
+:   `type = HitType.Circle`のとき、当たり判定の半径を表します。
+HitBody.angle
+:   `type = HitType.RotatableRect`のとき、当たり判定の回転角を表します。
+
+HitBody.typeの値によって、当たり判定処理のときにどのフィールドを用いるかが異なります。
+
+-----------------------------------------------------------------
+HitBody.type           x    y    width   height   radius   angle
+--------------------- ---- ---- ------- -------- -------- -------
+HitType.Rect           ◯    ◯     ◯      ◯
+
+HitType.Circle         ◯    ◯                      ◯
+
+HitType.RotatableRect  ◯    ◯     ◯      ◯                ◯
+
+-----------------------------------------------------------------
+
+それぞれの種別の当たり判定の形状を図示すると以下のようになります。
+
+**TODO: img**
+
 ### 定数群
+
+####ExAttackType {#ExAttackType}
+
+EXアタックの種別を表す定数群です。
+
+---------------------------- ----------------------------------------------
+ExAttackType.Reimu           霊夢のEXアタック(陰陽玉)
+ExAttackType.Marisa          魔理沙のEXアタック(レーザーを発するビット)
+ExAttackType.Sakuya          咲夜さんのEXアタック(ナイフ)
+ExAttackType.Youmu           妖夢のEXアタック(なんか設置されるやつ)
+ExAttackType.Reisen          鈴仙のEXアタック(膨張する丸弾)
+ExAttackType.Cirno           チルノのEXアタック(つらら)
+ExAttackType.Lyrica          リリカのEXアタック(弾源)
+ExAttackType.Merlin          メルランのEXアタック(弾源)
+ExAttackType.Lunasa          ルナサのEXアタック(弾源)
+ExAttackType.Mystia_Ex       ミスティアのEXアタック(鳥型弾源)
+ExAttackType.Mystia_Charge2  ミスティアのC2(鳥型弾源)
+ExAttackType.Mystia_Charge3  ミスティアのC3(鳥型弾源)
+ExAttackType.Mystia_Boss1    ミスティアのボスアタック時の弾(鳥型弾源)
+ExAttackType.Mystia_Boss2    ミスティアのボスアタック時の弾(鳥型弾源)
+ExAttackType.Tewi            てゐのEXアタック(丸い跳ね返るやつ)
+ExAttackType.Aya             射命丸のEXアタック(高速丸弾)
+ExAttackType.Medicine        メディスンのEXアタック(毒霧)
+ExAttackType.Yuuka           幽香のEXアタック(向日葵)
+ExAttackType.Komachi         小町のEXアタック(弾源)
+ExAttackType.Eiki            映姫のEXアタック(弾幕の罪を表面化するもやもや)
+---------------------------- ----------------------------------------------
+
+####ItemType {#ItemType}
+
+アイテムの種別を表す定数群です。
+
+-------------------- ----
+ItemType.G           G
+ItemType.Bullet      弾
+ItemType.Ex          Ex
+ItemType.Score       点
+-------------------- ----
+
+####HitType {#HitType}
+
+当たり判定の種別を表す定数群です。
+
+---------------------- ----------------
+HitType.Rect           矩形
+HitType.Circle         円形
+HitType.RotatableRect  回転可能な矩形
+---------------------- ----------------
+
+####CharacterType {#CharacterType}
+
+自機のキャラクター種別を表す定数群です。
+
+----------------------- -------------------------
+CharacterType.Reimu     博麗霊夢
+CharacterType.Marisa    霧雨魔理沙
+CharacterType.Sakuya    十六夜咲夜
+CharacterType.Youmu     魂魄妖夢
+CharacterType.Reisen    鈴仙・優曇華院・イナバ
+CharacterType.Cirno     チルノ
+CharacterType.Lyrica    リリカ・プリズムリバー
+CharacterType.Mystia    ミスティア・ローレライ
+CharacterType.Tewi      因幡てゐ
+CharacterType.Yuuka     風見幽香
+CharacterType.Aya       射命丸文
+CharacterType.Medicine  メディスン・メランコリー
+CharacterType.Komachi   小野塚小町
+CharacterType.Eiki      四季映姫・ヤマザナドゥ
+CharacterType.Merlin    メルラン・プリズムリバー
+CharacterType.Lunasa    ルナサ・プリズムリバー
+----------------------- -------------------------
 
 ##雑多
 
+###座標系について
+
+###当たり判定処理について
+
+###Tips
+
+- `require`は使用できませんが、`dofile`が使用できるのでこれを用いてスクリプトファイルを分割することができます。
+- [Enemy](#Enemy)や[Bullet](#Bullet)、[Item](#Item)や[ExAttack](#ExAttack)が持つ`id`フィールドはこれらのオブジェクト全体においてユニークです。例えば、あるEnemyオブジェクトと別のあるBulletオブジェクトが同じidを持つ、ということは起こりません。
+- ラウンドの切り替わりを通知するイベントハンドラはありませんが、グローバル変数[round](#round)の値を監視することでラウンドの切り替わりを検知することができます。同様にGameSide.player.lifeを監視することで被弾を検知することができます。

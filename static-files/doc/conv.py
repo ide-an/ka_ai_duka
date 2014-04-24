@@ -9,6 +9,12 @@ def isemptyline(line):
 def convertlink(line):
   p_url = re.compile(r"(http://[a-zA-Z0-9\.\-_/]*)")
   return p_url.sub(r'<a href="\1">\1</a>', line)
+def converthashlink(line):
+  p_hash = re.compile(r"(\S*)#([\w_]*)")
+  return p_hash.sub(r'<a href="#\2">\1</a>', line)
+def convertat(line):
+  p_at = re.compile(r"(\S*)@([\w_]*)")
+  return p_at.sub(r'<span id="\2">\1</span>', line)
 def convert(line, is_prev_empty_line):
   global using_p
   global using_item1
@@ -18,7 +24,7 @@ def convert(line, is_prev_empty_line):
   p_h3 = re.compile(r"\*{3}(.*)")
   p_ul1 = re.compile(r"^- (.*)")
   p_ul2 = re.compile(r"^  - (.*)")
-  line = convertlink(line)
+  line = convertlink(converthashlink(convertat(line)))
   m = p_h1.match(line)
   if m:
     return ("<h1>%s</h1>" % m.group(1))

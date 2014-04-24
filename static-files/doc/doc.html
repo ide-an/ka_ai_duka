@@ -1,0 +1,667 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>花AI塚 AIスクリプト ドキュメント</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">花AI塚 AIスクリプト ドキュメント</h1>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#概要">概要</a></li>
+<li><a href="#lua5.1標準ライブラリからの制限">Lua5.1標準ライブラリからの制限</a><ul>
+<li><a href="#使用できないライブラリ">使用できないライブラリ</a></li>
+<li><a href="#使用できるが制限されているライブラリ">使用できるが、制限されているライブラリ</a></li>
+</ul></li>
+<li><a href="#api">API</a><ul>
+<li><a href="#関数">関数</a><ul>
+<li><a href="#sendKeys">sendKeys(key_state)</a></li>
+<li><a href="#hitTest">hitTest(hitbody_a, hitbody_b)</a></li>
+</ul></li>
+<li><a href="#グローバル変数">グローバル変数</a><ul>
+<li><a href="#game_sides">game_sides</a></li>
+<li><a href="#player_side">player_side</a></li>
+<li><a href="#difficulty">difficulty</a></li>
+<li><a href="#round">round</a></li>
+</ul></li>
+<li><a href="#オブジェクト">オブジェクト</a><ul>
+<li><a href="#GameSide">GameSide</a></li>
+<li><a href="#Player">Player</a></li>
+<li><a href="#Enemy">Enemy</a></li>
+<li><a href="#Bullet">Bullet</a></li>
+<li><a href="#ExAttack">ExAttack</a></li>
+<li><a href="#Item">Item</a></li>
+<li><a href="#HitBody">HitBody</a></li>
+</ul></li>
+<li><a href="#定数群">定数群</a><ul>
+<li><a href="#ExAttackType">ExAttackType</a></li>
+<li><a href="#ItemType">ItemType</a></li>
+<li><a href="#HitType">HitType</a></li>
+<li><a href="#CharacterType">CharacterType</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#雑多">雑多</a><ul>
+<li><a href="#座標系について">座標系について</a></li>
+<li><a href="#当たり判定処理について">当たり判定処理について</a></li>
+<li><a href="#tips">Tips</a></li>
+</ul></li>
+</ul>
+</div>
+<h2 id="概要">概要</h2>
+<p>花AI塚のAIはLua5.1(<a href="http://www.lua.org/">本家サイト</a>、<a href="http://milkpot.sakura.ne.jp/lua/lua51_manual_ja.html">日本語版リファレンス</a>)で記述します。 花映塚の対戦が開始するとスクリプトがロードされ、以後対戦が終了するまで毎フレームmain関数が呼び出されます。 大戦終了後はスクリプトがアンロードされます。</p>
+<h2 id="lua5.1標準ライブラリからの制限">Lua5.1標準ライブラリからの制限</h2>
+<p>セキュリティ上の都合により、提供する標準ライブラリを制限しています。</p>
+<h3 id="使用できないライブラリ">使用できないライブラリ</h3>
+<p>以下の関数はAIスクリプト内で使用できません。</p>
+<ul>
+<li>collectgarbage</li>
+<li>getfenv</li>
+<li>getmetatable</li>
+<li>load</li>
+<li>loadstring</li>
+<li>print</li>
+<li>rawequal</li>
+<li>rawget</li>
+<li>setfenv</li>
+<li>setmetatable</li>
+<li>module</li>
+<li>require</li>
+<li>packageモジュールのすべて</li>
+<li>string.dump</li>
+<li>ioモジュールのうち
+<ul>
+<li>io.close</li>
+<li>io.flush</li>
+<li>io.input</li>
+<li>io.lines</li>
+<li>io.output</li>
+<li>io.popen</li>
+<li>io.read</li>
+<li>io.tmpfile</li>
+<li>io.write</li>
+</ul></li>
+<li>osモジュールのうち
+<ul>
+<li>os.execute</li>
+<li>os.exit</li>
+<li>os.getenv</li>
+<li>os.remove</li>
+<li>os.rename</li>
+<li>os.setlocale</li>
+<li>os.tmpname</li>
+</ul></li>
+<li>debugモジュールのすべて</li>
+</ul>
+<h3 id="使用できるが制限されているライブラリ">使用できるが、制限されているライブラリ</h3>
+<p>以下の関数はAIスクリプト内で使用できますが、本来の関数よりも機能が制限されています。</p>
+<ul>
+<li>dofile</li>
+<li>loadfile</li>
+<li>io.open</li>
+</ul>
+<p>これらはいずれも指定できるファイルパスが制限されています。 これらの関数に渡すファイルパスfilenameは</p>
+<pre><code>string.match(filename, &#39;^[%w_%-]+%.%w+$&#39;)</code></pre>
+<p>にマッチしなければいけません。マッチしない場合はファイルオープンに失敗するなどのエラーが発生します。</p>
+<p>以下のfilenameはマッチします。</p>
+<ul>
+<li>hoge-fuga_foo.bar</li>
+<li>20140401-log.1</li>
+</ul>
+<p>以下のfilenameはマッチしません。</p>
+<ul>
+<li>./file.txt</li>
+<li>dir/foo.txt</li>
+<li>bar</li>
+</ul>
+<p>なお、これらの関数で指定したファイルパスはAIスクリプトのある場所からの相対パスとして解釈されます。 したがって、これらの関数はAIスクリプトのあるフォルダ内のファイルへのみアクセスできます。</p>
+<p>また、dofileおよびloadfileでバイトコードをロードすることはできません。</p>
+<h2 id="api">API</h2>
+<p>花映塚のゲーム情報を取得したり、キー入力を送信するための関数やオブジェクトがAIスクリプトへ提供されます。</p>
+<p>提供されるものとしては以下のものがあります。</p>
+<ul>
+<li>関数
+<ul>
+<li><a href="#sendKeys">sendKeys</a></li>
+<li><a href="#hitTest">hitTest</a></li>
+</ul></li>
+<li>グローバル変数
+<ul>
+<li><a href="#game_sides">game_sides</a></li>
+<li><a href="#player_side">player_side</a></li>
+<li><a href="#difficulty">difficulty</a></li>
+<li><a href="#round">round</a></li>
+</ul></li>
+<li>定数群
+<ul>
+<li><a href="#ExAttackType">ExAttackType</a>.*</li>
+<li><a href="#ItemType">ItemType</a>.*</li>
+<li><a href="#HitType">HitType</a>.*</li>
+<li><a href="#CharacterType">CharacterType</a>.*</li>
+</ul></li>
+</ul>
+<h3 id="関数">関数</h3>
+<h4 id="sendKeys">sendKeys(key_state)</h4>
+<p>現在プレイしている自機に対するキー入力を花映塚へ送ります。 <code>key_state</code>には整数値を指定し、各ビットがそれぞれどのキーを押すかを表します。</p>
+<p>最下位ビットからそれぞれ</p>
+<ul>
+<li>1bit目: Zキー(射撃)</li>
+<li>2bit目: Xキー(緊急ボム)</li>
+<li>3bit目: Shiftキー(低速)</li>
+<li>4bit目: 未使用</li>
+<li>5bit目: ↑キー(上移動)</li>
+<li>6bit目: ↓キー(下移動)</li>
+<li>7bit目: ←キー(左移動)</li>
+<li>8bit目: →キー(右移動)</li>
+</ul>
+<p>となっています。</p>
+<h4 id="hitTest">hitTest(hitbody_a, hitbody_b)</h4>
+<p>2つの<a href="#HitBody">HitBody</a>オブジェクト<code>hitbody_a</code>と<code>hitbody_b</code>の当たり判定処理を行います。 <code>hitbody_a</code>と<code>hitbody_b</code>とがぶつかっている時はtrueを、そうでなければfalseを返します。</p>
+<h3 id="グローバル変数">グローバル変数</h3>
+<h4 id="game_sides">game_sides</h4>
+<p>2つの<a href="#GameSide">GameSide</a> からなる配列で、<code>game_sides[1]</code>は1P側の、<code>game_sides[2]</code>は2P側のゲーム状態を表します。 このグローバル変数は毎フレーム更新されます。</p>
+<p>この変数を経由して得られるすべての値は次フレームで破壊的に変更される可能性があります。 例えばある時点で<code>game_sides[1].enemies[1]</code>が敵Aを表していたとして、 次のフレームでは敵Bのデータに書き換えられている可能性があります。 そのため<code>game_sides</code>のフィールドへの参照を保存して次フレームで参照するのは<em>非推奨</em>です。 ある時点でのデータを次フレームに渡したい場合は深いコピーを行うなどして下さい。</p>
+<h4 id="player_side">player_side</h4>
+<p>この変数はこのAIスクリプトが1P側か2P側かを表します。 1P側ならば</p>
+<pre><code>player_side == 1</code></pre>
+<p>2P側ならば</p>
+<pre><code>player_side == 2</code></pre>
+<p>です。</p>
+<h4 id="difficulty">difficulty</h4>
+<p>この変数は現在のゲームの難易度を表します。</p>
+<table>
+<col width="12%" />
+<col width="19%" />
+<thead>
+<tr class="header">
+<th align="left">難易度</th>
+<th align="center">difficultyの値</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Easy</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="left">Normal</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Hard</td>
+<td align="center">2</td>
+</tr>
+<tr class="even">
+<td align="left">Lunatic</td>
+<td align="center">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Extra</td>
+<td align="center">4</td>
+</tr>
+</tbody>
+</table>
+<h4 id="round">round</h4>
+<p>この変数は対戦開始からの経過ラウンド数を表します。</p>
+<h3 id="オブジェクト">オブジェクト</h3>
+<h4 id="GameSide">GameSide</h4>
+<p>GameSideオブジェクトは対戦の各サイドのゲーム状態を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
+<dl>
+<dt>GameSide.player</dt>
+<dd><a href="#Player">Player</a> オブジェクトを持つフィールドで、自機に関する情報を表します。
+</dd>
+<dt>GameSide.enemies</dt>
+<dd><a href="#Enemy">Enemy</a> オブジェクトの配列で、画面上の敵に関する情報を表します。
+</dd>
+<dt>GameSide.bullets</dt>
+<dd><a href="#Bullet">Bullet</a> オブジェクトの配列で、画面上の敵弾に関する情報を表します。
+</dd>
+<dt>GameSide.exAttacks</dt>
+<dd><a href="#ExAttack">ExAttack</a> オブジェクトの配列で、画面上のEXアタックに関する情報を表します。
+</dd>
+<dt>GameSide.items</dt>
+<dd><a href="#Item">Item</a> オブジェクトの配列で、画面上のアイテムに関する情報を表します。
+</dd>
+<dt>GameSide.round_win</dt>
+<dd>現在の対戦で勝利したラウンド数を表します。
+</dd>
+<dt>GameSide.score</dt>
+<dd>現在のスコアを表します。
+</dd>
+</dl>
+<h4 id="Player">Player</h4>
+<p>Playerオブジェクトは自機に関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
+<dl>
+<dt>Player.x / Player.y</dt>
+<dd>自機の位置を表します。
+</dd>
+<dt>Player.life</dt>
+<dd>残りライフを表します。
+</dd>
+<dt>Player.cardAttackLevel</dt>
+<dd>現在のカードアタックレベルを表します。
+</dd>
+<dt>Player.bossAttackLevel</dt>
+<dd>現在のボスカードアタックレベルを表します。
+</dd>
+<dt>Player.currentCharge / Player.currentChargeMax</dt>
+<dd>currentChargeは現在のチャージゲージのチャージ量、currentChargeMaxは現在チャージゲージがチャージできる最大値を表します。 チャージ量は0~400までの浮動小数点数で表されます。
+</dd>
+<dt>Player.chargeSpeed</dt>
+<dd>チャージゲージのチャージ速度を表します。 チャージ速度は1フレームあたりにチャージされる量で表されます。
+</dd>
+<dt>Player.spellPoint</dt>
+<dd>現在のスペルポイントを表します。
+</dd>
+<dt>Player.combo</dt>
+<dd>現在のコンボ数を表します。
+</dd>
+<dt>Player.character</dt>
+<dd>自機キャラクターの種別を表します。 <a href="#CharacterType">CharacterType</a> の定数のいずれかの値を取ります。
+</dd>
+<dt>Player.speedFast</dt>
+<dd>高速移動時の自機の速さを表します。
+</dd>
+<dt>Player.speedSlow</dt>
+<dd>低速移動時の自機の速さを表します。
+</dd>
+<dt>Player.hitBodyRect / Player.hitBodyCircle / Player.hitBodyForItem</dt>
+<dd>これらはいずれも<a href="#HitBody">HitBody</a>オブジェクトで、自機の当たり判定を表します。 弾や敵、EXアタックとの当たり判定処理にはhitBodyRectまたはhitBodyCircleを使用します。 hitBodyRectは矩形の当たり判定、hitBodyCircleは円形の当たり判定です。 一方、hitBodyForItemはアイテムとの当たり判定処理で使用する当たり判定です。
+</dd>
+</dl>
+<h4 id="Enemy">Enemy</h4>
+<p>Enemyオブジェクトは個々の敵に関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
+<dl>
+<dt>Enemy.id</dt>
+<dd>それぞれの敵ごとに1つずつ付与されるIDです。 ある敵について、その敵に対応するEnemyオブジェクトは必ず同じidを持ちます。
+</dd>
+<dt>Enemy.x / Enemy.y</dt>
+<dd>敵の位置を表します。
+</dd>
+<dt>Enemy.vx / Enemy.vy</dt>
+<dd>現在の速度を表します。
+</dd>
+<dt>Enemy.enabled</dt>
+<dd><p>現在生きている敵かどうかをブール値で表します。</p>
+このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
+</dd>
+<dt>Enemy.isSpirit</dt>
+<dd>この敵が幽霊かどうかをブール値で表します。
+</dd>
+<dt>Enemy.isActivatedSpirit</dt>
+<dd>この敵が吸霊によって活性化した幽霊かどうかをブール値で表します。
+</dd>
+<dt>Enemy.isBoss</dt>
+<dd>この敵がボスかどうかをブール値で表します。
+</dd>
+<dt>Enemy.isLily</dt>
+<dd>この敵がリリー・ホワイト(またはブラック)かどうかをブール値で表します。
+</dd>
+<dt>Enemy.isPseudoEnemy</dt>
+<dd><p>この敵が擬似的な敵かどうかをブール値で表します。</p>
+<p>擬似的な敵とは弾幕の設置のためだけに存在する(多くの場合不可視な)敵のことです。 たとえば咲夜さんのC2やC3でナイフが配置される際には、擬似的な敵が出現しナイフを配置しています。</p>
+</dd>
+<dt>Enemy.hitBody</dt>
+<dd><p>敵の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は敵vs自機の衝突判定で用いるものです。</p>
+</dd>
+</dl>
+<h4 id="Bullet">Bullet</h4>
+<p>Bulletオブジェクトは個々の弾やレーザーに関する情報を表します。 EXアタックによって発生する弾のいくつかについては<a href="#ExAttack">ExAttack</a>オブジェクトとして扱われます。 Bulletオブジェクトは以下のフィールドを持ちます。</p>
+<dl>
+<dt>Bullet.id</dt>
+<dd>それぞれの弾ごとに1つずつ付与されるIDです。 ある弾について、その弾に対応するBulletオブジェクトは必ず同じidを持ちます。
+</dd>
+<dt>Bullet.x / Bullet.y</dt>
+<dd>弾の位置を表します。
+</dd>
+<dt>Bullet.vx / Bullet.vy</dt>
+<dd>現在の速度を表します。
+</dd>
+<dt>Bullet.enabled</dt>
+<dd><p>現在有効な弾かどうかをブール値で表します。</p>
+このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
+</dd>
+<dt>Bullet.hitBody</dt>
+<dd><p>弾の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は弾vs自機の衝突判定で用いるものです。</p>
+</dd>
+</dl>
+<h4 id="ExAttack">ExAttack</h4>
+<p>ExAttackオブジェクトはEXアタックによって発生する弾やメディの毒霧、四季映姫のなんかもやもやのやつなどに関する情報を表します。</p>
+<p>EXアタックによって発生する弾のすべてがExAttackオブジェクトで表されるとは限りません。 たとえば小野塚小町のEXアタックでは個々の弾はBulletオブジェクトで表され、弾源のみがExAttackオブジェクトで表されます。</p>
+<p>ExAttackオブジェクトは以下のフィールドを持ちます。</p>
+<dl>
+<dt>ExAttack.id</dt>
+<dd>それぞれのEXアタックの弾ごとに1つずつ付与されるIDです。 ある弾について、その弾に対応するExAttackオブジェクトは必ず同じidを持ちます。
+</dd>
+<dt>ExAttack.x / ExAttack.y</dt>
+<dd>EXアタックの位置を表します。
+</dd>
+<dt>ExAttack.vx / ExAttack.vy</dt>
+<dd><p>現在の速度を表します。</p>
+<strong>BUG:</strong> 1P/2P間をまたぐ間、速度が正しく取得できない。
+</dd>
+<dt>ExAttack.type</dt>
+<dd>EXアタックの種別を表します。 <a href="#ExAttackType">ExAttackType</a> の定数のいずれかの値を取ります。
+</dd>
+<dt>ExAttack.enabled</dt>
+<dd><p>現在有効なEXアタックかどうかをブール値で表します。</p>
+このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
+</dd>
+<dt>ExAttack.hittable</dt>
+<dd><p>有効な当たり判定を持つかどうかをブール値で表します。</p>
+EXアタックは必ずしも有効な当たり判定を持つとは限りません(特に弾源としてのみ機能する場合)。
+</dd>
+<dt>ExAttack.hitBody</dt>
+<dd><p>EXアタックの当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定はEXアタックvs自機の衝突判定で用いるものです。</p>
+<p><strong>注意</strong> <code>hittable = false</code>のときはhitBodyが<code>nil</code>であるケースがあります。</p>
+</dd>
+</dl>
+<h4 id="Item">Item</h4>
+<p>Itemオブジェクトは画面中のアイテムに関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
+<dl>
+<dt>Item.id</dt>
+<dd>それぞれのアイテムごとに1つずつ付与されるIDです。
+</dd>
+<dt>Item.x / Item.y</dt>
+<dd>アイテムの位置を表します。
+</dd>
+<dt>Item.vx / Item.vy</dt>
+<dd>現在の速度を表します。
+</dd>
+<dt>Item.type</dt>
+<dd>アイテムの種別を表します。 <a href="#ItemType">ItemType</a>の定数のいずれかの値を取ります。
+</dd>
+<dt>Item.enabled</dt>
+<dd><p>現在有効なアイテムかどうかをブール値で表します。</p>
+このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
+</dd>
+<dt>Item.hitBody</dt>
+<dd><p>アイテムの当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。</p>
+</dd>
+</dl>
+<h4 id="HitBody">HitBody</h4>
+<p>HitBodyオブジェクトは当たり判定に関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
+<dl>
+<dt>HitBody.type</dt>
+<dd>この当たり判定の種別を表します。 <a href="#HitType">HitType</a> の定数のいずれかの値を取ります。
+</dd>
+<dt>HitBody.x / HitBody.y</dt>
+<dd>この当たり判定の現在の位置を表します。
+</dd>
+<dt>HitBody.width</dt>
+<dd>当たり判定の幅を表します。
+</dd>
+<dt>HitBody.height</dt>
+<dd>当たり判定の高さを表します。
+</dd>
+<dt>HitBody.radius</dt>
+<dd><code>type = HitType.Circle</code>のとき、当たり判定の半径を表します。
+</dd>
+<dt>HitBody.angle</dt>
+<dd><code>type = HitType.RotatableRect</code>のとき、当たり判定の回転角を表します。
+</dd>
+</dl>
+<p>HitBody.typeの値によって、当たり判定処理のときにどのフィールドを用いるかが異なります。</p>
+<table>
+<col width="30%" />
+<col width="6%" />
+<col width="6%" />
+<col width="11%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<thead>
+<tr class="header">
+<th align="left">HitBody.type</th>
+<th align="center">x</th>
+<th align="center">y</th>
+<th align="center">width</th>
+<th align="center">height</th>
+<th align="center">radius</th>
+<th align="center">angle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">HitType.Rect</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">HitType.Circle</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">◯</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">HitType.RotatableRect</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center"></td>
+<td align="center">◯</td>
+</tr>
+</tbody>
+</table>
+<p>それぞれの種別の当たり判定の形状を図示すると以下のようになります。</p>
+<p><strong>TODO: img</strong></p>
+<h3 id="定数群">定数群</h3>
+<h4 id="ExAttackType">ExAttackType</h4>
+<p>EXアタックの種別を表す定数群です。</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">ExAttackType.Reimu</td>
+<td align="left">霊夢のEXアタック(陰陽玉)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Marisa</td>
+<td align="left">魔理沙のEXアタック(レーザーを発するビット)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Sakuya</td>
+<td align="left">咲夜さんのEXアタック(ナイフ)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Youmu</td>
+<td align="left">妖夢のEXアタック(なんか設置されるやつ)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Reisen</td>
+<td align="left">鈴仙のEXアタック(膨張する丸弾)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Cirno</td>
+<td align="left">チルノのEXアタック(つらら)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Lyrica</td>
+<td align="left">リリカのEXアタック(弾源)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Merlin</td>
+<td align="left">メルランのEXアタック(弾源)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Lunasa</td>
+<td align="left">ルナサのEXアタック(弾源)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Mystia_Ex</td>
+<td align="left">ミスティアのEXアタック(鳥型弾源)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Mystia_Charge2</td>
+<td align="left">ミスティアのC2(鳥型弾源)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Mystia_Charge3</td>
+<td align="left">ミスティアのC3(鳥型弾源)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Mystia_Boss1</td>
+<td align="left">ミスティアのボスアタック時の弾(鳥型弾源)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Mystia_Boss2</td>
+<td align="left">ミスティアのボスアタック時の弾(鳥型弾源)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Tewi</td>
+<td align="left">てゐのEXアタック(丸い跳ね返るやつ)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Aya</td>
+<td align="left">射命丸のEXアタック(高速丸弾)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Medicine</td>
+<td align="left">メディスンのEXアタック(毒霧)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Yuuka</td>
+<td align="left">幽香のEXアタック(向日葵)</td>
+</tr>
+<tr class="odd">
+<td align="left">ExAttackType.Komachi</td>
+<td align="left">小町のEXアタック(弾源)</td>
+</tr>
+<tr class="even">
+<td align="left">ExAttackType.Eiki</td>
+<td align="left">映姫のEXアタック(弾幕の罪を表面化するもやもや)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ItemType">ItemType</h4>
+<p>アイテムの種別を表す定数群です。</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">ItemType.G</td>
+<td align="left">G</td>
+</tr>
+<tr class="even">
+<td align="left">ItemType.Bullet</td>
+<td align="left">弾</td>
+</tr>
+<tr class="odd">
+<td align="left">ItemType.Ex</td>
+<td align="left">Ex</td>
+</tr>
+<tr class="even">
+<td align="left">ItemType.Score</td>
+<td align="left">点</td>
+</tr>
+</tbody>
+</table>
+<h4 id="HitType">HitType</h4>
+<p>当たり判定の種別を表す定数群です。</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">HitType.Rect</td>
+<td align="left">矩形</td>
+</tr>
+<tr class="even">
+<td align="left">HitType.Circle</td>
+<td align="left">円形</td>
+</tr>
+<tr class="odd">
+<td align="left">HitType.RotatableRect</td>
+<td align="left">回転可能な矩形</td>
+</tr>
+</tbody>
+</table>
+<h4 id="CharacterType">CharacterType</h4>
+<p>自機のキャラクター種別を表す定数群です。</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">CharacterType.Reimu</td>
+<td align="left">博麗霊夢</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Marisa</td>
+<td align="left">霧雨魔理沙</td>
+</tr>
+<tr class="odd">
+<td align="left">CharacterType.Sakuya</td>
+<td align="left">十六夜咲夜</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Youmu</td>
+<td align="left">魂魄妖夢</td>
+</tr>
+<tr class="odd">
+<td align="left">CharacterType.Reisen</td>
+<td align="left">鈴仙・優曇華院・イナバ</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Cirno</td>
+<td align="left">チルノ</td>
+</tr>
+<tr class="odd">
+<td align="left">CharacterType.Lyrica</td>
+<td align="left">リリカ・プリズムリバー</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Mystia</td>
+<td align="left">ミスティア・ローレライ</td>
+</tr>
+<tr class="odd">
+<td align="left">CharacterType.Tewi</td>
+<td align="left">因幡てゐ</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Yuuka</td>
+<td align="left">風見幽香</td>
+</tr>
+<tr class="odd">
+<td align="left">CharacterType.Aya</td>
+<td align="left">射命丸文</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Medicine</td>
+<td align="left">メディスン・メランコリー</td>
+</tr>
+<tr class="odd">
+<td align="left">CharacterType.Komachi</td>
+<td align="left">小野塚小町</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Eiki</td>
+<td align="left">四季映姫・ヤマザナドゥ</td>
+</tr>
+<tr class="odd">
+<td align="left">CharacterType.Merlin</td>
+<td align="left">メルラン・プリズムリバー</td>
+</tr>
+<tr class="even">
+<td align="left">CharacterType.Lunasa</td>
+<td align="left">ルナサ・プリズムリバー</td>
+</tr>
+</tbody>
+</table>
+<h2 id="雑多">雑多</h2>
+<h3 id="座標系について">座標系について</h3>
+<h3 id="当たり判定処理について">当たり判定処理について</h3>
+<h3 id="tips">Tips</h3>
+<ul>
+<li><code>require</code>は使用できませんが、<code>dofile</code>が使用できるのでこれを用いてスクリプトファイルを分割することができます。</li>
+<li><a href="#Enemy">Enemy</a>や<a href="#Bullet">Bullet</a>、<a href="#Item">Item</a>や<a href="#ExAttack">ExAttack</a>が持つ<code>id</code>フィールドはこれらのオブジェクト全体においてユニークです。例えば、あるEnemyオブジェクトと別のあるBulletオブジェクトが同じidを持つ、ということは起こりません。</li>
+<li>ラウンドの切り替わりを通知するイベントハンドラはありませんが、グローバル変数<a href="#round">round</a>の値を監視することでラウンドの切り替わりを検知することができます。同様にGameSide.player.lifeを監視することで被弾を検知することができます。</li>
+</ul>
+</body>
+</html>

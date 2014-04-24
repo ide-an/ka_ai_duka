@@ -79,4 +79,142 @@
 
 **API
 
+花映塚のゲーム情報を取得したり、キー入力を送信するための関数やオブジェクトがAIスクリプトへ提供されます。
+
+提供されるものとしては以下のものがあります。
+
+- 関数
+  - sendKeys#sendKeys
+  - hitTest#hitTest
+- グローバル変数
+  - game_sides#game_sides
+  - player_side#player_side
+  - difficulty#difficulty
+  - round#round
+- 定数群
+  - ExAttackType.*
+  - ItemType.*
+  - HitType.*
+  - CharacterType.*
+
+*** 関数
+
+sendKeys@sendKeys(key_state)
+
+  現在プレイしている自機に対するキー入力を花映塚へ送ります。
+  key_stateには整数値を指定し、各ビットがそれぞれどのキーを押すかを表します。
+
+  最下位ビットからそれぞれ
+
+  - 1bit目: Zキー(射撃)
+  - 2bit目: Xキー(緊急ボム)
+  - 3bit目: Shiftキー(低速)
+  - 4bit目: 未使用
+  - 5bit目: ↑キー(上移動)
+  - 6bit目: ↓キー(下移動)
+  - 7bit目: ←キー(左移動)
+  - 8bit目: →キー(右移動)
+
+  となっています。
+
+hitTest@hitTest(hitbody_a, hitbody_b)
+
+  当たり判定オブジェクトhitbody_aとhitbody_bとの当たり判定処理を行います。
+  hitbody_aとhitbody_bとがぶつかっている時はtrueを、そうでなければfalseを返します。
+
+*** グローバル変数
+
+game_sides#GameSide@game_sides
+  
+  2つのGameSide#GameSide からなる配列で、game_sides[1]は1P側の、game_sides[2]は2P側のゲーム状態を表します。
+  このグローバル変数は毎フレーム更新されます。
+
+  この変数を経由して得られるすべての値は次フレームで破壊的に変更される可能性があります。
+  例えばある時点でgame_sides[1].enemies[1]が敵Aを表していたとして、
+  次のフレームでは敵Bのデータに書き換えられている可能性があります。
+  そのためgame_sidesのフィールドへの参照を保存して次フレームで参照するのは非推奨です。
+  ある時点でのデータを次フレームに渡したい場合は深いコピーを行うなどして下さい。
+
+player_side@player_side
+  
+  この変数はこのAIスクリプトが1P側か2P側かを表します。
+  1P側ならば
+  <pre>player_side == 1</pre>
+  2P側ならば
+  <pre>player_side == 2</pre>
+  です。
+
+difficulty@difficulty
+
+  この変数は現在のゲームの難易度を表します。
+  TODO: 難易度と値の対応表
+  
+round@round
+
+  この変数は対戦開始からの経過ラウンド数を表します。
+
+*** オブジェクト
+
+GameSide@GameSide
+
+  GameSideオブジェクトは対戦の各サイドのゲーム状態を表します。
+  このオブジェクトは以下のフィールドを持ちます。
+
+  GameSide.player
+    Player#Player オブジェクトを持つフィールドで、自機に関する情報を表します。
+  GameSide.enemies
+    Enemy#Enemy オブジェクトの配列で、画面上の敵に関する情報を表します。
+  GameSide.bullets
+    Bullet#Bullet オブジェクトの配列で、画面上の敵弾に関する情報を表します。
+  GameSide.exAttacks
+    ExAttack#ExAttack オブジェクトの配列で、画面上のEXアタックに関する情報を表します。
+  GameSide.items
+    Item#Item オブジェクトの配列で、画面上のイテムに関する情報を表します。
+  GameSide.round_win
+    現在の対戦で勝利したラウンド数を表します。
+  GameSide.score
+    現在のスコアを表します。
+
+Player
+
+  Playerオブジェクトは自機に関する情報を表します。
+  このオブジェクトは以下のフィールドを持ちます。
+  
+  Player.x
+  Player.y
+    自機の位置を表します。
+  Player.life
+    残りライフを表します。
+  Player.cardAttackLevel
+    現在のカードアタックレベルを表します。
+  Player.bossAttackLevel
+    現在のボスカードアタックレベルを表します。
+  Player.currentCharge
+  Player.currentChargeMax
+  Player.chargeSpeed
+    currentChargeは現在のチャージ量、currentChargeMaxは現在チャージできる最大値、chargeSpeedは1フレームの間にチャージされる量を表します。
+    チャージ量は0~400までの浮動小数点数で表されます。
+  Player.spellPoint
+    現在のSpell Pointを表します。
+  Player.combo
+    現在のコンボ数を表します。
+  Player.character
+    自機キャラクターの種別を表します。
+    CharacterType#CharacterType の定数のいずれかの値を取ります。
+  Player.speedFast
+    高速時の自機の速さを表します。
+  Player.speedSlow
+    低速時の自機の速さを表します。
+  Player.hitBodyRect　//TODO
+  Player.hitBodyCircle
+  Player.hitBodyForItem
+
+Enemy
+Bullet
+ExAttack
+Item
+HitBody
+
+*** 定数群
+
 **雑多
