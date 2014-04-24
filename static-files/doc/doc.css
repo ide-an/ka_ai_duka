@@ -1,0 +1,46 @@
+em{
+  color: #00c;
+  font-weight: bold;
+  font-style: normal;
+}
+strong{
+  color: #f00;
+  font-weight: bold;
+  font-style: normal;
+}
+table{
+  border-collapse: collapse;
+  border: 1px solid #666;
+}
+table td, table th{
+  border: 1px solid #666;
+}
+tr.header{
+  background-color: #ccc;
+}
+tr.odd{
+  background-color: #fcc;
+}
+tr.even{
+  background-color: #fff;
+}
+p{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+dt{
+  font-weight: bold;
+  font-style: normal;
+}
+h4{
+  color: #039;
+}
+
+p.caption{
+  font-size: 80%;
+}
+.figure{
+  padding-top: 1em;
+  text-align: center;
+  background-color: #ffefcc;
+}

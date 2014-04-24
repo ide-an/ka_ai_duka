@@ -6,6 +6,7 @@
   <meta name="generator" content="pandoc" />
   <title>花AI塚 AIスクリプト ドキュメント</title>
   <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="doc.css" type="text/css" />
 </head>
 <body>
 <div id="header">
@@ -456,7 +457,9 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 </tbody>
 </table>
 <p>それぞれの種別の当たり判定の形状を図示すると以下のようになります。</p>
-<p><strong>TODO: img</strong></p>
+<div class="figure">
+<img src="hittypes.png" alt="当たり判定の形状一覧" /><p class="caption">当たり判定の形状一覧</p>
+</div>
 <h3 id="定数群">定数群</h3>
 <h4 id="ExAttackType">ExAttackType</h4>
 <p>EXアタックの種別を表す定数群です。</p>
@@ -656,7 +659,19 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 </table>
 <h2 id="雑多">雑多</h2>
 <h3 id="座標系について">座標系について</h3>
+<p>自機の位置や弾の速度など、ゲームに関する位置情報はすべて以下の座標系でのものです。</p>
+<div class="figure">
+<img src="axis.png" alt="ゲーム状態に関する座標系" /><p class="caption">ゲーム状態に関する座標系</p>
+</div>
+<p>この座標系はY軸が下向きかつ画面上部でYが0であり、X軸が右向きかつ各陣の画面中央でXが0である座標系です。</p>
 <h3 id="当たり判定処理について">当たり判定処理について</h3>
+<p>花映塚において当たり判定処理は</p>
+<ul>
+<li>矩形 vs 矩形</li>
+<li>円形 vs 円形</li>
+<li>矩形 vs 回転可能な矩形</li>
+</ul>
+<p>のいずれかを行うことで実現しています。 <a href="#Player">Player</a>オブジェクトで述べたように、自機には円形と矩形の両方の当たり判定がありますが、 円形の当たり判定(Player.hitBodyCircle)が用いられるのは円形の当たり判定との当たり判定処理を行うときだけで、それ以外の当たり判定では矩形の当たり判定を用います。</p>
 <h3 id="tips">Tips</h3>
 <ul>
 <li><code>require</code>は使用できませんが、<code>dofile</code>が使用できるのでこれを用いてスクリプトファイルを分割することができます。</li>
