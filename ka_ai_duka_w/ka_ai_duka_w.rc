@@ -7,7 +7,7 @@
 #include <richedit.h>
 #include "resource.h"
 
-IDI_ICON ICON "icon.ico"
+//IDI_ICON ICON "icon.ico"
 
 //Icon resources
 
