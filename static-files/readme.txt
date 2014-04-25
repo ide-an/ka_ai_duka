@@ -25,6 +25,11 @@ Author: いで(@ide_an)
     花映塚の実行ファイルにロードされるDLL。
   sample-script
     AIスクリプトのサンプルです。
+      random-walk
+      passive-avoid
+      shoot-nearest
+    の3種類があります。
+    それぞれmain.luaをロードして実行します。
   doc
     AIの記述に関するドキュメントです。
 
@@ -70,6 +75,7 @@ Author: いで(@ide_an)
 
   * 花映塚製品版ver 1.00への対応
   * 爆風で消せる弾かどうかの識別
+  * EXアタックが1P/2P間をまたぐときの速度取得
 
 7. 動作確認環境
 
@@ -81,4 +87,4 @@ Author: いで(@ide_an)
 
 8. 更新履歴
 
-  2014/04/XX ver1.0リリース
+  2014/04/25 ver1.0リリース
