@@ -1,9 +1,6 @@
 #include "bind.h"
 #include "GameSide.h"
 #include "sandbox.h"
-//#include <luabind\luabind.hpp>
-//#include <luabind\iterator_policy.hpp>
-//#include <luabind\operator.hpp>
 #include <boost\shared_ptr.hpp>
 
 namespace ka_ai_duka{

@@ -1,5 +1,4 @@
 #include "sandbox.h"
-#include <luabind\object.hpp>
 namespace ka_ai_duka{
     namespace sandbox{
         const char* env_name = "env";

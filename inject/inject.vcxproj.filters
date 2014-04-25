@@ -16,14 +16,8 @@
     <Filter Include="ソース ファイル\lib">
       <UniqueIdentifier>{fc0ac99d-807b-40d0-9b47-1fdab9e1b978}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\lib\luabind">
-      <UniqueIdentifier>{7d76856f-fb3f-4149-87a5-fa63719aa69b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\lib">
       <UniqueIdentifier>{cb5b0232-3dfa-4ad8-b026-798970034de4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\lib\luabind">
-      <UniqueIdentifier>{eddcb1f3-542b-4d14-ba98-2aa13f3feb0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -47,57 +41,6 @@
     </ClCompile>
     <ClCompile Include="GameSide.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\class.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\class_info.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\class_registry.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\class_rep.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\create_class.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\error.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\exception_handler.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\function.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\inheritance.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\link_compatibility.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\object_rep.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\open.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\pcall.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\scope.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\stack_content_by_name.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\weak_ref.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\luabind\src\wrapper_base.cpp">
-      <Filter>ソース ファイル\lib\luabind</Filter>
     </ClCompile>
     <ClCompile Include="bind.cpp">
       <Filter>ソース ファイル</Filter>
@@ -145,120 +88,6 @@
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\adopt_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\back_reference.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\back_reference_fwd.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\class.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\class_info.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\config.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\container_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\copy_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\dependency_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\discard_result_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\error.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\exception_handler.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\from_stack.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\function.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\get_main_thread.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\get_pointer.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\handle.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\iterator_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\lua_include.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\luabind.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\make_function.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\nil.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\object.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\open.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\operator.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\out_value_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\prefix.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\raw_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\return_reference_to_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\scope.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\shared_ptr_converter.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\tag_function.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\typeid.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\value_wrapper.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\version.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\weak_ref.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\wrapper_base.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\luabind\luabind\yield_policy.hpp">
-      <Filter>ヘッダー ファイル\lib\luabind</Filter>
     </ClInclude>
     <ClInclude Include="bind.h">
       <Filter>ヘッダー ファイル</Filter>
