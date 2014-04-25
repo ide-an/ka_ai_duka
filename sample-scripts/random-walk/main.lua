@@ -4,7 +4,7 @@
 local keyutils = dofile("keyutils.lua");
 
 -- debug only
-local enable_time_logging = true; -- trueにすると毎フレームの経過時間のログを取る
+local enable_time_logging = false; -- trueにすると毎フレームの経過時間のログを取る
 local fp;
 if (enable_time_logging) then
   fp = io.open(os.date("%Y%m%d%H%M%S").."-"..tostring(player_side).."p.txt","w");

@@ -40,9 +40,9 @@ namespace ka_ai_duka{
             game_sides[0]->Update(idgen);
             game_sides[1]->Update(idgen);
             observer->OnFrameUpdate(*this);
-            if(key_states[2].keys & keys::p){
-                OnSnapshotSave();
-            }
+            //if(key_states[2].keys & keys::p){
+            //    OnSnapshotSave();
+            //}
             prev_p = (key_states[2].keys & keys::p);
         }
     }

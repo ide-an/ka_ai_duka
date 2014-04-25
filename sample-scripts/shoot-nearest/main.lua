@@ -8,7 +8,7 @@ local hitutils = dofile("hitutils.lua");
 local predict_frame = 10;
 
 -- debug only
-local enable_time_logging = true; -- trueにすると毎フレームの経過時間などのログを取る
+local enable_time_logging = false; -- trueにすると毎フレームの経過時間などのログを取る
 local count = 0;
 local item_count = 0;
 local fp;
