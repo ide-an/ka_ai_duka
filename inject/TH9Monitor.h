@@ -59,6 +59,7 @@ namespace ka_ai_duka{
         bool is_playing;// 0x1000: cut-in, 0x8: replay
         managed_types::GameSide* game_sides[2];
         IDGenerator idgen;
+        char (&charge_types)[2];
         int &hwnd;//for debugging
         void OnSnapshotSave(void);
     protected:
@@ -73,11 +74,12 @@ namespace ka_ai_duka{
             unsigned int (&round_win)[2],
             unsigned int &difficulty,
             unsigned int &play_status,
+            char (&charge_types)[2],
             int &hwnd,
             raw_types::ExAttackFuncAddr &ex_attack_func_addr
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
             round(round), round_win(round_win), difficulty(difficulty), is_playing(false), play_status(play_status), hwnd(hwnd),
-            ex_attack_func_addr(ex_attack_func_addr)
+            ex_attack_func_addr(ex_attack_func_addr), charge_types(charge_types)
         {};
         virtual ~TH9Monitor(void){};
         virtual void Attach(void) = 0;

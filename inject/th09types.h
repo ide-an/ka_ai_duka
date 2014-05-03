@@ -106,7 +106,9 @@ namespace ka_ai_duka {
             unsigned int status;
             char unknown4[0x10BC - 0xDBE - sizeof(int)];
             unsigned int unknown_status;
-            char unknown5[0x10C4 - 0x10BC - sizeof(int)];
+            //char unknown5[0x10C0 - 0x10BC - sizeof(int)];
+            short bullet_type;
+            char unknown6[0x10C4 - 0x10C0 - sizeof(short)];
         };
 
         struct Laser{

@@ -241,6 +241,7 @@ namespace ka_ai_duka{
         SetNumber(ls, "vx", bullet.Vx());
         SetNumber(ls, "vy", bullet.Vy());
         SetBool(ls, "enabled", bullet.Enabled());
+        SetBool(ls, "isErasable", bullet.IsErasable());
 
         AddTableIfNotFound(ls,"hitBody", 0, 7);
         SetHitBodyFields(ls, *bullet.HittableObject());
@@ -286,7 +287,8 @@ namespace ka_ai_duka{
         SetNewTable(ls, "bullets");
         SetNewTable(ls, "items");
         SetNewTable(ls, "exAttacks");
-        SetNumber(ls, "round_win", game_side.RoundWin());
+        SetNumber(ls, "roundWin", game_side.RoundWin());
+        SetNumber(ls, "chargeType", game_side.ChargeType());
         SetNumber(ls, "score", game_side.Score());
     }
 
@@ -321,7 +323,7 @@ namespace ka_ai_duka{
         AddTableIfNotFound(ls, "bullets", len, 0);
         int idx = 1;
         for(auto it=bullets.begin();it!=bullets.end();++it){
-            AddTableIfNotFound(ls, idx, 0, 7);
+            AddTableIfNotFound(ls, idx, 0, 8);
             SetBulletFields(ls, *it->get());
             lua_pop(ls, 1);
             idx++;
@@ -372,7 +374,7 @@ namespace ka_ai_duka{
     void UpdateGameSide(lua_State* ls,  managed_types::GameSide& game_side, PlayerSide side)
     {
         int idx = side == Side_1P ? 1 : 2;
-        AddTableIfNotFound(ls, idx, 0, 7);
+        AddTableIfNotFound(ls, idx, 0, 8);
         SetGameSideFields(ls, game_side);
         UpdatePlayer(ls, *game_side.Player());
         UpdateEnemies(ls, game_side.Enemies());
@@ -461,6 +463,13 @@ namespace ka_ai_duka{
         SetNumber(ls, "Eiki", raw_types::Eiki);
         SetNumber(ls, "Merlin", raw_types::Merlin);
         SetNumber(ls, "Lunasa", raw_types::Lunasa);
+        lua_pop(ls, 1);
+
+        ::lua_createtable(ls, 0, 2);
+        ::lua_pushvalue(ls, -1);
+        lua_setglobal(ls, "ChargeType");
+        SetNumber(ls, "Slow", managed_types::Slow);
+        SetNumber(ls, "Charge", managed_types::Charge);
         lua_pop(ls, 1);
     }
 

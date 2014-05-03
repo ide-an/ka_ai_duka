@@ -7,12 +7,14 @@ namespace ka_ai_duka{
         GameSide::GameSide(
             raw_types::Board &board, 
             unsigned int &round_win, 
+            char &charge_type,
             raw_types::ExAttackFuncAddr &ex_func_addr,
             raw_types::ExAttackContainer* &ex_attack_container,
             PlayerSide player_side
             )
             : board(board),
             round_win(round_win),
+            charge_type(charge_type),
             bullet_marks_length(536),
             laser_marks_length(48),
             enemy_marks_length(128),

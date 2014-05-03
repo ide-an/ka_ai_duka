@@ -31,6 +31,7 @@ namespace ka_ai_duka{
             virtual float Vx() const = 0;
             virtual float Vy() const = 0;
             virtual bool Enabled() const = 0;
+            virtual bool IsErasable() const = 0;
             virtual void Update() = 0;
             virtual boost::shared_ptr<managed_types::HittableObject> HittableObject() const = 0;
         };
@@ -62,6 +63,10 @@ namespace ka_ai_duka{
             float Vy() const
             {
                 return bullet.velocity.y;
+            }
+            bool IsErasable() const
+            {
+                return bullet.bullet_type == 0;
             }
             bool Enabled() const
             {
@@ -107,6 +112,10 @@ namespace ka_ai_duka{
             float Vy() const
             {
                 return 0.0f;
+            }
+            bool IsErasable() const
+            {
+                return false;
             }
             bool Enabled() const
             {

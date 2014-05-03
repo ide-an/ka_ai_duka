@@ -17,11 +17,17 @@ namespace ka_ai_duka{
         typedef std::vector<boost::shared_ptr<Item> > Items;
         typedef std::vector<boost::shared_ptr<ExAttack> > ExAttacks;
 
+        enum ChargeType{
+            Slow = 0,
+            Charge
+        };
+
         class GameSide
         {
         private:
             raw_types::Board &board;
             unsigned int &round_win;
+            char &charge_type;
             struct raw_types::ExAttackFuncAddr &ex_func_addr;
             raw_types::ExAttackContainer* &ex_attack_container;
             PlayerSide player_side;
@@ -54,6 +60,7 @@ namespace ka_ai_duka{
             GameSide(
                 raw_types::Board &board,
                 unsigned int &round_win,
+                char &charge_type,
                 raw_types::ExAttackFuncAddr &ex_func_addr,
                 raw_types::ExAttackContainer* &ex_attack_container,
                 PlayerSide player_side
@@ -84,6 +91,10 @@ namespace ka_ai_duka{
             unsigned int RoundWin(void) const
             {
                 return round_win;
+            }
+            ChargeType ChargeType() const
+            {
+                return charge_type == 0 ? Slow : Charge;
             }
             unsigned int Score(void) const
             {

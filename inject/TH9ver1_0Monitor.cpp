@@ -11,6 +11,7 @@ namespace ka_ai_duka{
             address::globals_ver1_0->round_win,
             address::globals_ver1_0->difficulty,
             address::globals_ver1_0->play_status,
+            address::globals_ver1_0->charge_types,
             address::globals_ver1_0->hwnd,
             address::ex_attack_func_addr_ver1_0
             )

@@ -24,7 +24,9 @@ namespace ka_ai_duka{
             char unknown8[0x4B3104 - 0x4B30B0 - sizeof(int)];
             int** d3d8;//4B3104
             int** d3d8_device;//4B3108
-            char unknown9[0x4B42D0 - 0x4B3108 - sizeof(int**)];
+            char unknown9[0x4B353C - 0x4B3108 - sizeof(int**)];
+            char charge_types[2];
+            char unknown10[0x4B42D0 - 0x4B353C - sizeof(char)*2];
             struct raw_types::NetInfo* net_info;//4B42D0
         };
 #pragma pack(pop)
