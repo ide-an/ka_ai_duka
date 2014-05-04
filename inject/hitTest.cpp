@@ -26,16 +26,17 @@ namespace ka_ai_duka{
         }
         bool HitTestRectVsRotatableRect(HittableRect* a, HittableRotatableRect* b)
         {
-            float cos_ = cos(-1 * a->Angle());
-            float sin_ = sin(-1 * a->Angle());
-            float dx = b->X() - a->X();
-            float dy = b->Y() - a->Y();
-            float bx = b->X() + cos_ * dx - sin_ * dy;
-            float by = b->Y() + sin_ * dx + cos_ * dy;
-            float bdx = b->Width() / 2;
+            float cos_ = cos(-1 * b->Angle());
+            float sin_ = sin(-1 * b->Angle());
+            float dx = a->X() - b->X();
+            float dy = a->Y() - b->Y();
+            float ax = b->X() + cos_ * dx - sin_ * dy;
+            float ay = b->Y() + sin_ * dx + cos_ * dy;
+            float adx = a->Width() / 2;
+            float ady = a->Height() / 2;
             float bdy = b->Height() / 2;
-            if(a->X() <= bx + bdx && bx - bdx <= a->X() + a->Width() 
-                && a->Y() <= by + bdy && by - bdy <= a->Y() + a->Height()){
+            if(ax - adx <= b->X() + b->Width() && b->X() <= ax + adx 
+                && ay - ady <= b->Y() + bdy && b->Y() - bdy <= ay + ady){
                 return true;
             }
             return false;
@@ -46,9 +47,9 @@ namespace ka_ai_duka{
                 return HitTestRectVsRect(reinterpret_cast<HittableRect*>(a), reinterpret_cast<HittableRect*>(b));
             }else if(a->Type() == Hit_Circle && b->Type() == Hit_Circle){
                 return HitTestCircleVsCircle(reinterpret_cast<HittableCircle*>(a), reinterpret_cast<HittableCircle*>(b));
-            }else if(a->Type() == Hit_RotatableRect && b->Type() == Hit_Rect){
+            }else if(a->Type() == Hit_Rect && b->Type() == Hit_RotatableRect){
                 return HitTestRectVsRotatableRect(reinterpret_cast<HittableRect*>(a), reinterpret_cast<HittableRotatableRect*>(b));
-            }else if(b->Type() == Hit_RotatableRect && a->Type() == Hit_Rect){
+            }else if(b->Type() == Hit_Rect && a->Type() == Hit_RotatableRect){
                 return HitTestRectVsRotatableRect(reinterpret_cast<HittableRect*>(b), reinterpret_cast<HittableRotatableRect*>(a));
             }else{
                 return false;
