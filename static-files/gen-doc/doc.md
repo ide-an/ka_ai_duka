@@ -1,4 +1,4 @@
-% 花AI塚 AIスクリプト ドキュメント
+% 花AI塚ver 1.1 AIスクリプト ドキュメント
 
 ##概要
 
@@ -190,10 +190,13 @@ GameSide.exAttacks
 :   [ExAttack](#ExAttack) オブジェクトの配列で、画面上のEXアタックに関する情報を表します。
 GameSide.items
 :   [Item](#Item) オブジェクトの配列で、画面上のアイテムに関する情報を表します。
-GameSide.round_win
+GameSide.roundWin
 :   現在の対戦で勝利したラウンド数を表します。
 GameSide.score
 :   現在のスコアを表します。
+GameSide.chargeType
+:   現在のチャージタイプを表します。
+    [ChargeType](#ChargeType) の定数のいずれかの値を取ります。
 
 ####Player {#Player}
 
@@ -282,6 +285,8 @@ Bullet.enabled
 :   現在有効な弾かどうかをブール値で表します。
 
     このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
+Bullet.isErasable
+    敵撃破時の爆風で消せる弾かどうかをブール値で表します。
 Bullet.hitBody
 :   弾の当たり判定を表す[HitBody](#HitBody)オブジェクトです。
     この当たり判定は弾vs自機の衝突判定で用いるものです。
@@ -303,7 +308,7 @@ ExAttack.x / ExAttack.y
 ExAttack.vx / ExAttack.vy
 :   現在の速度を表します。
 
-    **BUG:** 1P/2P間をまたぐ間、速度が正しく取得できない。
+    **BUG:** 1P/2P間をまたぐ間、速度が正しく取得できない(咲夜さんのEXアタックのみ取得可)。
 ExAttack.type
 :   EXアタックの種別を表します。
     [ExAttackType](#ExAttackType) の定数のいずれかの値を取ります。
@@ -451,6 +456,14 @@ CharacterType.Merlin    メルラン・プリズムリバー
 CharacterType.Lunasa    ルナサ・プリズムリバー
 ----------------------- -------------------------
 
+####ChargeType {#ChargeType}
+
+チャージタイプを表す定数群です。
+
+------------------ -----------------------------------
+ChargeType.Slow     Z長押しでチャージ、Shiftで低速
+ChargeType.Charge   Shiftでチャージ、Z長押しで低速
+------------------ -----------------------------------
 ##雑多
 
 ###座標系について

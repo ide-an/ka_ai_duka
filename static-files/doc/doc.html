@@ -4,13 +4,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <title>花AI塚 AIスクリプト ドキュメント</title>
+  <title>花AI塚ver 1.1 AIスクリプト ドキュメント</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="res/doc.css" type="text/css" />
 </head>
 <body>
 <div id="header">
-<h1 class="title">花AI塚 AIスクリプト ドキュメント</h1>
+<h1 class="title">花AI塚ver 1.1 AIスクリプト ドキュメント</h1>
 </div>
 <div id="TOC">
 <ul>
@@ -44,6 +44,7 @@
 <li><a href="#ItemType">ItemType</a></li>
 <li><a href="#HitType">HitType</a></li>
 <li><a href="#CharacterType">CharacterType</a></li>
+<li><a href="#ChargeType">ChargeType</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#雑多">雑多</a><ul>
@@ -227,11 +228,14 @@
 <dt>GameSide.items</dt>
 <dd><a href="#Item">Item</a> オブジェクトの配列で、画面上のアイテムに関する情報を表します。
 </dd>
-<dt>GameSide.round_win</dt>
+<dt>GameSide.roundWin</dt>
 <dd>現在の対戦で勝利したラウンド数を表します。
 </dd>
 <dt>GameSide.score</dt>
 <dd>現在のスコアを表します。
+</dd>
+<dt>GameSide.chargeType</dt>
+<dd>現在のチャージタイプを表します。 <a href="#ChargeType">ChargeType</a> の定数のいずれかの値を取ります。
 </dd>
 </dl>
 <h4 id="Player">Player</h4>
@@ -326,10 +330,8 @@
 <dd><p>現在有効な弾かどうかをブール値で表します。</p>
 このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
 </dd>
-<dt>Bullet.hitBody</dt>
-<dd><p>弾の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は弾vs自機の衝突判定で用いるものです。</p>
-</dd>
 </dl>
+<p>Bullet.isErasable 敵撃破時の爆風で消せる弾かどうかをブール値で表します。 Bullet.hitBody : 弾の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は弾vs自機の衝突判定で用いるものです。</p>
 <h4 id="ExAttack">ExAttack</h4>
 <p>ExAttackオブジェクトはEXアタックによって発生する弾やメディの毒霧、四季映姫のなんかもやもやのやつなどに関する情報を表します。</p>
 <p>EXアタックによって発生する弾のすべてがExAttackオブジェクトで表されるとは限りません。 たとえば小野塚小町のEXアタックでは個々の弾はBulletオブジェクトで表され、弾源のみがExAttackオブジェクトで表されます。</p>
@@ -343,7 +345,7 @@
 </dd>
 <dt>ExAttack.vx / ExAttack.vy</dt>
 <dd><p>現在の速度を表します。</p>
-<strong>BUG:</strong> 1P/2P間をまたぐ間、速度が正しく取得できない。
+<strong>BUG:</strong> 1P/2P間をまたぐ間、速度が正しく取得できない(咲夜さんのEXアタックのみ取得可)。
 </dd>
 <dt>ExAttack.type</dt>
 <dd>EXアタックの種別を表します。 <a href="#ExAttackType">ExAttackType</a> の定数のいずれかの値を取ります。
@@ -654,6 +656,20 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 <tr class="even">
 <td align="left">CharacterType.Lunasa</td>
 <td align="left">ルナサ・プリズムリバー</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ChargeType">ChargeType</h4>
+<p>チャージタイプを表す定数群です。</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">ChargeType.Slow</td>
+<td align="center">Z長押しでチャージ、Shiftで低速</td>
+</tr>
+<tr class="even">
+<td align="left">ChargeType.Charge</td>
+<td align="center">Shiftでチャージ、Z長押しで低速</td>
 </tr>
 </tbody>
 </table>
