@@ -17,4 +17,114 @@ namespace ka_ai_duka{
             )
     {
     }
+
+    int __declspec(naked) OnFrameUpdateVer1_0(void)
+    {   
+        __asm{
+            pushad;
+            pushfd;
+        }
+        if(monitor){
+            monitor->OnFrameUpdate();
+        }
+        __asm{
+            popfd;
+            popad;
+            mov eax, 1;
+            ret;
+        }
+    }
+
+    void __declspec(naked) OnGameStartVer1_0(void)
+    {
+        __asm{
+            pushad;
+            pushfd;
+        }
+        if(monitor){
+            monitor->OnGameStart();
+        }
+        __asm{
+            popfd;
+            popad;
+            mov edx, 320h;
+            ret;
+        }
+    }
+
+    void __declspec(naked) OnGameEndVer1_0(void)
+    {
+        __asm{
+            pushad;
+            pushfd;
+        }
+        if(monitor){
+            monitor->OnGameEnd();
+        }
+        __asm{
+            popfd;
+            popad;
+            add ebx, 0E8h;
+            ret;
+        }
+    }
+
+    void TH9ver1_0Monitor::Attach(void)
+    {
+        InjectOnFrameUpdate();
+        InjectOnGameStart();
+        InjectOnGameEnd();
+    }
+
+    void TH9ver1_0Monitor::InjectOnFrameUpdate(void)
+    {
+        /**
+          retn
+        Ç
+          call OnFrameUpdate ;; return 1
+          retn
+        Ç…èëÇ´ä∑Ç¶ÇÈ
+        */
+        char* inject_to = address::addr_on_frame_update.ver1_0;
+        char code[] = {
+            0xE8, 0, 0, 0, 0, // call OnFrameUpdate
+            0xC3              // retn
+        };
+        SetJumpTo(code + 1, (int)(inject_to + 5), (int)OnFrameUpdateVer1_0);
+        WriteCode(inject_to, code, sizeof(code));
+    }
+
+    void TH9ver1_0Monitor::InjectOnGameStart(void)
+    {
+        /**
+          mov     edx, 320h
+        Ç
+          call OnGameStart
+        Ç…èëÇ´ä∑Ç¶ÇÈ
+        */
+        char* inject_to = address::addr_on_game_start.ver1_0;
+        char code[] = {
+            0xE8, 0, 0, 0, 0, // call OnGameStart
+        };
+        SetJumpTo(code + 1, (int)(inject_to + 5), (int)OnGameStartVer1_0);
+        WriteCode(inject_to, code, sizeof(code));
+    }
+
+    void TH9ver1_0Monitor::InjectOnGameEnd(void)
+    {
+        /**      
+          add     ebx, 0E8h
+        Ç
+          call OnGameEnd
+          nop
+        Ç…èëÇ´ä∑Ç¶ÇÈ
+        */
+        char* inject_to = address::addr_on_game_end.ver1_0;
+        char code[] = {
+            0xE8, 0, 0, 0, 0, //call OnGameEnd
+            0x90              //nop
+        };
+        SetJumpTo(code + 1, (int)(inject_to + 5), (int)OnGameEndVer1_0);
+        WriteCode(inject_to, code, sizeof(code));
+    }
 }

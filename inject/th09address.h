@@ -31,6 +31,31 @@ namespace ka_ai_duka{
         };
 #pragma pack(pop)
 
+#pragma pack(push, 1)
+        struct Th9GlobalVer1_0{
+            struct raw_types::Board board[2];//49ED94
+            char unknown1[0x49EE3C - 0x49ED94 - sizeof(raw_types::Board)*2];
+            struct raw_types::ExAttackContainer* ex_attack_container;//49EE3C
+            char unknown2[0x49EE90 - 0x49EE3C - sizeof(raw_types::ExAttackContainer*)];
+            unsigned int round;//49EE90
+            char unknown3[4];
+            unsigned int round_win[2];//49EE98
+            char unknown4[0x49EEAC - 0x49EE98 - sizeof(int)*2];
+            unsigned int difficulty;//49EEAC
+            char unknown5[0x49EEC4 - 0x49EEAC - sizeof(int)];
+            unsigned int play_status;
+            char unknown6[0x4A3E18 - 0x49EEC4 - sizeof(int)];
+            struct raw_types::KeyState key_states[3];
+            char unknown7[0x4AA0B0 - 0x4A3E18 - sizeof(raw_types::KeyState)*3];
+            int hwnd; //4AA0B0
+            char unknown8[0x4AA104 - 0x4AA0B0 - sizeof(int)];
+            int** d3d8;//4AA104
+            int** d3d8_device;//4AA108
+            char unknown9[0x4AA53C - 0x4AA108 - sizeof(int**)];
+            char charge_types[2];
+        };
+#pragma pack(pop)
+        
         struct Address{
             char* const ver1_5;
             char* const ver1_0;
@@ -44,6 +69,6 @@ namespace ka_ai_duka{
         extern const struct Address addr_on_game_end;
         extern const struct Address addr_window_title;
         extern struct Th9GlobalVer1_5* const globals_ver1_5;
-        extern struct Th9GlobalVer1_5* const globals_ver1_0;//TODO: ver 1.0ópÇÃç\ë¢ëÃíËã`
+        extern struct Th9GlobalVer1_0* const globals_ver1_0;
     }
 }

@@ -25,13 +25,7 @@ void Attach(HANDLE hModule){
         monitor = new TH9ver1_5aMonitor();
         break;
     case Ver1_0:
-        {
-            std::ostringstream os;
-            os << "‰Ô‰f’Ëver 1.00‚É‚Í‘Î‰ž‚µ‚Ä‚¢‚Ü‚¹‚ñB" << std::endl;
-            ka_ai_duka::ReportError(os);
-            return;
-        }
-        //monitor = new TH9ver1_0Monitor();
+        monitor = new TH9ver1_0Monitor();
         break;
     default:
         assert(0);

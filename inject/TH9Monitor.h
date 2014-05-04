@@ -136,12 +136,13 @@ namespace ka_ai_duka{
     {
     public:
         TH9ver1_0Monitor(void);
-        void Attach(void){
-            assert(0);//TODO: implement
-        }
+        void Attach(void);
         void Detach(void){
-            assert(0);//TODO: implement
         }
+    private:
+        void InjectOnFrameUpdate(void);
+        void InjectOnGameStart(void);
+        void InjectOnGameEnd(void);
     };
 
     extern TH9Monitor* monitor;
