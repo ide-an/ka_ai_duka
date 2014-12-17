@@ -4,7 +4,7 @@
 #include <boost\shared_ptr.hpp>
 
 namespace ka_ai_duka{
-    
+
 
     void SendKeys1P(KeyState key_state)
     {
@@ -282,11 +282,6 @@ namespace ka_ai_duka{
 
     void SetGameSideFields(lua_State* ls,  managed_types::GameSide& game_side)
     {
-        SetNewTable(ls, "player");
-        SetNewTable(ls, "enemies");
-        SetNewTable(ls, "bullets");
-        SetNewTable(ls, "items");
-        SetNewTable(ls, "exAttacks");
         SetNumber(ls, "roundWin", game_side.RoundWin());
         SetNumber(ls, "chargeType", game_side.ChargeType());
         SetNumber(ls, "score", game_side.Score());
@@ -370,7 +365,6 @@ namespace ka_ai_duka{
         }
         lua_pop(ls, 1);
     }
-
     void UpdateGameSide(lua_State* ls,  managed_types::GameSide& game_side, PlayerSide side)
     {
         int idx = side == Side_1P ? 1 : 2;
@@ -390,6 +384,7 @@ namespace ka_ai_duka{
         if(use_env){
             lua_getglobal(ls, "env");
             AddTableIfNotFound(ls, "game_sides", 2, 0);
+            lua_remove(ls, -2);
         }else{
             AddTableToGlobalIfNotFound(ls, "game_sides", 2, 0);
         }
@@ -500,5 +495,25 @@ namespace ka_ai_duka{
             lua_pushnumber(ls, monitor.GetRound());
             lua_setglobal(ls, "round");
         }
+    }
+    void UnsetGameSides(lua_State* ls) {
+        lua_getglobal(ls, "env");
+        lua_pushstring(ls, "game_sides");
+        lua_pushnil(ls);
+        lua_settable(ls, -3);
+        lua_settop(ls, 0);
+    }
+    /**
+     * LuaJITで動かすための対症療法的な関数。
+     * exportするときはグロ―バル変数のgame_sidesを更新し、sandboxでenv.game_sides = game_sidesとしている。
+     * 以降のAIManager.OnFrameUpdateではenv.game_sidesを更新する。
+     * 本家Luaではenv.game_sidesとグローバル変数game_sidesは同じオブジェクトを指しているが、
+     * LuaJITではこの2つが別のオブジェクトと解釈されているっぽい。
+     * いったんenv.game_sidesを再度アロケートすることでLuaスクリプト側から正しいgame_sidesオブジェクトが指されるようにする。
+     */
+    void ReallocateVariables(lua_State* ls, TH9Monitor& monitor)
+    {
+        UnsetGameSides(ls);
+        UpdateVariables(ls, monitor);
     }
 }
