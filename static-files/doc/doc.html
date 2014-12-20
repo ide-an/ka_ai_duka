@@ -4,13 +4,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <title>花AI塚ver 1.1 AIスクリプト ドキュメント</title>
+  <title>花AI塚ver 1.2 AIスクリプト ドキュメント</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="res/doc.css" type="text/css" />
 </head>
 <body>
 <div id="header">
-<h1 class="title">花AI塚ver 1.1 AIスクリプト ドキュメント</h1>
+<h1 class="title">花AI塚ver 1.2 AIスクリプト ドキュメント</h1>
 </div>
 <div id="TOC">
 <ul>
@@ -330,8 +330,13 @@
 <dd><p>現在有効な弾かどうかをブール値で表します。</p>
 このフィールドは以前の設計において必要だったのが惰性で残った感じの代物で、今後廃止される恐れがあります。
 </dd>
+<dt>Bullet.isErasable</dt>
+<dd>敵撃破時の爆風で消せる弾かどうかをブール値で表します。
+</dd>
+<dt>Bullet.hitBody</dt>
+<dd><p>弾の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は弾vs自機の衝突判定で用いるものです。</p>
+</dd>
 </dl>
-<p>Bullet.isErasable 敵撃破時の爆風で消せる弾かどうかをブール値で表します。 Bullet.hitBody : 弾の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は弾vs自機の衝突判定で用いるものです。</p>
 <h4 id="ExAttack">ExAttack</h4>
 <p>ExAttackオブジェクトはEXアタックによって発生する弾やメディの毒霧、四季映姫のなんかもやもやのやつなどに関する情報を表します。</p>
 <p>EXアタックによって発生する弾のすべてがExAttackオブジェクトで表されるとは限りません。 たとえば小野塚小町のEXアタックでは個々の弾はBulletオブジェクトで表され、弾源のみがExAttackオブジェクトで表されます。</p>
