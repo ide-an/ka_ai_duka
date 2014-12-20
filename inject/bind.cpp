@@ -496,13 +496,6 @@ namespace ka_ai_duka{
             lua_setglobal(ls, "round");
         }
     }
-    void UnsetGameSides(lua_State* ls) {
-        lua_getglobal(ls, "env");
-        lua_pushstring(ls, "game_sides");
-        lua_pushnil(ls);
-        lua_settable(ls, -3);
-        lua_settop(ls, 0);
-    }
     /**
      * LuaJITで動かすための対症療法的な関数。
      * exportするときはグロ―バル変数のgame_sidesを更新し、sandboxでenv.game_sides = game_sidesとしている。
@@ -511,9 +504,11 @@ namespace ka_ai_duka{
      * LuaJITではこの2つが別のオブジェクトと解釈されているっぽい。
      * いったんenv.game_sidesを再度アロケートすることでLuaスクリプト側から正しいgame_sidesオブジェクトが指されるようにする。
      */
-    void ReallocateVariables(lua_State* ls, TH9Monitor& monitor)
-    {
-        UnsetGameSides(ls);
-        UpdateVariables(ls, monitor);
+    void UnsetGameSides(lua_State* ls) {
+        lua_getglobal(ls, "env");
+        lua_pushstring(ls, "game_sides");
+        lua_pushnil(ls);
+        lua_settable(ls, -3);
+        lua_settop(ls, 0);
     }
 }

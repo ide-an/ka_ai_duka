@@ -85,7 +85,7 @@ namespace ka_ai_duka{
                 // この処理はタイミングに依存するらしく、スクリプトをdofileした直後ではなくCallMain直前でないといけないらしい。
                 // なお、一度指し直せば以後は問題ない。
                 if (should_refresh) {
-                    ReallocateVariables(lua_states[i], monitor);
+                    UnsetGameSides(lua_states[i]);
                 }
                 UpdateVariables(lua_states[i], monitor);
                 if(!sandbox::CallMain(lua_states[i])){
