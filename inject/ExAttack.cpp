@@ -69,7 +69,7 @@ namespace ka_ai_duka{
                 AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Tewi, 13.0f));
                 return true;
             }else if(func_addr == ex_func_addr.aya){
-                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Aya, 12.0f));
+                AddExAttack(attacks, new ExAttackAya(ex_attack, idgen.NewId()));
                 return true;
             }else if(func_addr == ex_func_addr.medicine){
                 AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Medicine, 64.0f));
@@ -141,7 +141,7 @@ namespace ka_ai_duka{
         {
             hittable_object->SetX(X());
             hittable_object->SetY(Y());
-            hittable_object->SetRadius(ex_attack.feature->radius * 0.8f);
+            hittable_object->SetRadius(ex_attack.feature->reisen_radius_or_aya_offset * 0.8f);
         }
         //Cirno
         void ExAttackCirno::Update(void)
@@ -151,12 +151,23 @@ namespace ka_ai_duka{
             hittable_object->SetWidth(width);
             hittable_object->SetHeight(height);
         }
+        //Aya
+        float ExAttackAya::X(void) const
+        {
+            float offset = ex_attack.feature->reisen_radius_or_aya_offset * cos(ex_attack.feature->yuuka_or_aya_info.ex_aya_offset_angle);
+            return ExAttack::X() + offset;
+        }
+        float ExAttackAya::Y(void) const
+        {
+            float offset = ex_attack.feature->reisen_radius_or_aya_offset * sin(ex_attack.feature->yuuka_or_aya_info.ex_aya_offset_angle);
+            return ExAttack::Y() + offset;
+        }
         //Yuuka
         void ExAttackYuuka::Update(void)
         {
             hittable_object->SetX(X());
             hittable_object->SetY(Y());
-            hittable_object->SetRadius(ex_attack.feature->ex_yuuka_type >= 2 ? 18.0f : 28.0f);
+            hittable_object->SetRadius(ex_attack.feature->yuuka_or_aya_info.ex_yuuka_type >= 2 ? 18.0f : 28.0f);
         }
     }
 }

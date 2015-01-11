@@ -187,6 +187,16 @@ namespace ka_ai_duka {
                 return ex_attack.feature->velocity_mystia.y;
             }
         };
+        class ExAttackAya : public ExAttackCircle
+        {
+        public:
+            ExAttackAya(raw_types::ExAttack &ex_attack, unsigned int id)
+                : ExAttackCircle(ex_attack, id, Aya, 12.0f)
+            {
+            }
+            float X() const;
+            float Y() const;
+        };
         class ExAttackYuuka : public ExAttackCircle
         {
         public:
