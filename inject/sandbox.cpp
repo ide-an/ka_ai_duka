@@ -6,7 +6,7 @@ namespace ka_ai_duka{
         bool Initialize(::lua_State* ls)
         {
             const char * src = 
-                "jit.off();\n"//disable jit
+                "jit.on();\n"//disable jit
                 "jit.opt.start(3, '-fold');\n"
                 "env = {};\n"
                 "local function validate_path(filename)\n"
