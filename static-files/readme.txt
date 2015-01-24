@@ -1,5 +1,5 @@
 花AI塚 ～ 東方花映塚AI自作ツール
-Version: 1.3
+Version: 1.4
 Author: いで(@ide_an)
 対応バージョン: 東方花映塚ver 1.50a
                 東方花映塚ver 1.00
@@ -84,6 +84,10 @@ Author: いで(@ide_an)
   割とつらい環境でもぼちぼち動きます。
 
 8. 更新履歴
+
+  2015/01/24 ver1.4リリース
+    修正
+      ver1.2およびver1.3でtable.remove, table.insert, selectが正しく動作しなくなっていたのを修正。
 
   2015/01/12 ver1.3リリース
     修正
