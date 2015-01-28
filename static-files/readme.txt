@@ -1,5 +1,5 @@
 花AI塚 ～ 東方花映塚AI自作ツール
-Version: 1.4
+Version: 1.5
 Author: いで(@ide_an)
 対応バージョン: 東方花映塚ver 1.50a
                 東方花映塚ver 1.00
@@ -84,6 +84,10 @@ Author: いで(@ide_an)
   割とつらい環境でもぼちぼち動きます。
 
 8. 更新履歴
+
+  2015/01/29 ver1.5リリース
+    修正
+      ver1.4でこっそりJIT有効化したのがバグを引き起こした(https://bitbucket.org/ide_an/ka_ai_duka/issue/7)ので粛々と無効化。
 
   2015/01/24 ver1.4リリース
     修正

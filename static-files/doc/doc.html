@@ -4,13 +4,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <title>花AI塚ver 1.4 AIスクリプト ドキュメント</title>
+  <title>花AI塚ver 1.5 AIスクリプト ドキュメント</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="res/doc.css" type="text/css" />
 </head>
 <body>
 <div id="header">
-<h1 class="title">花AI塚ver 1.4 AIスクリプト ドキュメント</h1>
+<h1 class="title">花AI塚ver 1.5 AIスクリプト ドキュメント</h1>
 </div>
 <div id="TOC">
 <ul>
@@ -54,11 +54,11 @@
 </ul></li>
 </ul>
 </div>
-<h2 id="概要">概要</h2>
+<h2 id="概要"><a href="#概要">概要</a></h2>
 <p>花AI塚のAIはLua5.1(<a href="http://www.lua.org/">本家サイト</a>、<a href="http://milkpot.sakura.ne.jp/lua/lua51_manual_ja.html">日本語版リファレンス</a>)で記述します。 花映塚の対戦が開始するとスクリプトがロードされ、以後対戦が終了するまで毎フレームmain関数が呼び出されます。 大戦終了後はスクリプトがアンロードされます。</p>
-<h2 id="lua5.1標準ライブラリからの制限">Lua5.1標準ライブラリからの制限</h2>
+<h2 id="lua5.1標準ライブラリからの制限"><a href="#lua5.1標準ライブラリからの制限">Lua5.1標準ライブラリからの制限</a></h2>
 <p>セキュリティ上の都合により、提供する標準ライブラリを制限しています。</p>
-<h3 id="使用できないライブラリ">使用できないライブラリ</h3>
+<h3 id="使用できないライブラリ"><a href="#使用できないライブラリ">使用できないライブラリ</a></h3>
 <p>以下の関数はAIスクリプト内で使用できません。</p>
 <ul>
 <li>collectgarbage</li>
@@ -99,7 +99,7 @@
 </ul></li>
 <li>debugモジュールのすべて</li>
 </ul>
-<h3 id="使用できるが制限されているライブラリ">使用できるが、制限されているライブラリ</h3>
+<h3 id="使用できるが制限されているライブラリ"><a href="#使用できるが制限されているライブラリ">使用できるが、制限されているライブラリ</a></h3>
 <p>以下の関数はAIスクリプト内で使用できますが、本来の関数よりも機能が制限されています。</p>
 <ul>
 <li>dofile</li>
@@ -122,7 +122,7 @@
 </ul>
 <p>なお、これらの関数で指定したファイルパスはAIスクリプトのある場所からの相対パスとして解釈されます。 したがって、これらの関数はAIスクリプトのあるフォルダ内のファイルへのみアクセスできます。</p>
 <p>また、dofileおよびloadfileでバイトコードをロードすることはできません。</p>
-<h2 id="api">API</h2>
+<h2 id="api"><a href="#api">API</a></h2>
 <p>花映塚のゲーム情報を取得したり、キー入力を送信するための関数やオブジェクトがAIスクリプトへ提供されます。</p>
 <p>提供されるものとしては以下のものがあります。</p>
 <ul>
@@ -146,8 +146,8 @@
 <li><a href="#CharacterType">CharacterType</a>.*</li>
 </ul></li>
 </ul>
-<h3 id="関数">関数</h3>
-<h4 id="sendKeys">sendKeys(key_state)</h4>
+<h3 id="関数"><a href="#関数">関数</a></h3>
+<h4 id="sendKeys"><a href="#sendKeys">sendKeys(key_state)</a></h4>
 <p>現在プレイしている自機に対するキー入力を花映塚へ送ります。 <code>key_state</code>には整数値を指定し、各ビットがそれぞれどのキーを押すかを表します。</p>
 <p>最下位ビットからそれぞれ</p>
 <ul>
@@ -161,19 +161,19 @@
 <li>8bit目: →キー(右移動)</li>
 </ul>
 <p>となっています。</p>
-<h4 id="hitTest">hitTest(hitbody_a, hitbody_b)</h4>
+<h4 id="hitTest"><a href="#hitTest">hitTest(hitbody_a, hitbody_b)</a></h4>
 <p>2つの<a href="#HitBody">HitBody</a>オブジェクト<code>hitbody_a</code>と<code>hitbody_b</code>の当たり判定処理を行います。 <code>hitbody_a</code>と<code>hitbody_b</code>とがぶつかっている時はtrueを、そうでなければfalseを返します。</p>
-<h3 id="グローバル変数">グローバル変数</h3>
-<h4 id="game_sides">game_sides</h4>
+<h3 id="グローバル変数"><a href="#グローバル変数">グローバル変数</a></h3>
+<h4 id="game_sides"><a href="#game_sides">game_sides</a></h4>
 <p>2つの<a href="#GameSide">GameSide</a> からなる配列で、<code>game_sides[1]</code>は1P側の、<code>game_sides[2]</code>は2P側のゲーム状態を表します。 このグローバル変数は毎フレーム更新されます。</p>
 <p>この変数を経由して得られるすべての値は次フレームで破壊的に変更される可能性があります。 例えばある時点で<code>game_sides[1].enemies[1]</code>が敵Aを表していたとして、 次のフレームでは敵Bのデータに書き換えられている可能性があります。 そのため<code>game_sides</code>のフィールドへの参照を保存して次フレームで参照するのは<em>非推奨</em>です。 ある時点でのデータを次フレームに渡したい場合は深いコピーを行うなどして下さい。</p>
-<h4 id="player_side">player_side</h4>
+<h4 id="player_side"><a href="#player_side">player_side</a></h4>
 <p>この変数はこのAIスクリプトが1P側か2P側かを表します。 1P側ならば</p>
 <pre><code>player_side == 1</code></pre>
 <p>2P側ならば</p>
 <pre><code>player_side == 2</code></pre>
 <p>です。</p>
-<h4 id="difficulty">difficulty</h4>
+<h4 id="difficulty"><a href="#difficulty">difficulty</a></h4>
 <p>この変数は現在のゲームの難易度を表します。</p>
 <table>
 <col width="12%" />
@@ -207,10 +207,10 @@
 </tr>
 </tbody>
 </table>
-<h4 id="round">round</h4>
+<h4 id="round"><a href="#round">round</a></h4>
 <p>この変数は対戦開始からの経過ラウンド数を表します。</p>
-<h3 id="オブジェクト">オブジェクト</h3>
-<h4 id="GameSide">GameSide</h4>
+<h3 id="オブジェクト"><a href="#オブジェクト">オブジェクト</a></h3>
+<h4 id="GameSide"><a href="#GameSide">GameSide</a></h4>
 <p>GameSideオブジェクトは対戦の各サイドのゲーム状態を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
 <dl>
 <dt>GameSide.player</dt>
@@ -238,7 +238,7 @@
 <dd>現在のチャージタイプを表します。 <a href="#ChargeType">ChargeType</a> の定数のいずれかの値を取ります。
 </dd>
 </dl>
-<h4 id="Player">Player</h4>
+<h4 id="Player"><a href="#Player">Player</a></h4>
 <p>Playerオブジェクトは自機に関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
 <dl>
 <dt>Player.x / Player.y</dt>
@@ -278,7 +278,7 @@
 <dd>これらはいずれも<a href="#HitBody">HitBody</a>オブジェクトで、自機の当たり判定を表します。 弾や敵、EXアタックとの当たり判定処理にはhitBodyRectまたはhitBodyCircleを使用します。 hitBodyRectは矩形の当たり判定、hitBodyCircleは円形の当たり判定です。 一方、hitBodyForItemはアイテムとの当たり判定処理で使用する当たり判定です。
 </dd>
 </dl>
-<h4 id="Enemy">Enemy</h4>
+<h4 id="Enemy"><a href="#Enemy">Enemy</a></h4>
 <p>Enemyオブジェクトは個々の敵に関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
 <dl>
 <dt>Enemy.id</dt>
@@ -314,7 +314,7 @@
 <dd><p>敵の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は敵vs自機の衝突判定で用いるものです。</p>
 </dd>
 </dl>
-<h4 id="Bullet">Bullet</h4>
+<h4 id="Bullet"><a href="#Bullet">Bullet</a></h4>
 <p>Bulletオブジェクトは個々の弾やレーザーに関する情報を表します。 EXアタックによって発生する弾のいくつかについては<a href="#ExAttack">ExAttack</a>オブジェクトとして扱われます。 Bulletオブジェクトは以下のフィールドを持ちます。</p>
 <dl>
 <dt>Bullet.id</dt>
@@ -337,7 +337,7 @@
 <dd><p>弾の当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。 この当たり判定は弾vs自機の衝突判定で用いるものです。</p>
 </dd>
 </dl>
-<h4 id="ExAttack">ExAttack</h4>
+<h4 id="ExAttack"><a href="#ExAttack">ExAttack</a></h4>
 <p>ExAttackオブジェクトはEXアタックによって発生する弾やメディの毒霧、四季映姫のなんかもやもやのやつなどに関する情報を表します。</p>
 <p>EXアタックによって発生する弾のすべてがExAttackオブジェクトで表されるとは限りません。 たとえば小野塚小町のEXアタックでは個々の弾はBulletオブジェクトで表され、弾源のみがExAttackオブジェクトで表されます。</p>
 <p>ExAttackオブジェクトは以下のフィールドを持ちます。</p>
@@ -368,7 +368,7 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 <p><strong>注意</strong> <code>hittable = false</code>のときはhitBodyが<code>nil</code>であるケースがあります。</p>
 </dd>
 </dl>
-<h4 id="Item">Item</h4>
+<h4 id="Item"><a href="#Item">Item</a></h4>
 <p>Itemオブジェクトは画面中のアイテムに関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
 <dl>
 <dt>Item.id</dt>
@@ -391,7 +391,7 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 <dd><p>アイテムの当たり判定を表す<a href="#HitBody">HitBody</a>オブジェクトです。</p>
 </dd>
 </dl>
-<h4 id="HitBody">HitBody</h4>
+<h4 id="HitBody"><a href="#HitBody">HitBody</a></h4>
 <p>HitBodyオブジェクトは当たり判定に関する情報を表します。 このオブジェクトは以下のフィールドを持ちます。</p>
 <dl>
 <dt>HitBody.type</dt>
@@ -467,8 +467,8 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 <div class="figure">
 <img src="res/hittypes.png" alt="当たり判定の形状一覧" /><p class="caption">当たり判定の形状一覧</p>
 </div>
-<h3 id="定数群">定数群</h3>
-<h4 id="ExAttackType">ExAttackType</h4>
+<h3 id="定数群"><a href="#定数群">定数群</a></h3>
+<h4 id="ExAttackType"><a href="#ExAttackType">ExAttackType</a></h4>
 <p>EXアタックの種別を表す定数群です。</p>
 <table>
 <tbody>
@@ -554,7 +554,7 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 </tr>
 </tbody>
 </table>
-<h4 id="ItemType">ItemType</h4>
+<h4 id="ItemType"><a href="#ItemType">ItemType</a></h4>
 <p>アイテムの種別を表す定数群です。</p>
 <table>
 <tbody>
@@ -576,7 +576,7 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 </tr>
 </tbody>
 </table>
-<h4 id="HitType">HitType</h4>
+<h4 id="HitType"><a href="#HitType">HitType</a></h4>
 <p>当たり判定の種別を表す定数群です。</p>
 <table>
 <tbody>
@@ -594,7 +594,7 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 </tr>
 </tbody>
 </table>
-<h4 id="CharacterType">CharacterType</h4>
+<h4 id="CharacterType"><a href="#CharacterType">CharacterType</a></h4>
 <p>自機のキャラクター種別を表す定数群です。</p>
 <table>
 <tbody>
@@ -664,7 +664,7 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 </tr>
 </tbody>
 </table>
-<h4 id="ChargeType">ChargeType</h4>
+<h4 id="ChargeType"><a href="#ChargeType">ChargeType</a></h4>
 <p>チャージタイプを表す定数群です。</p>
 <table>
 <tbody>
@@ -678,14 +678,14 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 </tr>
 </tbody>
 </table>
-<h2 id="雑多">雑多</h2>
-<h3 id="座標系について">座標系について</h3>
+<h2 id="雑多"><a href="#雑多">雑多</a></h2>
+<h3 id="座標系について"><a href="#座標系について">座標系について</a></h3>
 <p>自機の位置や弾の速度など、ゲームに関する位置情報はすべて以下の座標系でのものです。</p>
 <div class="figure">
 <img src="res/axis.png" alt="ゲーム状態に関する座標系" /><p class="caption">ゲーム状態に関する座標系</p>
 </div>
 <p>この座標系はY軸が下向きかつ画面上部でYが0であり、X軸が右向きかつ各陣の画面中央でXが0である座標系です。</p>
-<h3 id="当たり判定処理について">当たり判定処理について</h3>
+<h3 id="当たり判定処理について"><a href="#当たり判定処理について">当たり判定処理について</a></h3>
 <p>花映塚において当たり判定処理は</p>
 <ul>
 <li>矩形 vs 矩形</li>
@@ -693,7 +693,7 @@ EXアタックは必ずしも有効な当たり判定を持つとは限りませ
 <li>矩形 vs 回転可能な矩形</li>
 </ul>
 <p>のいずれかを行うことで実現しています。 <a href="#Player">Player</a>オブジェクトで述べたように、自機には円形と矩形の両方の当たり判定がありますが、 円形の当たり判定(Player.hitBodyCircle)が用いられるのは円形の当たり判定との当たり判定処理を行うときだけで、それ以外の当たり判定では矩形の当たり判定を用います。</p>
-<h3 id="tips">Tips</h3>
+<h3 id="tips"><a href="#tips">Tips</a></h3>
 <ul>
 <li><code>require</code>は使用できませんが、<code>dofile</code>が使用できるのでこれを用いてスクリプトファイルを分割することができます。</li>
 <li><a href="#Enemy">Enemy</a>や<a href="#Bullet">Bullet</a>、<a href="#Item">Item</a>や<a href="#ExAttack">ExAttack</a>が持つ<code>id</code>フィールドはこれらのオブジェクト全体においてユニークです。例えば、あるEnemyオブジェクトと別のあるBulletオブジェクトが同じidを持つ、ということは起こりません。</li>
