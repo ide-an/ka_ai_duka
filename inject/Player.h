@@ -107,20 +107,20 @@ namespace ka_ai_duka{
             }
             void Update(void)
             {
-				//矩形
+                //矩形
                 hittable_rect->SetX(X());
                 hittable_rect->SetY(Y());
                 hittable_rect->SetWidth(player.rect_size1.x);
                 hittable_rect->SetHeight(player.rect_size1.y);
-				//円
+                //円
                 hittable_circle->SetX(X());
                 hittable_circle->SetY(Y());
                 hittable_circle->SetRadius(player.feature->radius);
-				//対アイテム
-				hittable_for_item->SetX(X());
-				hittable_for_item->SetY(Y());
-				hittable_for_item->SetWidth(player.rect_size3.x);
-				hittable_for_item->SetHeight(player.rect_size3.y);
+                //対アイテム
+                hittable_for_item->SetX(X());
+                hittable_for_item->SetY(Y());
+                hittable_for_item->SetWidth(player.rect_size3.x);
+                hittable_for_item->SetHeight(player.rect_size3.y);
             }
         };
     }
