@@ -68,25 +68,15 @@ namespace ka_ai_duka{
                     ::lua_close(ls);
                 }else{
                     lua_states[i] = ls;
-                    should_refresh = true;
                 }
             }
         }
-        
     }
 
     void AIManager::OnFrameUpdate(TH9Monitor &monitor)
     {
         for(int i=0;i<2;i++){
             if(lua_states[i]){
-                // LuaJITでは、スクリプトから参照できるgame_sidesとC++から参照できるgame_sidesとで指している先が異なってしまっている
-                // (luaではExportVariablesで生成したインスタンスを指す一方、C++側では別のインスタンスを指しており、game_sides[i]==nilになっている)
-                // これを避けるため、最初のCallMain前にgame_sidesをnullクリアし、改めてgame_sidesインスタンスを生成し、双方が同じインスタンスを指すようにしている。
-                // この処理はタイミングに依存するらしく、スクリプトをdofileした直後ではなくCallMain直前でないといけないらしい。
-                // なお、一度指し直せば以後は問題ない。
-                if (should_refresh) {
-                    UnsetGameSides(lua_states[i]);
-                }
                 UpdateVariables(lua_states[i], monitor);
                 if(!sandbox::CallMain(lua_states[i])){
                     std::ostringstream os;
@@ -99,7 +89,6 @@ namespace ka_ai_duka{
                 }
             }
         }
-        should_refresh = false;
     }
 
     void AIManager::OnGameEnd(TH9Monitor &monitor)
