@@ -72,7 +72,7 @@ namespace ka_ai_duka{
                 AddExAttack(attacks, new ExAttackAya(ex_attack, idgen.NewId()));
                 return true;
             }else if(func_addr == ex_func_addr.medicine){
-                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Medicine, 64.0f));
+                AddExAttack(attacks, new ExAttackNoMove(ex_attack, idgen.NewId(), Medicine, 64.0f));
                 return true;
             }else if(func_addr == ex_func_addr.yuuka){
                 AddExAttack(attacks, new ExAttackYuuka(ex_attack, idgen.NewId()));
@@ -81,7 +81,7 @@ namespace ka_ai_duka{
                 AddExAttack(attacks, new ExAttackUnhittable(ex_attack, idgen.NewId(), Komachi));
                 return true;
             }else if(func_addr == ex_func_addr.eiki){
-                AddExAttack(attacks, new ExAttackCircle(ex_attack, idgen.NewId(), Eiki, 32.0f));
+                AddExAttack(attacks, new ExAttackNoMove(ex_attack, idgen.NewId(), Eiki, 32.0f));
                 return true;
             }
             //UNREACHABLE

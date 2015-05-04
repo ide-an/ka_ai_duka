@@ -131,7 +131,7 @@ namespace ka_ai_duka {
             }
             float X() const;//ç–é‚³‚ñ‚ÌEX‚Í1‚Â‚Ì‚ ‚ê‚©‚ç5ŒÂ‚Ì’e‚ª¶‚Ü‚ê‚é
             float Y() const;
-            
+
             virtual bool Hittable(void) const
             {
                 return ex_attack.feature->is_local == 0;//Å‰‚©‚ç(‚¾‚¯)—LŒø
@@ -205,6 +205,28 @@ namespace ka_ai_duka {
             {
             }
             void Update(void);
+        };
+        class ExAttackNoMove : public ExAttackCircle
+        {
+        public:
+            ExAttackNoMove(raw_types::ExAttack &ex_attack, unsigned int id, ExAttackType ex_type, float radius)
+                : ExAttackCircle(ex_attack, id, ex_type, radius)
+            {
+            }
+            float Vx() const
+            {
+                if (ex_attack.feature->is_local) {
+                    return 0.0f;
+                }
+                return ExAttackCircle::Vx();
+            }
+            float Vy() const
+            {
+                if (ex_attack.feature->is_local) {
+                    return 0.0f;
+                }
+                return ExAttackCircle::Vy();
+            }
         };
 
         bool ExAttackFactory(
