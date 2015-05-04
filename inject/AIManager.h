@@ -10,8 +10,6 @@ namespace ka_ai_duka{
         unsigned int frame;
         std::string filenames[2];
         ::lua_State* lua_states[2];
-        //LuaJITで起きるバグ(Luaから参照されるgame_sidesが新しい状態に更新されなくなる)の対応のため。
-        bool should_refresh;
         bool ShouldRunAI(int player_side, TH9Monitor &monitor)//1P: 0, 2P: 1
         {
             return !filenames[player_side].empty() && !monitor.GetGameSide((PlayerSide) player_side)->Player()->IsNativeAI();

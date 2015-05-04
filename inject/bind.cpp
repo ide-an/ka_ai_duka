@@ -4,7 +4,7 @@
 #include <boost\shared_ptr.hpp>
 
 namespace ka_ai_duka{
-
+    
 
     void SendKeys1P(KeyState key_state)
     {
@@ -365,6 +365,7 @@ namespace ka_ai_duka{
         }
         lua_pop(ls, 1);
     }
+
     void UpdateGameSide(lua_State* ls,  managed_types::GameSide& game_side, PlayerSide side)
     {
         int idx = side == Side_1P ? 1 : 2;
@@ -495,20 +496,5 @@ namespace ka_ai_duka{
             lua_pushnumber(ls, monitor.GetRound());
             lua_setglobal(ls, "round");
         }
-    }
-    /**
-     * LuaJITで動かすための対症療法的な関数。
-     * exportするときはグロ―バル変数のgame_sidesを更新し、sandboxでenv.game_sides = game_sidesとしている。
-     * 以降のAIManager.OnFrameUpdateではenv.game_sidesを更新する。
-     * 本家Luaではenv.game_sidesとグローバル変数game_sidesは同じオブジェクトを指しているが、
-     * LuaJITではこの2つが別のオブジェクトと解釈されているっぽい。
-     * いったんenv.game_sidesを再度アロケートすることでLuaスクリプト側から正しいgame_sidesオブジェクトが指されるようにする。
-     */
-    void UnsetGameSides(lua_State* ls) {
-        lua_getglobal(ls, "env");
-        lua_pushstring(ls, "game_sides");
-        lua_pushnil(ls);
-        lua_settable(ls, -3);
-        lua_settop(ls, 0);
     }
 }
