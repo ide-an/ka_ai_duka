@@ -20,8 +20,8 @@ namespace ka_ai_duka{
                     new HittableRect(
                     player.position.x,
                     player.position.y,
-                    player.rect_size1.x,
-                    player.rect_size1.y));
+                    player.rect_size1.x * 2,
+                    player.rect_size1.y * 2));
                 hittable_circle = boost::shared_ptr<HittableCircle>(
                     new HittableCircle(
                     player.position.x,
@@ -31,8 +31,8 @@ namespace ka_ai_duka{
                     new HittableRect(
                     player.position.x,
                     player.position.y,
-                    player.rect_size3.x,
-                    player.rect_size3.y));
+                    player.rect_size3.x * 2,
+                    player.rect_size3.y * 2));
             }
             ~Player(void)
             {
@@ -110,8 +110,8 @@ namespace ka_ai_duka{
                 //矩形
                 hittable_rect->SetX(X());
                 hittable_rect->SetY(Y());
-                hittable_rect->SetWidth(player.rect_size1.x);
-                hittable_rect->SetHeight(player.rect_size1.y);
+                hittable_rect->SetWidth(player.rect_size1.x * 2);
+                hittable_rect->SetHeight(player.rect_size1.y * 2);
                 //円
                 hittable_circle->SetX(X());
                 hittable_circle->SetY(Y());
@@ -119,8 +119,8 @@ namespace ka_ai_duka{
                 //対アイテム
                 hittable_for_item->SetX(X());
                 hittable_for_item->SetY(Y());
-                hittable_for_item->SetWidth(player.rect_size3.x);
-                hittable_for_item->SetHeight(player.rect_size3.y);
+                hittable_for_item->SetWidth(player.rect_size3.x * 2);
+                hittable_for_item->SetHeight(player.rect_size3.y * 2);
             }
         };
     }

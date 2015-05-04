@@ -56,9 +56,9 @@ namespace ka_ai_duka {
             struct Rect3D rect1;
             struct Rect3D rect2;
             struct Rect3D rect3; // vs Item
-            struct Vector3D rect_size1;//0x1CA8
-            struct Vector3D rect_size2;//0x1CB4
-            struct Vector3D rect_size3;//0x1CC0
+            struct Vector3D rect_size1;//0x1CA8 実際には2倍のサイズ
+            struct Vector3D rect_size2;//0x1CB4 実際には2倍のサイズ
+            struct Vector3D rect_size3;//0x1CC0 実際には2倍のサイズ
             char unknown5[0x30338 - 0x1CC0 - sizeof(Vector3D)];
             struct PlayerFeature* feature;
             char unknown6[0x30384 - 0x30338 - sizeof(PlayerFeature *)];
