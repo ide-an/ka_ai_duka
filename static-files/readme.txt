@@ -1,5 +1,5 @@
 花AI塚 ～ 東方花映塚AI自作ツール
-Version: 1.5
+Version: 1.6
 Author: いで(@ide_an)
 対応バージョン: 東方花映塚ver 1.50a
                 東方花映塚ver 1.00
@@ -68,8 +68,10 @@ Author: いで(@ide_an)
 
   Q. バグ踏んだ。
   Q. 要望がある。
-  A. 報告お願いします。幻想板ツールスレあたりに投下すれば反応します。
-     Twitterでも可です。@ide_anに投げれば反応します。
+  A. 報告お願いします。連絡方法は以下の3種類があります。
+      * issueトラッカ https://bitbucket.org/ide_an/ka_ai_duka/issues
+      * 東方プレイヤー板のツールスレに投げる
+      * Twitterで@ide_anに投げる
 
 6. TODO
 
@@ -84,6 +86,12 @@ Author: いで(@ide_an)
   割とつらい環境でもぼちぼち動きます。
 
 8. 更新履歴
+
+  2015/05/05 ver1.6リリース
+    修正
+      LuaJITから本家Lua実装に戻す。パフォーマンスが悪化するが標準ライブラリ系のバグが直る。
+      自機のhitBodyRectおよびhitBodyForItemのサイズ取得ミスを修正(hitBodyRectが実際より大きく、hitBodyForItemが実際より小さくなっていた)。
+      メディスンと四季映姫のEXアタックの速度取得ミスを修正。
 
   2015/01/29 ver1.5リリース
     修正
