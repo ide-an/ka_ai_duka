@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include <windows.h>
 /////////////////////////////////////////////////////////////////////////////
 // Neutral resources
 
@@ -35,8 +36,8 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,146,181,50,14
     PUSHBUTTON      "キャンセル",IDCANCEL,198,181,50,14
     GROUPBOX        "AI開発者オプション",IDC_STATIC,198,0,186,174
-    CONTROL         "スクリプトからのスナップショット取得を許可",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,15,172,8
-    CONTROL         "リプレイ再生中もAIを動かす",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,51,172,8
+    CONTROL         "スクリプトからのスナップショット取得を許可",IDC_ENABLE_SNAPTSHOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,15,172,8
+    CONTROL         "リプレイ再生中もAIを動かす",IDC_DRY_RUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,51,172,8
 END
 
 
@@ -50,8 +51,7 @@ GUIDELINES DESIGNINFO
 BEGIN
     "IDD_DIALOG1", DIALOG
     BEGIN
-        RIGHTMARGIN, 200
-        BOTTOMMARGIN, 200
+        RIGHTMARGIN, 384
     END
 END
 #endif    // APSTUDIO_INVOKED

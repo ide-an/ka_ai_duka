@@ -109,6 +109,8 @@ void InitUI(HWND hwnd, ka_ai_duka::common::Config &conf)
     ChangeScriptPath(hwnd, conf.ScriptPath1P(), ID_EDIT_SCRIPTPATH_1P);
     ChangeScriptPath(hwnd, conf.ScriptPath2P(), ID_EDIT_SCRIPTPATH_2P);
     ChangeScriptPath(hwnd, conf.Th09ExePath(), ID_EDIT_EXEPATH);
+    SetChecked(hwnd, conf.EnableSnapshot(), IDC_ENABLE_SNAPTSHOT);
+    SetChecked(hwnd, conf.EnableRunWhileReplay(), IDC_DRY_RUN);
 }
 
 void SetConfigFromUI(HWND hwnd, ka_ai_duka::common::Config &conf)
@@ -124,6 +126,8 @@ void SetConfigFromUI(HWND hwnd, ka_ai_duka::common::Config &conf)
     std::string exe_path;
     GetScriptPath(hwnd, exe_path, ID_EDIT_EXEPATH);
     conf.SetTh09ExePath(exe_path);
+    conf.SetEnableSnapshot(IsChecked(hwnd, IDC_ENABLE_SNAPTSHOT));
+    conf.SetEnableRunWhileReplay(IsChecked(hwnd, IDC_DRY_RUN));
 }
 
 bool RunExe(void)
@@ -187,6 +191,12 @@ BOOL CALLBACK DialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 case ID_SELECTFILE_EXE:
                     OnSelectFileClick(hWnd, ID_EDIT_EXEPATH, true);
                     break;
+                case IDC_ENABLE_SNAPTSHOT:
+                    // Nothing to do
+                    break;
+                case IDC_DRY_RUN:
+                    // Nothing to do
+                    break;
                 }
                 break;
             }
@@ -215,9 +225,11 @@ int APIENTRY WinMain(
         //iniファイルがうまく読めなければデフォルト設定とする
         conf.SetEnable1P(false);
         conf.SetEnable2P(false);
-        conf.SetEnable1P("");
-        conf.SetEnable2P("");
+        conf.SetScriptPath1P("");
+        conf.SetScriptPath2P("");
         conf.SetTh09ExePath("");
+        conf.SetEnableSnapshot(false);
+        conf.SetEnableRunWhileReplay(false);
     }
     auto res = DialogBoxA(hInstance, "IDD_DIALOG1", NULL, DialogProc);
     if(res ==-1){
