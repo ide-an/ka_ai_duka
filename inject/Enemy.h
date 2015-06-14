@@ -61,7 +61,7 @@ namespace ka_ai_duka{
             }
             bool IsLily() const
             {
-                return (enemy.status & 0x00002400) != 0;
+                return ((enemy.status & 0x00002400) != 0) && !IsBoss();
             }
             //’e‚ğİ’u‚·‚é‚¾‚¯‚Å“–‚½‚è”»’è‚ğ‚½‚È‚¢‚à‚Ì‚È‚Ç
             bool IsPseudoEnemy() const
