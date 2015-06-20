@@ -10,6 +10,8 @@ namespace ka_ai_duka{
             bool enable_1P;
             bool enable_2P;
             std::string th09_exe_path;
+            bool enable_snapshot;
+            bool enable_run_while_replay;
         public:
             bool Enable1P() const
             {
@@ -51,6 +53,22 @@ namespace ka_ai_duka{
             void SetTh09ExePath(const std::string& str)
             {
                 th09_exe_path = str;
+            }
+            bool EnableSnapshot() const
+            {
+                return enable_snapshot;
+            }
+            void SetEnableSnapshot(bool b)
+            {
+                enable_snapshot = b;
+            }
+            bool EnableRunWhileReplay() const
+            {
+                return enable_run_while_replay;
+            }
+            void SetEnableRunWhileReplay(bool b)
+            {
+                enable_run_while_replay = b;
             }
             void Load(const std::string &filepath);
             void Save(const std::string &filepath);

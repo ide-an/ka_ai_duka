@@ -8,6 +8,8 @@ namespace ka_ai_duka{
         const char* key_script_path = "script_path";
         const char* key_enabled = "enabled";
         const char* key_exe_path = "exe_path";
+        const char* key_enable_snapshot = "snapshot";
+        const char* key_enable_run_while_replay = "run_while_replay";
         const char* sec_1p = "1p";
         const char* sec_2p = "2p";
         const char* sec_common = "common";
@@ -67,6 +69,8 @@ namespace ka_ai_duka{
                 script_path_2P = ReadIniString(sec_2p, key_script_path, "", file_path.c_str());
                 enable_2P = ReadIniBool(sec_2p, key_enabled, false, file_path.c_str());
                 th09_exe_path = ReadIniString(sec_common, key_exe_path, "", file_path.c_str());
+                enable_snapshot = ReadIniBool(sec_common, key_enable_snapshot, false, file_path.c_str());
+                enable_run_while_replay = ReadIniBool(sec_common, key_enable_run_while_replay, false, file_path.c_str());
             }else{
                 std::ostringstream os;
                 os << "iniファイルが見つかりません。" << std::endl;
@@ -84,6 +88,8 @@ namespace ka_ai_duka{
             WriteIniString(sec_2p, key_script_path, script_path_2P, file_path.c_str());
             WriteIniBool(sec_2p, key_enabled, enable_2P, file_path.c_str());
             WriteIniString(sec_common, key_exe_path, th09_exe_path, file_path.c_str());
+            WriteIniBool(sec_common, key_enable_snapshot, enable_snapshot, file_path.c_str());
+            WriteIniBool(sec_common, key_enable_run_while_replay, enable_run_while_replay, file_path.c_str());
             FlushIni(file_path.c_str());
         }
 
