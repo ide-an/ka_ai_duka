@@ -103,7 +103,7 @@ namespace ka_ai_duka{
                 "io.type\n"
                 "os.clock os.date os.difftime os.time\n"
                 "\n"
-                "game_sides player_side round difficulty sendKeys hitTest\n"
+                "game_sides player_side round difficulty sendKeys hitTest saveSnapshot\n"
                 "HitType ItemType ExAttackType CharacterType ChargeType\n"
                 "]];\n"
                 "for s in string.gmatch(safe_lib, '[a-zA-Z0-9_%.]+') do\n"

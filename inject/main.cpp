@@ -31,6 +31,7 @@ void Attach(HANDLE hModule){
         assert(0);
         break;
     }
+    monitor->SetCanSaveSnapshot(conf.EnableSnapshot());
     ai_manager = new AIManager();
     if(conf.Enable1P()){
         ai_manager->SetFilename1P(conf.ScriptPath1P());

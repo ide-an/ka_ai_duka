@@ -35,6 +35,14 @@ namespace ka_ai_duka{
         return 0;
     }
 
+    int Lua_SaveSnapshot(lua_State* ls)
+    {
+        //if (monitor->CanSaveSnapshot()){
+            monitor->SaveSnapshot();
+        //}
+        return 0;
+    }
+
     double GetAsNumber(lua_State* ls, const char* key, int idx)
     {
         lua_pushstring(ls, key);
@@ -101,6 +109,8 @@ namespace ka_ai_duka{
         lua_setglobal(ls, "sendKeys");
         lua_pushcfunction(ls, Lua_HitTest);
         lua_setglobal(ls, "hitTest");
+        lua_pushcfunction(ls, Lua_SaveSnapshot);
+        lua_setglobal(ls, "saveSnapshot");
     }
     
     //lua utilities

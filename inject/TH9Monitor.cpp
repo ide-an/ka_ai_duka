@@ -102,6 +102,17 @@ namespace ka_ai_duka{
         key_states[side].start_leaving_keys = changed_keys & ~key_states[side].keys;
     }
 
+    void TH9Monitor::SaveSnapshot()
+    {
+        //スナップショット取得については通常のキーとは別の領域をチェックしているのでそっちを書き換える
+        //.text:0042D3DA                 mov     ecx, offset key_states_3P
+        //.text:0042D3DF                 call    andEcx_6
+        //.text:0042D3E4                 test    ax, ax; check if P is pushed
+        //.text:0042D3E7                 jz      short loc_42D44C
+        key_states[2].system_keys |= keys::p;
+
+    }
+
     void TH9Monitor::SetWindowTitle(const char* text)
     {
         ::SetWindowTextA((HWND)hwnd, text);
