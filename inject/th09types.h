@@ -211,7 +211,9 @@ namespace ka_ai_duka {
         };
 
         struct KeyState{
-            char unknown1[0x2C];
+            char unknown1[0x6];
+            unsigned short system_keys;
+            char unknown1_5[0x2C - 0x6 - sizeof(unsigned short)];
             unsigned short keys;//0x2C
             unsigned short prev_keys;//0x2E
             char unknown2[0x32 - 0x2E - sizeof(unsigned short)];
