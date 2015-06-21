@@ -37,9 +37,9 @@ namespace ka_ai_duka{
 
     int Lua_SaveSnapshot(lua_State* ls)
     {
-        //if (monitor->CanSaveSnapshot()){
+        if (monitor->CanSaveSnapshot()){
             monitor->SaveSnapshot();
-        //}
+        }
         return 0;
     }
 
