@@ -65,6 +65,7 @@ namespace ka_ai_duka{
         extern struct raw_types::ExAttackFuncAddr ex_attack_func_addr_ver1_0;
         
         extern const struct Address addr_on_frame_update;
+        extern const struct Address addr_on_replay_update;
         extern const struct Address addr_on_game_start;
         extern const struct Address addr_on_game_end;
         extern const struct Address addr_window_title;
