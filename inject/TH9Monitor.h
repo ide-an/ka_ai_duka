@@ -62,6 +62,7 @@ namespace ka_ai_duka{
         char (&charge_types)[2];
         int &hwnd;//for debugging
         bool can_save_snapshot;
+        bool should_run_ai_while_replay;
         void OnSnapshotSave(void);
     protected:
         void SetJumpTo(char* code, int from, int to);
@@ -80,7 +81,7 @@ namespace ka_ai_duka{
             raw_types::ExAttackFuncAddr &ex_attack_func_addr
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
             round(round), round_win(round_win), difficulty(difficulty), is_playing(false), play_status(play_status), hwnd(hwnd),
-            ex_attack_func_addr(ex_attack_func_addr), charge_types(charge_types), can_save_snapshot(false)
+            ex_attack_func_addr(ex_attack_func_addr), charge_types(charge_types), can_save_snapshot(false), should_run_ai_while_replay(false)
         {};
         virtual ~TH9Monitor(void){};
         virtual void Attach(void) = 0;
@@ -108,6 +109,10 @@ namespace ka_ai_duka{
         void SetCanSaveSnapshot(bool b)
         {
             can_save_snapshot = b;
+        }
+        void SetShouldRunAIWhileReplay(bool b)
+        {
+            should_run_ai_while_replay = b;
         }
         managed_types::GameSide* GetGameSide(PlayerSide side)
         {

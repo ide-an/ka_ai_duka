@@ -49,7 +49,7 @@ namespace ka_ai_duka{
 
     void TH9Monitor::OnGameStart(void)
     {
-        if(!IsNetBattle() && !IsReplay()){
+        if (!IsNetBattle() && (!IsReplay() || should_run_ai_while_replay)){
             is_playing = true;
         }
         if(is_playing && observer){
