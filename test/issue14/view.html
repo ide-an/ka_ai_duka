@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #player {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+    <script type="text/javascript" src="log.js"></script>
+    <script type="text/javascript">
+      onload = function() {
+        var el = document.getElementById("player");
+        var idx = 0;
+        var interval = 16;
+        var step = function() {
+          var pos = l[idx];
+          el.style.left = (300 + pos.x) + "px";
+          el.style.top = (100 + pos.y) + "px";
+          ++idx;
+          console.log(pos.x,pos.y);
+          if (idx < l.length) {
+            setTimeout(step, interval);
+          }
+        };
+        var button = document.getElementById("play-button");
+        button.addEventListener("click", function() {
+          button.disabled = "disabled";
+          idx = 0;
+          step();
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <input type="button" value="play" id="play-button"/>
+    <div id="player">*</div>
+  </body>
+</html>
+

@@ -49,7 +49,7 @@ namespace ka_ai_duka{
 
     void TH9Monitor::OnGameStart(void)
     {
-        if(!IsNetBattle() && !IsReplay()){
+        if (!IsNetBattle() && (!IsReplay() || should_run_ai_while_replay)){
             is_playing = true;
         }
         if(is_playing && observer){
@@ -96,10 +96,12 @@ namespace ka_ai_duka{
 
     void TH9Monitor::SetKeyState(PlayerSide side, KeyState key_state)
     {
-        key_states[side].keys |= key_state;
-        KeyState changed_keys = key_states[side].keys ^ key_states[side].prev_keys;
-        key_states[side].start_pushing_keys = changed_keys & key_states[side].keys;
-        key_states[side].start_leaving_keys = changed_keys & ~key_states[side].keys;
+        if (!IsReplay()){
+            key_states[side].keys |= key_state;
+            KeyState changed_keys = key_states[side].keys ^ key_states[side].prev_keys;
+            key_states[side].start_pushing_keys = changed_keys & key_states[side].keys;
+            key_states[side].start_leaving_keys = changed_keys & ~key_states[side].keys;
+        }
     }
 
     void TH9Monitor::SaveSnapshot()
@@ -110,7 +112,6 @@ namespace ka_ai_duka{
         //.text:0042D3E4                 test    ax, ax; check if P is pushed
         //.text:0042D3E7                 jz      short loc_42D44C
         key_states[2].system_keys |= keys::p;
-
     }
 
     void TH9Monitor::SetWindowTitle(const char* text)

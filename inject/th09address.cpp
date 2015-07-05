@@ -5,6 +5,10 @@ namespace ka_ai_duka{
             reinterpret_cast<char*>(0x420290),
             reinterpret_cast<char*>(0x420240)
         };
+        const struct Address addr_on_replay_update = {
+            reinterpret_cast<char*>(0x4205DA),
+            reinterpret_cast<char*>(0x42058A)
+        };
         const struct Address addr_on_game_start = {
             reinterpret_cast<char*>(0x41B2C3),
             reinterpret_cast<char*>(0x41B273)
