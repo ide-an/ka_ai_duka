@@ -145,6 +145,7 @@ namespace ka_ai_duka{
         void InjectOnFrameUpdate(void);
         void InjectOnGameStart(void);
         void InjectOnGameEnd(void);
+        void InjectOnReplayUpdate(void);
     };
 
     class TH9ver1_0Monitor : public TH9Monitor
