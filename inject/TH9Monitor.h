@@ -61,6 +61,8 @@ namespace ka_ai_duka{
         IDGenerator idgen;
         char (&charge_types)[2];
         int &hwnd;//for debugging
+        bool can_save_snapshot;
+        bool should_run_ai_while_replay;
         void OnSnapshotSave(void);
     protected:
         void SetJumpTo(char* code, int from, int to);
@@ -79,7 +81,7 @@ namespace ka_ai_duka{
             raw_types::ExAttackFuncAddr &ex_attack_func_addr
             ) : board(board), key_states(key_states), ex_attack_container(ex_attack_container),
             round(round), round_win(round_win), difficulty(difficulty), is_playing(false), play_status(play_status), hwnd(hwnd),
-            ex_attack_func_addr(ex_attack_func_addr), charge_types(charge_types)
+            ex_attack_func_addr(ex_attack_func_addr), charge_types(charge_types), can_save_snapshot(false), should_run_ai_while_replay(false)
         {};
         virtual ~TH9Monitor(void){};
         virtual void Attach(void) = 0;
@@ -99,6 +101,19 @@ namespace ka_ai_duka{
             return (play_status & 0x8) != 0;
         }
         void SetKeyState(PlayerSide side, KeyState key_state);
+        void SaveSnapshot(void); 
+        bool CanSaveSnapshot(void) const
+        {
+            return can_save_snapshot;
+        }
+        void SetCanSaveSnapshot(bool b)
+        {
+            can_save_snapshot = b;
+        }
+        void SetShouldRunAIWhileReplay(bool b)
+        {
+            should_run_ai_while_replay = b;
+        }
         managed_types::GameSide* GetGameSide(PlayerSide side)
         {
             return game_sides[side];
@@ -130,6 +145,7 @@ namespace ka_ai_duka{
         void InjectOnFrameUpdate(void);
         void InjectOnGameStart(void);
         void InjectOnGameEnd(void);
+        void InjectOnReplayUpdate(void);
     };
 
     class TH9ver1_0Monitor : public TH9Monitor
@@ -143,6 +159,7 @@ namespace ka_ai_duka{
         void InjectOnFrameUpdate(void);
         void InjectOnGameStart(void);
         void InjectOnGameEnd(void);
+        void InjectOnReplayUpdate(void);
     };
 
     extern TH9Monitor* monitor;

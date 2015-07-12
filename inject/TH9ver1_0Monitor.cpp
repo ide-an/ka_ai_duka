@@ -72,6 +72,7 @@ namespace ka_ai_duka{
     void TH9ver1_0Monitor::Attach(void)
     {
         InjectOnFrameUpdate();
+        InjectOnReplayUpdate();
         InjectOnGameStart();
         InjectOnGameEnd();
     }
@@ -86,6 +87,24 @@ namespace ka_ai_duka{
         Ç…èëÇ´ä∑Ç¶ÇÈ
         */
         char* inject_to = address::addr_on_frame_update.ver1_0;
+        char code[] = {
+            0xE8, 0, 0, 0, 0, // call OnFrameUpdate
+            0xC3              // retn
+        };
+        SetJumpTo(code + 1, (int)(inject_to + 5), (int)OnFrameUpdateVer1_0);
+        WriteCode(inject_to, code, sizeof(code));
+    }
+
+    void TH9ver1_0Monitor::InjectOnReplayUpdate(void)
+    {
+        /**
+          retn
+        Ç
+          call OnFrameUpdate ;; return 1
+          retn
+        Ç…èëÇ´ä∑Ç¶ÇÈ
+        */
+        char* inject_to = address::addr_on_replay_update.ver1_0;
         char code[] = {
             0xE8, 0, 0, 0, 0, // call OnFrameUpdate
             0xC3              // retn
