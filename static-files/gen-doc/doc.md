@@ -1,4 +1,4 @@
-% 花AI塚ver 1.6 AIスクリプト ドキュメント
+% 花AI塚ver 1.7 AIスクリプト ドキュメント
 
 ##概要
 
@@ -88,6 +88,7 @@
 - 関数
     - [sendKeys](#sendKeys)
     - [hitTest](#hitTest)
+    - [saveSnapshot](#saveSnapshot)
 - グローバル変数
     - [game_sides](#game_sides)
     - [player_side](#player_side)
@@ -123,6 +124,11 @@
 
 2つの[HitBody](#HitBody)オブジェクト`hitbody_a`と`hitbody_b`の当たり判定処理を行います。
 `hitbody_a`と`hitbody_b`とがぶつかっている時はtrueを、そうでなければfalseを返します。
+
+#### saveSnapshot() {#saveSnapshot}
+
+呼び出すと、呼び出したフレームでのスナップショットを保存します。保存先は花映塚のデフォルトの保存先です。
+この関数は設定で「スクリプトからのスナップショット取得を許可」を有効にしたときだけ使用できます。
 
 ### グローバル変数
 
