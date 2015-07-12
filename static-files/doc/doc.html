@@ -4,13 +4,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <title>花AI塚ver 1.6 AIスクリプト ドキュメント</title>
+  <title>花AI塚ver 1.7 AIスクリプト ドキュメント</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="res/doc.css" type="text/css" />
 </head>
 <body>
 <div id="header">
-<h1 class="title">花AI塚ver 1.6 AIスクリプト ドキュメント</h1>
+<h1 class="title">花AI塚ver 1.7 AIスクリプト ドキュメント</h1>
 </div>
 <div id="TOC">
 <ul>
@@ -166,7 +166,7 @@
 <h4 id="hitTest"><a href="#hitTest">hitTest(hitbody_a, hitbody_b)</a></h4>
 <p>2つの<a href="#HitBody">HitBody</a>オブジェクト<code>hitbody_a</code>と<code>hitbody_b</code>の当たり判定処理を行います。 <code>hitbody_a</code>と<code>hitbody_b</code>とがぶつかっている時はtrueを、そうでなければfalseを返します。</p>
 <h4 id="saveSnapshot"><a href="#saveSnapshot">saveSnapshot()</a></h4>
-<p>呼び出すと、呼び出したフレームでのスナップショットを保存します。保存先は花映塚のデフォルトの保存先です。 <em>この関数は設定で「スクリプトからのスナップショット取得を許可」を有効にしたときだけ使用できます。</em></p>
+<p>呼び出すと、呼び出したフレームでのスナップショットを保存します。保存先は花映塚のデフォルトの保存先です。 この関数は設定で「スクリプトからのスナップショット取得を許可」を有効にしたときだけ使用できます。</p>
 <h3 id="グローバル変数"><a href="#グローバル変数">グローバル変数</a></h3>
 <h4 id="game_sides"><a href="#game_sides">game_sides</a></h4>
 <p>2つの<a href="#GameSide">GameSide</a> からなる配列で、<code>game_sides[1]</code>は1P側の、<code>game_sides[2]</code>は2P側のゲーム状態を表します。 このグローバル変数は毎フレーム更新されます。</p>
