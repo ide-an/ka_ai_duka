@@ -35,9 +35,11 @@ BEGIN
     PUSHBUTTON      "ファイルを選ぶ",123,140,156,50,14
     DEFPUSHBUTTON   "OK",IDOK,146,181,50,14
     PUSHBUTTON      "キャンセル",IDCANCEL,198,181,50,14
-    GROUPBOX        "AI開発者オプション",IDC_STATIC,198,0,186,174
+    GROUPBOX        "AI開発者オプション",IDC_STATIC,198,0,186,175
     CONTROL         "スクリプトからのスナップショット取得を許可",IDC_ENABLE_SNAPTSHOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,15,172,8
-    CONTROL         "リプレイ再生中もAIを動かす",IDC_DRY_RUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,51,172,8
+    CONTROL         "リプレイ再生中もAIを動かす",IDC_DRY_RUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,70,172,8
+    LTEXT           "AIスクリプトからsaveSnapshot()を呼ぶとスナップショットが保存されるようになります。",IDC_STATIC,205,28,173,37
+    LTEXT           "リプレイ中やデモプレイ中もAIスクリプトが実行されるようになります。リプレイ中はAIスクリプトの自機操作はゲームに反映されません。",IDC_STATIC,205,84,173,37
 END
 
 
