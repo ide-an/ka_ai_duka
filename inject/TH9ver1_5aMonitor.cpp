@@ -1,7 +1,7 @@
 #include "TH9Monitor.h"
 #include "th09address.h"
 
-namespace ka_ai_duka{
+namespace ka_ai_duka {
     TH9ver1_5aMonitor::TH9ver1_5aMonitor(void) : TH9Monitor(
         address::globals_ver1_5->board,
         address::globals_ver1_5->key_states,
@@ -13,21 +13,21 @@ namespace ka_ai_duka{
         address::globals_ver1_5->charge_types,
         address::globals_ver1_5->hwnd,
         address::ex_attack_func_addr_ver1_5
-        ),
+    ),
         net_info(address::globals_ver1_5->net_info)
     {
     }
 
     int __declspec(naked) OnFrameUpdateVer1_5(void)
-    {   
-        __asm{
+    {
+        __asm {
             pushad;
             pushfd;
         }
-        if(monitor){
+        if (monitor) {
             monitor->OnFrameUpdate();
         }
-        __asm{
+        __asm {
             popfd;
             popad;
             mov eax, 1;
@@ -37,14 +37,14 @@ namespace ka_ai_duka{
 
     void __declspec(naked) OnGameStartVer1_5(void)
     {
-        __asm{
+        __asm {
             pushad;
             pushfd;
         }
-        if(monitor){
+        if (monitor) {
             monitor->OnGameStart();
         }
-        __asm{
+        __asm {
             popfd;
             popad;
             mov edx, 320h;
@@ -54,14 +54,14 @@ namespace ka_ai_duka{
 
     void __declspec(naked) OnGameEndVer1_5(void)
     {
-        __asm{
+        __asm {
             pushad;
             pushfd;
         }
-        if(monitor){
+        if (monitor) {
             monitor->OnGameEnd();
         }
-        __asm{
+        __asm {
             popfd;
             popad;
             add ebx, 0E8h;
@@ -76,7 +76,7 @@ namespace ka_ai_duka{
         InjectOnGameStart();
         InjectOnGameEnd();
     }
-
+#pragma warning( disable : 4309 )
     void TH9ver1_5aMonitor::InjectOnFrameUpdate(void)
     {
         /**
@@ -131,7 +131,7 @@ namespace ka_ai_duka{
 
     void TH9ver1_5aMonitor::InjectOnGameEnd(void)
     {
-        /**      
+        /**
         .text:0041B9A2                 add     ebx, 0E8h
         ‚ð
         .text:0041B9A2                 call OnGameEnd
@@ -146,4 +146,5 @@ namespace ka_ai_duka{
         SetJumpTo(code + 1, (int)(inject_to + 5), (int)OnGameEndVer1_5);
         WriteCode(inject_to, code, sizeof(code));
     }
+#pragma warning( default : 4309 )
 }

@@ -35,8 +35,9 @@ int main(int argc, char** argv){
     ::ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
     ::ZeroMemory(&pi, sizeof(pi));
-    char* current_dir = new char[conf.Th09ExePath().size()+1];
-    ::strcpy(current_dir, conf.Th09ExePath().c_str());
+    int buff_len = conf.Th09ExePath().size() + 1;
+    char* current_dir = new char[buff_len];
+    ::strcpy_s(current_dir, buff_len, conf.Th09ExePath().c_str());
     ::PathRemoveFileSpecA(current_dir);
     if(!::CreateProcess(conf.Th09ExePath().c_str(), NULL, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS | CREATE_SUSPENDED, NULL, current_dir, &si, &pi)){
         std::ostringstream os;
