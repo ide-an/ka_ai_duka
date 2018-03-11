@@ -69,8 +69,8 @@ Author: いで(@ide_an)
   Q. バグ踏んだ。
   Q. 要望がある。
   A. 報告お願いします。連絡方法は以下の3種類があります。
-      * issueトラッカ https://bitbucket.org/ide_an/ka_ai_duka/issues
-      * 東方プレイヤー板のツールスレに投げる
+      * issueトラッカ https://github.com/ide-an/ka_ai_duka/issues
+      * 東方寄書板のツールスレに投げる
       * Twitterで@ide_anに投げる
 
 6. TODO
@@ -103,7 +103,7 @@ Author: いで(@ide_an)
 
   2015/01/29 ver1.5リリース
     修正
-      ver1.4でこっそりJIT有効化したのがバグを引き起こした(https://bitbucket.org/ide_an/ka_ai_duka/issue/7)ので粛々と無効化。
+      ver1.4でこっそりJIT有効化したのがバグを引き起こした(https://github.com/ide-an/ka_ai_duka/issues/7 )ので粛々と無効化。
 
   2015/01/24 ver1.4リリース
     修正
