@@ -1,7 +1,4 @@
 version: 1.7.{build}
-branches:
-  only:
-  - ci
 configuration: Release
 before_build:
 - cmd: nuget restore
@@ -22,5 +19,4 @@ deploy:
   draft: false
   prerelease: true
   on:
-    branch: ci
     appveyor_repo_tag: true
