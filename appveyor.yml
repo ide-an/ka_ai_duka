@@ -1,0 +1,16 @@
+version: 1.7.{build}
+branches:
+  only:
+  - ci
+configuration: Release
+before_build:
+- cmd: nuget restore
+build:
+  verbosity: minimal
+after_build:
+- cmd: >-
+    C:\Python35\python deploy.py
+    7z a ka_ai_duka.zip %APPVEYOR_BUILD_FOLDER%\tmp-deploy\ka_ai_duka
+artifacts:
+- path: ka_ai_duka.zip
+  name: Release

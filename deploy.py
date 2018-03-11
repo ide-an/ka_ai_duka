@@ -7,7 +7,7 @@ sample_script_dir = "./sample-scripts/"
 bin_dir = "./Release/"
 static_files_dir = "./static-files/"
 
-deploy_name = time.strftime("ka_ai_duka-%Y%m%d-%H%M%S")
+deploy_name = "ka_ai_duka"
 deploy_dir = deploy_root_dir + deploy_name + "/"
 if not(os.path.exists(deploy_dir)):
   os.makedirs(deploy_dir)
