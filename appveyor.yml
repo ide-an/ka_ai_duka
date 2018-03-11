@@ -22,5 +22,5 @@ deploy:
   draft: false
   prerelease: true
   on:
-    branch: master
+    branch: ci
     appveyor_repo_tag: true
