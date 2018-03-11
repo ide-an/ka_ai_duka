@@ -1,0 +1,22 @@
+version: 1.7.{build}
+configuration: Release
+before_build:
+- cmd: nuget restore
+build:
+  verbosity: minimal
+after_build:
+- cmd: C:\Python35\python deploy.py
+- cmd: 7z a ka_ai_duka.zip %APPVEYOR_BUILD_FOLDER%\tmp-deploy\ka_ai_duka
+artifacts:
+- path: ka_ai_duka.zip
+  name: Release
+deploy:
+  description: ${appveyor_build_version}
+  provider: GitHub
+  auth_token:
+    secure: QJxoQNpTs4KZVd3QtGuBxCjaaIMtEh2ZsHMyvFSMfm8Mlj42AE0kHtbmctanJq7g
+  artifact: Release
+  draft: false
+  prerelease: true
+  on:
+    appveyor_repo_tag: true
