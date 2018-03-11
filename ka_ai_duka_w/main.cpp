@@ -221,7 +221,7 @@ int APIENTRY WinMain(
     }
     try{
         conf.Load(ini_path);
-    }catch(std::exception &e){
+    }catch (...) {
         //iniファイルがうまく読めなければデフォルト設定とする
         conf.SetEnable1P(false);
         conf.SetEnable2P(false);

@@ -43,7 +43,7 @@ namespace ka_ai_duka{
             //if(key_states[2].keys & keys::p){
             //    OnSnapshotSave();
             //}
-            prev_p = (key_states[2].keys & keys::p);
+            prev_p = (key_states[2].keys & keys::p) != 0;
         }
     }
 
@@ -76,8 +76,8 @@ namespace ka_ai_duka{
         FILE* fp;
         char filename[0xff];
         count++;
-        ::sprintf(filename, "C:/Users/ide/Desktop/hoge-snapshot-%d.txt", count);
-        fp = fopen(filename, "wt");
+        ::sprintf_s(filename, "C:/Users/ide/Desktop/hoge-snapshot-%d.txt", count);
+        fopen_s(&fp, filename, "wt");
         fprintf(fp, "bullet()\n");
         std::stringstream ss;
         for(auto it=game_sides[0]->Bullets().begin();it!=game_sides[0]->Bullets().end();++it){

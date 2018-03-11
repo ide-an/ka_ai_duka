@@ -1,7 +1,7 @@
 #include "TH9Monitor.h"
 #include "th09address.h"
 
-namespace ka_ai_duka{
+namespace ka_ai_duka {
     TH9ver1_0Monitor::TH9ver1_0Monitor(void) :
         TH9Monitor(
             address::globals_ver1_0->board,
@@ -14,20 +14,20 @@ namespace ka_ai_duka{
             address::globals_ver1_0->charge_types,
             address::globals_ver1_0->hwnd,
             address::ex_attack_func_addr_ver1_0
-            )
+        )
     {
     }
 
     int __declspec(naked) OnFrameUpdateVer1_0(void)
-    {   
-        __asm{
+    {
+        __asm {
             pushad;
             pushfd;
         }
-        if(monitor){
+        if (monitor) {
             monitor->OnFrameUpdate();
         }
-        __asm{
+        __asm {
             popfd;
             popad;
             mov eax, 1;
@@ -37,14 +37,14 @@ namespace ka_ai_duka{
 
     void __declspec(naked) OnGameStartVer1_0(void)
     {
-        __asm{
+        __asm {
             pushad;
             pushfd;
         }
-        if(monitor){
+        if (monitor) {
             monitor->OnGameStart();
         }
-        __asm{
+        __asm {
             popfd;
             popad;
             mov edx, 320h;
@@ -54,14 +54,14 @@ namespace ka_ai_duka{
 
     void __declspec(naked) OnGameEndVer1_0(void)
     {
-        __asm{
+        __asm {
             pushad;
             pushfd;
         }
-        if(monitor){
+        if (monitor) {
             monitor->OnGameEnd();
         }
-        __asm{
+        __asm {
             popfd;
             popad;
             add ebx, 0E8h;
@@ -76,6 +76,7 @@ namespace ka_ai_duka{
         InjectOnGameStart();
         InjectOnGameEnd();
     }
+#pragma warning( disable : 4309 )
 
     void TH9ver1_0Monitor::InjectOnFrameUpdate(void)
     {
@@ -131,7 +132,7 @@ namespace ka_ai_duka{
 
     void TH9ver1_0Monitor::InjectOnGameEnd(void)
     {
-        /**      
+        /**
           add     ebx, 0E8h
         ‚ð
           call OnGameEnd
@@ -146,4 +147,5 @@ namespace ka_ai_duka{
         SetJumpTo(code + 1, (int)(inject_to + 5), (int)OnGameEndVer1_0);
         WriteCode(inject_to, code, sizeof(code));
     }
+#pragma warning( default : 4309 )
 }
