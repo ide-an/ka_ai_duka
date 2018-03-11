@@ -63,7 +63,6 @@ namespace ka_ai_duka{
         int &hwnd;//for debugging
         bool can_save_snapshot;
         bool should_run_ai_while_replay;
-        void OnSnapshotSave(void);
     protected:
         void SetJumpTo(char* code, int from, int to);
         void WriteCode(char* inject_to, char* new_code, size_t size);

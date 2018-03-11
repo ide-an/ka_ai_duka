@@ -40,9 +40,6 @@ namespace ka_ai_duka{
             game_sides[0]->Update(idgen);
             game_sides[1]->Update(idgen);
             observer->OnFrameUpdate(*this);
-            //if(key_states[2].keys & keys::p){
-            //    OnSnapshotSave();
-            //}
             prev_p = (key_states[2].keys & keys::p) != 0;
         }
     }
@@ -68,30 +65,6 @@ namespace ka_ai_duka{
             delete game_sides[1];
         }
         is_playing = false;
-    }
-
-    void TH9Monitor::OnSnapshotSave(void)
-    {
-        static int count = 0;
-        FILE* fp;
-        char filename[0xff];
-        count++;
-        ::sprintf_s(filename, "C:/Users/ide/Desktop/hoge-snapshot-%d.txt", count);
-        fopen_s(&fp, filename, "wt");
-        fprintf(fp, "bullet()\n");
-        std::stringstream ss;
-        for(auto it=game_sides[0]->Bullets().begin();it!=game_sides[0]->Bullets().end();++it){
-            ss.str("");
-            ss << *((*it)->HittableObject());
-            fprintf(fp, "pos(%f,%f);v(%f,%f);body(%s);\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy(), ss.str().c_str());
-        }
-        fprintf(fp, "enemy()\n");
-        for(auto it=game_sides[0]->Enemies().begin();it!=game_sides[0]->Enemies().end();++it){
-            ss.str("");
-            ss << *((*it)->HittableObject());
-            fprintf(fp, "pos(%f,%f);v(%f,%f);body(%s);\n", (*it)->X(),(*it)->Y(),(*it)->Vx(),(*it)->Vy(), ss.str().c_str());
-        }
-        fclose(fp);
     }
 
     void TH9Monitor::SetKeyState(PlayerSide side, KeyState key_state)
