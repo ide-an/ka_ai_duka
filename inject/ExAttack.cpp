@@ -1,4 +1,5 @@
 #include "ExAttack.h"
+#include <cassert>
 #include <cstdlib>
 namespace ka_ai_duka{
     namespace managed_types{
