@@ -1,5 +1,5 @@
 #include "th09types.h"
-#include <boost\shared_ptr.hpp>
+#include <memory>
 #include "hitTest.h"
 #pragma once
 namespace ka_ai_duka{
@@ -9,25 +9,25 @@ namespace ka_ai_duka{
         private:
             raw_types::Player &player;
             raw_types::PlayerCharacter &character;
-            boost::shared_ptr<HittableRect> hittable_rect;
-            boost::shared_ptr<HittableCircle> hittable_circle;
-            boost::shared_ptr<HittableRect> hittable_for_item;
+            std::shared_ptr<HittableRect> hittable_rect;
+            std::shared_ptr<HittableCircle> hittable_circle;
+            std::shared_ptr<HittableRect> hittable_for_item;
         public:
             Player(raw_types::Player &player, raw_types::PlayerCharacter &character)
                 : player(player), character(character)
             {
-                hittable_rect = boost::shared_ptr<HittableRect>(
+                hittable_rect = std::shared_ptr<HittableRect>(
                     new HittableRect(
                     player.position.x,
                     player.position.y,
                     player.rect_size1.x * 2,
                     player.rect_size1.y * 2));
-                hittable_circle = boost::shared_ptr<HittableCircle>(
+                hittable_circle = std::shared_ptr<HittableCircle>(
                     new HittableCircle(
                     player.position.x,
                     player.position.y,
                     player.feature->radius));
-                hittable_for_item = boost::shared_ptr<HittableRect>(
+                hittable_for_item = std::shared_ptr<HittableRect>(
                     new HittableRect(
                     player.position.x,
                     player.position.y,
@@ -93,15 +93,15 @@ namespace ka_ai_duka{
             {
                 return player.feature->speed_slow;
             }
-            boost::shared_ptr<HittableRect> HittableObjectRect() const
+            std::shared_ptr<HittableRect> HittableObjectRect() const
             {
                 return hittable_rect;
             }
-            boost::shared_ptr<HittableCircle> HittableObjectCircle() const
+            std::shared_ptr<HittableCircle> HittableObjectCircle() const
             {
                 return hittable_circle;
             }
-            boost::shared_ptr<HittableRect> HittableObjectForItem() const
+            std::shared_ptr<HittableRect> HittableObjectForItem() const
             {
                 return hittable_for_item;
             }

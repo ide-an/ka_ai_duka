@@ -1,6 +1,6 @@
 #pragma once
 #include "th09types.h"
-#include <boost\shared_ptr.hpp>
+#include <memory>
 #include "hitTest.h"
 namespace ka_ai_duka{
     namespace managed_types{
@@ -33,19 +33,19 @@ namespace ka_ai_duka{
             virtual bool Enabled() const = 0;
             virtual bool IsErasable() const = 0;
             virtual void Update() = 0;
-            virtual boost::shared_ptr<managed_types::HittableObject> HittableObject() const = 0;
+            virtual std::shared_ptr<managed_types::HittableObject> HittableObject() const = 0;
         };
 
         class NormalBullet : public Bullet
         {
         private:
             raw_types::Bullet &bullet;
-            boost::shared_ptr<HittableRect> hittable_object;
+            std::shared_ptr<HittableRect> hittable_object;
         public:
             NormalBullet(raw_types::Bullet &bullet, unsigned int id)
                 : Bullet(bullet.position, id), bullet(bullet)
             {
-                hittable_object = boost::shared_ptr<HittableRect>(
+                hittable_object = std::shared_ptr<HittableRect>(
                     new HittableRect(
                     bullet.position.x,
                     bullet.position.y,
@@ -77,9 +77,9 @@ namespace ka_ai_duka{
                 int status = bullet.status & 0xffff;
                 return (status != 0) && (status != 6);
             }
-            boost::shared_ptr<managed_types::HittableObject> HittableObject() const
+            std::shared_ptr<managed_types::HittableObject> HittableObject() const
             {
-                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
+                return std::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
             void Update(void);
         };
@@ -88,12 +88,12 @@ namespace ka_ai_duka{
         {
         private:
             raw_types::Laser &laser;
-            boost::shared_ptr<HittableRotatableRect> hittable_object;
+            std::shared_ptr<HittableRotatableRect> hittable_object;
         public:
             Laser(raw_types::Laser &laser, unsigned int id)
                 : Bullet(laser.position, id), laser(laser)
             {
-                hittable_object = boost::shared_ptr<HittableRotatableRect>(
+                hittable_object = std::shared_ptr<HittableRotatableRect>(
                     new HittableRotatableRect(
                     laser.position.x,
                     laser.position.y,
@@ -125,9 +125,9 @@ namespace ka_ai_duka{
             {
                 return laser.enabled != 0;
             }
-            boost::shared_ptr<managed_types::HittableObject> HittableObject() const
+            std::shared_ptr<managed_types::HittableObject> HittableObject() const
             {
-                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
+                return std::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
             void Update(void);
         };

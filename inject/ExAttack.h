@@ -1,6 +1,6 @@
 #pragma once
 #include "th09types.h"
-#include <boost\shared_ptr.hpp>
+#include <memory>
 #include "hitTest.h"
 #include "player_side.h"
 #include "idgen.h"
@@ -78,24 +78,24 @@ namespace ka_ai_duka {
                 return ex_attack.is_2P ? Side_2P : Side_1P;
             }
             virtual void Update(void) = 0;
-            virtual boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const = 0;
+            virtual std::shared_ptr<managed_types::HittableObject> HittableObject(void) const = 0;
         };
 
         class ExAttackCircle : public ExAttack
         {
         protected:
             float radius;
-            boost::shared_ptr<HittableCircle> hittable_object;
+            std::shared_ptr<HittableCircle> hittable_object;
         public:
             ExAttackCircle(raw_types::ExAttack &ex_attack, unsigned int id, ExAttackType ex_type, float radius)
                 : ExAttack(ex_attack, id, ex_type), radius(radius)
             {
-                hittable_object = boost::shared_ptr<HittableCircle>(new HittableCircle(X(), Y(), radius));
+                hittable_object = std::shared_ptr<HittableCircle>(new HittableCircle(X(), Y(), radius));
             }
             virtual void Update(void);
-            boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const
+            std::shared_ptr<managed_types::HittableObject> HittableObject(void) const
             {
-                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
+                return std::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
         };
 
@@ -113,9 +113,9 @@ namespace ka_ai_duka {
             virtual void Update(void)
             {
             }
-            boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const
+            std::shared_ptr<managed_types::HittableObject> HittableObject(void) const
             {
-                return boost::shared_ptr<managed_types::HittableObject>(nullptr);
+                return std::shared_ptr<managed_types::HittableObject>(nullptr);
             }
         };
 
@@ -157,18 +157,18 @@ namespace ka_ai_duka {
         private:
             const float width;
             const float height;
-            boost::shared_ptr<HittableRect> hittable_object;
+            std::shared_ptr<HittableRect> hittable_object;
         public:
             ExAttackCirno(raw_types::ExAttack &ex_attack, unsigned int id)
                 : ExAttack(ex_attack, id, Cirno), width(6), height(32)
             {
-                hittable_object = boost::shared_ptr<HittableRect>(
+                hittable_object = std::shared_ptr<HittableRect>(
                     new HittableRect(X(), Y(), width, height));
             }
             void Update(void);
-            boost::shared_ptr<managed_types::HittableObject> HittableObject(void) const
+            std::shared_ptr<managed_types::HittableObject> HittableObject(void) const
             {
-                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
+                return std::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
         };
         class ExAttackMystia : public ExAttackUnhittable
@@ -233,7 +233,7 @@ namespace ka_ai_duka {
             raw_types::ExAttack &ex_attack,
             raw_types::ExAttackFuncAddr &ex_func_addr,
             IDGenerator &idgen,
-            std::vector<boost::shared_ptr<ExAttack> > &attacks
+            std::vector<std::shared_ptr<ExAttack> > &attacks
             );
     }
 }

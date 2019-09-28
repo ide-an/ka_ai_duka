@@ -49,7 +49,7 @@ namespace ka_ai_duka{
         {
             bullets.erase(std::remove_if(
                 bullets.begin(), bullets.end(), 
-                [](boost::shared_ptr<Bullet> elm){
+                [](std::shared_ptr<Bullet> elm){
                     return !elm->Enabled();
                 }), bullets.end());
             for(unsigned int i=0;i<bullet_marks_length;i++){
@@ -58,7 +58,7 @@ namespace ka_ai_duka{
                     bullet_marks[i] = false;
                 }else if(!bullet_marks[i] && is_enabled){
                     bullet_marks[i] = true;
-                    bullets.push_back(boost::shared_ptr<Bullet>(new NormalBullet(board.bullet_container->bullets[i], idgen.NewId())));
+                    bullets.push_back(std::shared_ptr<Bullet>(new NormalBullet(board.bullet_container->bullets[i], idgen.NewId())));
                 }
             }
             for(unsigned int i=0;i<laser_marks_length;i++){
@@ -67,7 +67,7 @@ namespace ka_ai_duka{
                     laser_marks[i] = false;
                 }else if(!laser_marks[i] && is_enabled){
                     laser_marks[i] = true;
-                    bullets.push_back(boost::shared_ptr<Bullet>(new Laser(board.bullet_container->lasers[i], idgen.NewId())));
+                    bullets.push_back(std::shared_ptr<Bullet>(new Laser(board.bullet_container->lasers[i], idgen.NewId())));
                 }
             }
             ResetBullets(bullets);
@@ -95,7 +95,7 @@ namespace ka_ai_duka{
                     enemy_marks[i] = false;
                 }else if(!enemy_marks[i] && is_enabled){
                     enemy_marks[i] = true;
-                    enemies.push_back(boost::shared_ptr<Enemy>(new Enemy(board.enemy_container->enemies[i], idgen.NewId())));
+                    enemies.push_back(std::shared_ptr<Enemy>(new Enemy(board.enemy_container->enemies[i], idgen.NewId())));
                 }
             }
             ResetEnemies(enemies);
@@ -123,7 +123,7 @@ namespace ka_ai_duka{
                     item_marks[i] = false;
                 }else if(!item_marks[i] && is_enabled){
                     item_marks[i] = true;
-                    items.push_back(boost::shared_ptr<Item>(new Item(board.player->items[i], idgen.NewId(), board.player->feature->item_size)));
+                    items.push_back(std::shared_ptr<Item>(new Item(board.player->items[i], idgen.NewId(), board.player->feature->item_size)));
                 }
             }
             ResetItems(items);

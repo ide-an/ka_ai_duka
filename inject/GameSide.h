@@ -8,14 +8,14 @@
 #include "player_side.h"
 #include "idgen.h"
 #include <vector>
-#include <boost\shared_ptr.hpp>
+#include <memory>
 
 namespace ka_ai_duka{
     namespace managed_types{
-        typedef std::vector<boost::shared_ptr<Bullet> > Bullets;
-        typedef std::vector<boost::shared_ptr<Enemy> > Enemies;
-        typedef std::vector<boost::shared_ptr<Item> > Items;
-        typedef std::vector<boost::shared_ptr<ExAttack> > ExAttacks;
+        typedef std::vector<std::shared_ptr<Bullet> > Bullets;
+        typedef std::vector<std::shared_ptr<Enemy> > Enemies;
+        typedef std::vector<std::shared_ptr<Item> > Items;
+        typedef std::vector<std::shared_ptr<ExAttack> > ExAttacks;
 
         enum ChargeType{
             Slow = 0,
