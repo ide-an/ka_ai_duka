@@ -1,19 +1,20 @@
 #include "ExAttack.h"
+#include <cassert>
 #include <cstdlib>
 namespace ka_ai_duka{
     namespace managed_types{
         void AddExAttack(
-            std::vector<boost::shared_ptr<ExAttack> > &attacks,
+            std::vector<std::shared_ptr<ExAttack> > &attacks,
             ExAttack* ex_attack
             )
         {
-            attacks.push_back(boost::shared_ptr<ExAttack>(ex_attack));
+            attacks.push_back(std::shared_ptr<ExAttack>(ex_attack));
         }
         bool ExAttackFactory(
             raw_types::ExAttack &ex_attack,
             raw_types::ExAttackFuncAddr &ex_func_addr,
             IDGenerator &idgen,
-            std::vector<boost::shared_ptr<ExAttack> > &attacks
+            std::vector<std::shared_ptr<ExAttack> > &attacks
             )
         {
             int func_addr = ex_attack.update_func_address;

@@ -1,7 +1,7 @@
 #include "bind.h"
 #include "GameSide.h"
 #include "sandbox.h"
-#include <boost\shared_ptr.hpp>
+#include <memory>
 
 namespace ka_ai_duka{
     

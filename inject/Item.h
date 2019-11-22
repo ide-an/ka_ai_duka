@@ -1,6 +1,6 @@
 #pragma once
 #include "th09types.h"
-#include <boost\shared_ptr.hpp>
+#include <memory>
 #include "hitTest.h"
 namespace ka_ai_duka{
     namespace managed_types{
@@ -9,12 +9,12 @@ namespace ka_ai_duka{
             unsigned int id;
             raw_types::Item &item;
             float &size;
-            boost::shared_ptr<HittableRect> hittable_object;
+            std::shared_ptr<HittableRect> hittable_object;
         public:
             Item(raw_types::Item &item, unsigned int id, float &size)
                 : item(item), id(id), size(size)
             {
-                hittable_object = boost::shared_ptr<HittableRect>(
+                hittable_object = std::shared_ptr<HittableRect>(
                     new HittableRect(
                     item.position.x,
                     item.position.y,
@@ -60,9 +60,9 @@ namespace ka_ai_duka{
             {
                 return item.enabled != 0;
             }
-            boost::shared_ptr<managed_types::HittableObject> HittableObject() const
+            std::shared_ptr<managed_types::HittableObject> HittableObject() const
             {
-                return boost::static_pointer_cast<managed_types::HittableObject>(hittable_object);
+                return std::static_pointer_cast<managed_types::HittableObject>(hittable_object);
             }
             void Update(void)
             {
